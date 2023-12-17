@@ -1,5 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
+from simple_term_menu import TerminalMenu
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -70,10 +71,14 @@ def validate_quantity(data):
 
 
 def confirm_user_entry(user_entry):
-    print(f"You entered {user_entry}. Are you sure?")
-    confirm_response = input("Enter Y (for Yes) or N (for No):")
-
-    if confirm_response == "Y":
+    """
+    Uses a simple terminal menu to confirm user entry with user. Returns true if user answers yes.
+    """
+    options = ["Yes", "No"]
+    terminal_menu = TerminalMenu(options, title=f"You entered {user_entry}. Are you sure?")
+    confirm_response = terminal_menu.show()
+    
+    if options[confirm_response] == "Yes":
         return True
     else:
         return False
