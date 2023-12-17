@@ -1,12 +1,13 @@
 import gspread
 from google.oauth2.service_account import Credentials
 from simple_term_menu import TerminalMenu
+from validators import validate_quantity
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
-    "https://www.googleapis.com/auth/drive"
-    ]
+    "https://www.googleapis.com/auth/drive",
+]
 
 CREDS = Credentials.from_service_account_file("creds.json")
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
@@ -34,7 +35,7 @@ def get_quantity():
                 if confirm_user_entry(quantity):
                     print("Quantity is valid")
                     break
-                else: 
+                else:
                     print("Not registering quantity")
                     continue
             print("Quantity is valid")
@@ -43,46 +44,21 @@ def get_quantity():
     return quantity
 
 
-
-def validate_quantity(data):
-    """
-    Validates data, returns true if data is a positive integer value.
-    """
-    try:
-        # checks if empty
-        if not data:
-            raise ValueError("Data cannot be empty. Please try again.")
-        
-        # tries to convert to int
-        quantity = int(data)
-
-        # checks if <= 0
-        if quantity <= 0:
-            raise ValueError(f"Quantity must be a positive integer value. Please try again")
-    except ValueError as e:
-        if "invalid literal for int()" in str(e):
-            print("Invalid input. Quantity must be a positive integer. Please try again")
-        else:
-            print(f"Invalid: {e} Please try again.\n")
-        
-        return False
-    
-    return True
-
-
 def confirm_user_entry(user_entry):
     """
-    Uses a simple terminal menu to confirm user entry with user. Returns true if user answers yes.
+    Uses a simple terminal menu to confirm user entry with user.
+    Returns true if user answers yes.
     """
     options = ["Yes", "No"]
-    terminal_menu = TerminalMenu(options, title=f"You entered {user_entry}. Are you sure?")
+    terminal_menu = TerminalMenu(
+        options, title=f"You entered {user_entry}. Are you sure?"
+    )
     confirm_response = terminal_menu.show()
-    
+
     if options[confirm_response] == "Yes":
         return True
     else:
         return False
-    
 
 
 quantity = get_quantity()

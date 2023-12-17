@@ -8,3 +8,5 @@ node_modules/
 .github/
 venv
 creds.json
+.vscode
+.flake8
