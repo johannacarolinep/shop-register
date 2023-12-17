@@ -1,7 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 from simple_term_menu import TerminalMenu
-from validators import validate_quantity
+from validators import validate_quantity, validate_article_nr
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -44,6 +44,22 @@ def get_quantity():
     return quantity
 
 
+def get_article_number():
+    """
+    Get an article number from the user. Runs a while loop to collect a valid article nr
+    from the user. Needs to be a positive 4 digit integer number.
+    """
+    while True:
+        article_nr = input("Enter article nr, a 4 digit number, e.g. 1001:\n")
+
+        if validate_article_nr(article_nr):
+            article_nr = int(article_nr)
+            print("Article number is valid format")
+            break
+
+    return article_nr
+
+
 def confirm_user_entry(user_entry):
     """
     Uses a simple terminal menu to confirm user entry with user.
@@ -64,3 +80,6 @@ def confirm_user_entry(user_entry):
 quantity = get_quantity()
 print(f"Quantity is: {quantity}")
 print(f"Quantity is of type {type(quantity)}")
+
+article_nr = get_article_number()
+print(f"Artcile nr is {article_nr}")
