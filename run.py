@@ -28,6 +28,14 @@ def get_quantity():
 
         if validate_quantity(quantity):
             quantity = int(quantity)
+            # if quantity is very large, does extra confirmation with user
+            if quantity >= 1000:
+                if confirm_user_entry(quantity):
+                    print("Quantity is valid")
+                    break
+                else: 
+                    print("Not registering quantity")
+                    continue
             print("Quantity is valid")
             break
 
@@ -59,6 +67,18 @@ def validate_quantity(data):
         return False
     
     return True
+
+
+def confirm_user_entry(user_entry):
+    print(f"You entered {user_entry}. Are you sure?")
+    confirm_response = input("Enter Y (for Yes) or N (for No):")
+
+    if confirm_response == "Y":
+        return True
+    else:
+        return False
+    
+
 
 quantity = get_quantity()
 print(f"Quantity is: {quantity}")
