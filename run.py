@@ -1,3 +1,4 @@
+import os
 import gspread
 from google.oauth2.service_account import Credentials
 from simple_term_menu import TerminalMenu
@@ -26,6 +27,56 @@ SHEET = GSPREAD_CLIENT.open("shop_register")
 # data = inventory.get_all_values()
 # print(data)
 
+
+def main_menu():
+    os.system("clear")
+    print("Opening main menu")
+    menu = ["1. Inventory", "2. Sales", "3. Quit"]
+    terminal_menu = TerminalMenu(menu, title="Main menu")
+    menu_index = terminal_menu.show()
+
+    # todo switch instead
+    if menu_index == 0:
+        print("Opening inventory menu")
+        inventory_menu()
+    if menu_index == 1:
+        print("Opening sales menu")
+    if menu_index == 2:
+        print("Quitting program")
+        SystemExit
+
+
+def inventory_menu():
+    menu = [
+        "1. Display inventory",
+        "2. Look up article",
+        "3. Add article",
+        "4. Edit article",
+        "5. Delete article",
+        "6. Back to main menu",
+    ]
+    terminal_menu = TerminalMenu(menu, title="Inventory menu:")
+    menu_index = terminal_menu.show()
+
+    # todo switch instead
+    if menu_index == 0:
+        print("Displaying inventory")
+    if menu_index == 1:
+        print("Looking up article")
+    if menu_index == 2:
+        print("Adding article")
+    if menu_index == 3:
+        print("Editing article")
+    if menu_index == 4:
+        print("Deleting article")
+    if menu_index == 5:
+        print("Back to main menu")
+        main_menu()
+
+
+main_menu()
+
+"""
 quantity = get_quantity()
 print(f"Quantity is: {quantity}")
 print(f"Quantity is of type {type(quantity)}")
@@ -41,3 +92,4 @@ print(f"Price is: {price_in}")
 
 price_out = get_price("out")
 print(f"Price out: {price_out}")
+"""
