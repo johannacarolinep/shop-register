@@ -1,7 +1,9 @@
 import gspread
 from google.oauth2.service_account import Credentials
 from simple_term_menu import TerminalMenu
-from validators import validate_quantity, validate_article_nr
+from validators import Validators
+
+data_validator = Validators()
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -28,7 +30,7 @@ def get_quantity():
     while True:
         quantity = input("Enter quantity, a positive integer, e.g. 17 or 2:\n")
 
-        if validate_quantity(quantity):
+        if data_validator.validate_quantity(quantity):
             quantity = int(quantity)
             # if quantity is very large, does extra confirmation with user
             if quantity >= 1000:
@@ -52,7 +54,7 @@ def get_article_number():
     while True:
         article_nr = input("Enter article nr, a 4 digit number, e.g. 1001:\n")
 
-        if validate_article_nr(article_nr):
+        if data_validator.validate_article_nr(article_nr):
             article_nr = int(article_nr)
             print("Article number is valid format")
             break
