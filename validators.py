@@ -16,8 +16,8 @@ class Validators:
 
     def validate_is_positive(self, data) -> bool:
         try:
-            temp_int = int(data)
-            if temp_int <= 0:
+            temp_float = float(data)
+            if temp_float <= 0:
                 raise ValueError("Data must be a positive value. Please try again")
         except ValueError as e:
             print(f"Invalid: {e} Please try again.\n")
@@ -28,9 +28,27 @@ class Validators:
         try:
             temp_int = int(data)
         except ValueError:
-            print("Invalid input. Data must be an integer. " "Please try again")
+            print("Invalid input. Data must be an integer. Please try again")
             return False
         return True
+
+    def validate_is_float(self, data) -> bool:
+        try:
+            temp_float = float(data)
+        except ValueError:
+            print("Invalid input. Data must be an decimal number. Please try again")
+            return False
+        return True
+
+    def validate_price(self, data) -> bool:
+        if (
+            self.validate_not_empty(data)
+            and self.validate_is_float(data)
+            and self.validate_is_positive(data)
+        ):
+            return True
+        else:
+            return False
 
     def validate_quantity(self, data) -> bool:
         if (

@@ -60,7 +60,7 @@ def get_price(type):
             price = input("Enter price out, a positive decimal value, e.g. 10.99:\n")
 
         if data_validator.validate_price(price):
-            price = float(price)
+            price = round(float(price), 2)
             # if quantity is very large, does extra confirmation with user
             if price >= 500:
                 if confirm_user_entry(price):
@@ -141,3 +141,6 @@ print(f"Article name is: {name}")
 
 price_in = get_price("in")
 print(f"Price is: {price_in}")
+
+price_out = get_price("out")
+print(f"Price out: {price_out}")
