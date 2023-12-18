@@ -1,3 +1,6 @@
+import re
+
+
 class Validators:
     def validate_not_empty(self, data) -> bool:
         """
@@ -52,5 +55,29 @@ class Validators:
                     raise ValueError("Must be a positive 4 digit integer. Try again")
             except ValueError as e:
                 print(f"Invalid: {e} Please try again.\n")
+                return False
+            return True
+
+    def validate_is_name(self, data) -> bool:
+        if self.validate_not_empty(data):
+            # Remove trailing whitespaces and extra whitespaces
+            cleaned_str = re.sub(r"\s+", " ", data).strip()
+
+            try:
+                # Check the maximum length
+                if len(cleaned_str) > 90:
+                    raise ValueError("The max length for names is 90 characters.")
+
+                if len(cleaned_str) < 5:
+                    raise ValueError("The minimum length is 5 characters")
+
+                # Use a regular expression to check for letters and optional max 2 digit nr
+                pattern = re.compile(
+                    r"(?:[a-zA-Z0-9\s.,!-]*[a-zA-Z]+\s*\d{0,2}\s*[a-zA-Z0-9\s.,!-]*)+"
+                )
+                if bool(pattern.search(cleaned_str)) is False:
+                    raise ValueError("Format incorrect.")
+            except ValueError as e:
+                print(f"Invalid input: {e}. Please try again.")
                 return False
             return True

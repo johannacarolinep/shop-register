@@ -2,6 +2,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 from simple_term_menu import TerminalMenu
 from validators import Validators
+import re
 
 data_validator = Validators()
 
@@ -62,6 +63,28 @@ def get_article_number():
     return article_nr
 
 
+def get_article_name():
+    """
+    Get a name from the user. Runs a while loop to collect a valid name
+    from the user. Needs to be a string of max length 90.
+    Has to contain letters, and a max of 2 numbers.
+    """
+    while True:
+        print(
+            "Article names are of length 5-90 characters.\n"
+            "Special characters not allowed, with exception of '!/./,/-'.\n"
+            "You can include up to one 2-digit number."
+        )
+        name = input("Enter article name:\n")
+
+        if data_validator.validate_is_name(name):
+            cleaned_name = re.sub(r"\s+", " ", name).strip()
+            uppercase_name = cleaned_name.upper()
+            break
+
+    return uppercase_name
+
+
 def confirm_user_entry(user_entry):
     """
     Uses a simple terminal menu to confirm user entry with user.
@@ -85,3 +108,6 @@ print(f"Quantity is of type {type(quantity)}")
 
 article_nr = get_article_number()
 print(f"Artcile nr is {article_nr}")
+
+name = get_article_name()
+print(f"Article name is: {name}")
