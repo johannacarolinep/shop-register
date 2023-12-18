@@ -47,6 +47,33 @@ def get_quantity():
     return quantity
 
 
+def get_price(type):
+    """
+    Get a price from the user. Runs a while loop to collect a valid price
+    from the user. Needs to be a positive number. If price is larger
+    than 500, confirm with user.
+    """
+    while True:
+        if type == "in":
+            price = input("Enter price in, a positive decimal value, e.g. 10.99:\n")
+        else:
+            price = input("Enter price out, a positive decimal value, e.g. 10.99:\n")
+
+        if data_validator.validate_price(price):
+            price = float(price)
+            # if quantity is very large, does extra confirmation with user
+            if price >= 500:
+                if confirm_user_entry(price):
+                    print("Price is valid")
+                    break
+                else:
+                    print("Not registering price")
+                    continue
+            break
+
+    return price
+
+
 def get_article_number():
     """
     Get an article number from the user. Runs a while loop to collect a valid
@@ -111,3 +138,6 @@ print(f"Artcile nr is {article_nr}")
 
 name = get_article_name()
 print(f"Article name is: {name}")
+
+price_in = get_price("in")
+print(f"Price is: {price_in}")
