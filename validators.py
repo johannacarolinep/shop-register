@@ -17,7 +17,8 @@ def validate_quantity(data) -> bool:
     except ValueError as e:
         if "invalid literal for int()" in str(e):
             print(
-                "Invalid input. Quantity must be a positive integer. Please try again"
+                "Invalid input. Quantity must be a positive integer. "
+                "Please try again"
             )
         else:
             print(f"Invalid: {e} Please try again.\n")
@@ -44,7 +45,8 @@ def validate_article_nr(data) -> bool:
     except ValueError as e:
         if "invalid literal for int()" in str(e):
             print(
-                "Invalid input. Quantity must be a positive integer. Please try again"
+                "Invalid input. Quantity must be a positive integer. "
+                "Please try again"
             )
         else:
             print(f"Invalid: {e} Please try again.\n")

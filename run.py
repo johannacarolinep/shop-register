@@ -26,7 +26,7 @@ def get_quantity():
     than 1000, confirm with user.
     """
     while True:
-        quantity = input("Enter quantity, a positive integer number, e.g. 17\n")
+        quantity = input("Enter quantity, a positive integer, e.g. 17 or 2:\n")
 
         if validate_quantity(quantity):
             quantity = int(quantity)
@@ -46,8 +46,8 @@ def get_quantity():
 
 def get_article_number():
     """
-    Get an article number from the user. Runs a while loop to collect a valid article nr
-    from the user. Needs to be a positive 4 digit integer number.
+    Get an article number from the user. Runs a while loop to collect a valid
+    article nr from the user. Needs to be a positive 4 digit integer number.
     """
     while True:
         article_nr = input("Enter article nr, a 4 digit number, e.g. 1001:\n")
