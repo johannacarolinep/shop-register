@@ -108,6 +108,7 @@ def display_data(headers, rows):
     pretty_table.field_names = headers
     pretty_table.add_rows(rows)
     print(pretty_table)
+    pretty_table.clear_rows()
 
 
 def display_full_sheet(sheet):
@@ -136,6 +137,74 @@ def get_row_for_article(article_number):
             return [headers, row_values]
 
 
+def get_row_index_for_article(article_number):
+    article_str = str(article_number)
+    column = inventory.col_values(1)
+    index = column.index(article_str) + 1
+    return index
+
+
+def edit_menu(article):
+    options = ["Name", "Price_in", "Price_out", "Stock"]
+    terminal_menu = TerminalMenu(
+        options,
+        multi_select=True,
+        show_multi_select_hint=True,
+        multi_select_select_on_accept=False,
+        multi_select_empty_ok=True,
+        title=f"Would you like to edit this article?",
+    )
+    response = terminal_menu.show()
+    print("Response = ", response)
+    if response is None:
+        print("You did not make a selection. Re-routing to main menu.")
+        main_menu()
+    else:
+        response_array = list(terminal_menu.chosen_menu_entries)
+        print("Response array", response_array)
+        row_index = get_row_index_for_article(article)
+
+        if "Name" in response_array:
+            print("Edit name:")
+            new_name = get_article_name()
+            column_index = 2
+            inventory.update_cell(row_index, column_index, new_name)
+
+        if "Price_in" in response_array:
+            print("Edit price in:")
+            new_price_in = get_price("in")
+            column_index = 3
+            inventory.update_cell(row_index, column_index, new_price_in)
+
+        if "Price_out" in response_array:
+            print("Edit price out:")
+            current_price_in = inventory.cell(row_index, 3).value
+
+            user_confirm = False
+            while not user_confirm:
+                new_price_out = get_price("out")
+                if new_price_out < float(current_price_in):
+                    print("Price out is lower than price in.")
+                    user_confirm = confirm_user_entry(new_price_out)
+                else:
+                    user_confirm = True
+
+            column_index = 4
+            inventory.update_cell(row_index, column_index, new_price_out)
+
+        if "Stock" in response_array:
+            print("Edit stock:")
+            new_stock = get_quantity()
+            column_index = 5
+            inventory.update_cell(row_index, column_index, new_stock)
+
+        main_menu()
+
+
+#    if "Name" in options[response]:
+#        print("edit name")
+
+
 def edit_article():
     article = get_article_number()
     if data_validator.validate_article_existence(article, inventory):
@@ -151,6 +220,7 @@ def edit_article():
         response = terminal_menu.show()
         if options[response] == "Yes":
             print("opening multi option menu")
+            edit_menu(article)
         else:
             print("Cancelled. Routing back to main menu")
             main_menu()
