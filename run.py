@@ -29,7 +29,7 @@ inventory = SHEET.worksheet("inventory")
 # print(data)
 
 
-def add_article():
+def build_article():
     article = get_article_number()
     print("Article is ", article)
     article_name = get_article_name()
@@ -47,7 +47,11 @@ def add_article():
         f"Article nr: {article}, Article name: {article_name}, Price in: {price_in}, Price out: {price_out}, Stock: {article_quantity}"
     )
     article_row = [article, article_name, price_in, price_out, article_quantity]
-    inventory.append_row(article_row)
+    return article_row
+
+
+def add_row(row, sheet):
+    sheet.append_row(row)
 
 
 def main_menu():
@@ -87,7 +91,8 @@ def inventory_menu():
             print("Looking up article")
         case 2:
             print("Adding article")
-            add_article()
+            article_row = build_article()
+            add_row(article_row, inventory)
         case 3:
             print("Editing article")
         case 4:
