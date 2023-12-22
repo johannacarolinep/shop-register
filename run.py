@@ -74,7 +74,15 @@ def inventory_menu():
             main_menu()
 
 
-main_menu()
+def main():
+    """
+    Main function
+    """
+
+    main_menu()
+
+
+main()
 
 """
 quantity = get_quantity()
