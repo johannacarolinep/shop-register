@@ -11,8 +11,10 @@ from get_user_input import (
     confirm_user_entry,
 )
 from articles import Articles
+from prettytable import PrettyTable
 
 data_validator = Validators()
+pretty_table = PrettyTable()
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -26,7 +28,6 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("shop_register")
 
 inventory = SHEET.worksheet("inventory")
-# data = inventory.get_all_values()
 # print(data)
 
 
@@ -96,6 +97,22 @@ def remove_row(article_nr, sheet):
     sheet.delete_rows(index)
 
 
+def display_data(headers, rows):
+    """
+    Display data from sheet
+    """
+    pretty_table.field_names = headers
+    pretty_table.add_rows(rows)
+    print(pretty_table)
+
+
+def display_full_sheet(sheet):
+    data = sheet.get_all_values()
+    headers = data[0]
+    data.pop(0)
+    display_data(headers, data)
+
+
 def main_menu():
     os.system("clear")
     print("Opening main menu")
@@ -129,6 +146,7 @@ def inventory_menu():
     match menu_index:
         case 0:
             print("Displaying inventory")
+            display_full_sheet(inventory)
         case 1:
             print("Looking up article")
         case 2:
