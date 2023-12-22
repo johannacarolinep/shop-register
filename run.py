@@ -10,6 +10,7 @@ from get_user_input import (
     get_article_name,
     confirm_user_entry,
 )
+from articles import Articles
 
 data_validator = Validators()
 
@@ -31,23 +32,39 @@ inventory = SHEET.worksheet("inventory")
 
 def build_article():
     article = get_article_number()
-    print("Article is ", article)
-    article_name = get_article_name()
-    price_in = get_price("in")
-    user_confirm = False
-    while not user_confirm:
-        price_out = get_price("out")
-        if price_out < price_in:
-            print("Price out is lower than price in.")
-            user_confirm = confirm_user_entry(price_out)
+    if data_validator.validate_article_existence(article, inventory):
+        options = ["Yes", "No"]
+        terminal_menu = TerminalMenu(
+            options,
+            title=f"Article {article} already exists. Would you like to edit this article?",
+        )
+        response = terminal_menu.show()
+
+        if options[response] == "Yes":
+            print("Opening edit function")
         else:
-            user_confirm = True
-    article_quantity = get_quantity()
-    print(
-        f"Article nr: {article}, Article name: {article_name}, Price in: {price_in}, Price out: {price_out}, Stock: {article_quantity}"
-    )
-    article_row = [article, article_name, price_in, price_out, article_quantity]
-    return article_row
+            main_menu()
+
+    else:
+        print("Article is ", article)
+        article_name = get_article_name()
+        price_in = get_price("in")
+        user_confirm = False
+        while not user_confirm:
+            price_out = get_price("out")
+            if price_out < price_in:
+                print("Price out is lower than price in.")
+                user_confirm = confirm_user_entry(price_out)
+            else:
+                user_confirm = True
+        article_quantity = get_quantity()
+        print(
+            f"Article nr: {article}, Article name: {article_name}, Price in: {price_in}, Price out: {price_out}, Stock: {article_quantity}"
+        )
+        article_instance = Articles(
+            article, article_name, price_in, price_out, article_quantity
+        )
+        return article_instance.to_row()
 
 
 def add_row(row, sheet):

@@ -40,6 +40,13 @@ class Validators:
             return False
         return True
 
+    def validate_article_existence(self, articleNr, sheet) -> bool:
+        column = sheet.col_values(1)
+        if str(articleNr) in column:
+            return True
+        else:
+            return False
+
     def validate_price(self, data) -> bool:
         if (
             self.validate_not_empty(data)
