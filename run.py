@@ -44,7 +44,6 @@ def build_article():
             print("Opening edit function")
         else:
             main_menu()
-
     else:
         print("Article is ", article)
         article_name = get_article_name()
@@ -69,6 +68,32 @@ def build_article():
 
 def add_row(row, sheet):
     sheet.append_row(row)
+
+
+def delete_article():
+    article = get_article_number()
+    if data_validator.validate_article_existence(article, inventory):
+        options = ["Yes", "No"]
+        terminal_menu = TerminalMenu(
+            options,
+            title=f"Article {article} exists. Would you like to delete this article?",
+        )
+        response = terminal_menu.show()
+        if options[response] == "Yes":
+            remove_row(article, inventory)
+        else:
+            print("Cancelled. Routing back to main menu")
+            main_menu()
+    else:
+        print("Article not found. Routing back to main menu")
+        main_menu()
+
+
+def remove_row(article_nr, sheet):
+    article_str = str(article_nr)
+    column = sheet.col_values(1)
+    index = column.index(article_str) + 1
+    sheet.delete_rows(index)
 
 
 def main_menu():
@@ -114,6 +139,7 @@ def inventory_menu():
             print("Editing article")
         case 4:
             print("Deleting article")
+            delete_article()
         case 5:
             print("Back to main menu")
             main_menu()
