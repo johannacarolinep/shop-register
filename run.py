@@ -35,15 +35,15 @@ def main_menu():
     terminal_menu = TerminalMenu(menu, title="Main menu")
     menu_index = terminal_menu.show()
 
-    # todo switch instead
-    if menu_index == 0:
-        print("Opening inventory menu")
-        inventory_menu()
-    if menu_index == 1:
-        print("Opening sales menu")
-    if menu_index == 2:
-        print("Quitting program")
-        SystemExit
+    match menu_index:
+        case 0:
+            print("Opening inventory menu")
+            inventory_menu()
+        case 1:
+            print("Opening sales menu")
+        case 2:
+            print("Quitting program")
+            SystemExit
 
 
 def inventory_menu():
@@ -58,20 +58,20 @@ def inventory_menu():
     terminal_menu = TerminalMenu(menu, title="Inventory menu:")
     menu_index = terminal_menu.show()
 
-    # todo switch instead
-    if menu_index == 0:
-        print("Displaying inventory")
-    if menu_index == 1:
-        print("Looking up article")
-    if menu_index == 2:
-        print("Adding article")
-    if menu_index == 3:
-        print("Editing article")
-    if menu_index == 4:
-        print("Deleting article")
-    if menu_index == 5:
-        print("Back to main menu")
-        main_menu()
+    match menu_index:
+        case 0:
+            print("Displaying inventory")
+        case 1:
+            print("Looking up article")
+        case 2:
+            print("Adding article")
+        case 3:
+            print("Editing article")
+        case 4:
+            print("Deleting article")
+        case 5:
+            print("Back to main menu")
+            main_menu()
 
 
 main_menu()
