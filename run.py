@@ -74,10 +74,14 @@ def add_row(row, sheet):
 def delete_article():
     article = get_article_number()
     if data_validator.validate_article_existence(article, inventory):
+        # display row
+        print("Article to remove:")
+        row_data = get_row_for_article(article)
+        display_data(row_data[0], [row_data[1]])
         options = ["Yes", "No"]
         terminal_menu = TerminalMenu(
             options,
-            title=f"Article {article} exists. Would you like to delete this article?",
+            title=f"Would you like to delete this article?",
         )
         response = terminal_menu.show()
         if options[response] == "Yes":
@@ -111,6 +115,48 @@ def display_full_sheet(sheet):
     headers = data[0]
     data.pop(0)
     display_data(headers, data)
+
+
+def look_up_article():
+    article_number = get_article_number()
+    if data_validator.validate_article_existence(article_number, inventory):
+        row_data = get_row_for_article(article_number)
+        display_data(row_data[0], [row_data[1]])
+    else:
+        print("Article not found. Re-routing to main menu.")
+        main_menu()
+
+
+def get_row_for_article(article_number):
+    headers = inventory.row_values(1)
+    column = inventory.col_values(1)
+    for index, cell_value in enumerate(column):
+        if str(cell_value) == str(article_number):
+            row_values = inventory.row_values(index + 1)
+            return [headers, row_values]
+
+
+def edit_article():
+    article = get_article_number()
+    if data_validator.validate_article_existence(article, inventory):
+        # display row
+        print("Article to edit:")
+        row_data = get_row_for_article(article)
+        display_data(row_data[0], [row_data[1]])
+        options = ["Yes", "No"]
+        terminal_menu = TerminalMenu(
+            options,
+            title=f"Would you like to edit this article?",
+        )
+        response = terminal_menu.show()
+        if options[response] == "Yes":
+            print("opening multi option menu")
+        else:
+            print("Cancelled. Routing back to main menu")
+            main_menu()
+    else:
+        print("Article not found. Routing back to main menu")
+        main_menu()
 
 
 def main_menu():
@@ -149,12 +195,14 @@ def inventory_menu():
             display_full_sheet(inventory)
         case 1:
             print("Looking up article")
+            look_up_article()
         case 2:
             print("Adding article")
             article_row = build_article()
             add_row(article_row, inventory)
         case 3:
             print("Editing article")
+            edit_article()
         case 4:
             print("Deleting article")
             delete_article()
