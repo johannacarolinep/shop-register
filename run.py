@@ -8,6 +8,7 @@ from get_user_input import (
     get_price,
     get_article_number,
     get_article_name,
+    confirm_user_entry,
 )
 
 data_validator = Validators()
@@ -23,9 +24,30 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("shop_register")
 
-# inventory = SHEET.worksheet("inventory")
+inventory = SHEET.worksheet("inventory")
 # data = inventory.get_all_values()
 # print(data)
+
+
+def add_article():
+    article = get_article_number()
+    print("Article is ", article)
+    article_name = get_article_name()
+    price_in = get_price("in")
+    user_confirm = False
+    while not user_confirm:
+        price_out = get_price("out")
+        if price_out < price_in:
+            print("Price out is lower than price in.")
+            user_confirm = confirm_user_entry(price_out)
+        else:
+            user_confirm = True
+    article_quantity = get_quantity()
+    print(
+        f"Article nr: {article}, Article name: {article_name}, Price in: {price_in}, Price out: {price_out}, Stock: {article_quantity}"
+    )
+    article_row = [article, article_name, price_in, price_out, article_quantity]
+    inventory.append_row(article_row)
 
 
 def main_menu():
@@ -65,6 +87,7 @@ def inventory_menu():
             print("Looking up article")
         case 2:
             print("Adding article")
+            add_article()
         case 3:
             print("Editing article")
         case 4:
@@ -78,7 +101,7 @@ def main():
     """
     Main function
     """
-
+    print("Welcome to shop register!")
     main_menu()
 
 
