@@ -1,5 +1,6 @@
 from simple_term_menu import TerminalMenu
 from validators import Validators
+from articles import Articles
 import re
 
 data_validator = Validators()
@@ -28,6 +29,25 @@ def get_quantity():
             break
 
     return quantity
+
+
+def get_sales_quantity(sheet, article_number) -> int:
+    article_index = Articles.get_row_index_for_article(article_number, sheet)
+    stock_quantity_str = sheet.cell(article_index, 5).value
+    stock_quantity = int(stock_quantity_str)
+    while True:
+        sales_quantity = input(
+            f"Enter sales quantity (Current stock level is {stock_quantity}):"
+        )
+        if data_validator.validate_quantity(sales_quantity):
+            sales_quantity = int(sales_quantity)
+
+            if sales_quantity <= stock_quantity:
+                break
+            else:
+                print("Sales quantity cannot be more than current stock")
+                continue
+    return sales_quantity
 
 
 def get_price(type):

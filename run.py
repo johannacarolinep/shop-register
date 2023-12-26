@@ -10,13 +10,13 @@ from get_user_input import (
     get_article_number,
     get_article_name,
     confirm_user_entry,
+    get_sales_quantity,
 )
 from articles import Articles
 from prettytable import PrettyTable
 
 data_validator = Validators()
 pretty_table = PrettyTable()
-# article_class = Articles()
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -30,7 +30,7 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("shop_register")
 
 inventory = SHEET.worksheet("inventory")
-# print(data)
+orders = SHEET.worksheet("orders")
 
 
 def build_article():
@@ -283,6 +283,63 @@ def delete_article_end_menu():
         main_menu()
 
 
+def generate_order_id():
+    current_id = orders.get_all_values()[-1][0]
+    return int(current_id) + 1
+
+
+def build_order(order_id):
+    # ask for article id, verify exists
+    article_number = get_article_number()
+    if data_validator.validate_article_existence(article_number, inventory):
+        sales_quantity = get_sales_quantity(inventory, article_number)
+        """
+        user_confirm = False
+        while not user_confirm:
+            price_out = get_price("out")
+            if price_out < price_in:
+                print("Price out is lower than price in.")
+                user_confirm = confirm_user_entry(price_out)
+            else:
+                user_confirm = True
+        """
+    # sales quantity
+    # verify quantity exists
+    # calculate the sum
+
+    # create order row
+
+
+def register_order():
+    order_id = generate_order_id()
+    build_order(order_id)
+
+
+def sales_menu():
+    """
+    Displays the sales menu
+    """
+    options = [
+        "Display orders (by date)",
+        "Look up order by ID",
+        "Register an order",
+        "Back to main menu",
+    ]
+    terminal_menu = TerminalMenu(options, title="Sales menu")
+    menu_index = terminal_menu.show()
+
+    match menu_index:
+        case 0:
+            print("Display orders (by date)")
+        case 1:
+            print("Look up order by ID")
+        case 2:
+            print("Register an order")
+            register_order()
+        case 3:
+            main_menu()
+
+
 def inventory_menu():
     menu = [
         "1. Display inventory",
@@ -329,15 +386,14 @@ def main_menu():
             inventory_menu()
         case 1:
             print("Opening sales menu")
+            sales_menu()
         case 2:
             print("Quitting program")
             SystemExit
 
 
 def main():
-    """
-    Main function
-    """
+    """Main function"""
     print("Welcome to shop register!")
     main_menu()
 
