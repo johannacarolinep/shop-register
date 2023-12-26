@@ -67,7 +67,6 @@ def get_article_number():
 
         if data_validator.validate_article_nr(article_nr):
             article_nr = int(article_nr)
-            print("Article number is valid format")
             break
 
     return article_nr

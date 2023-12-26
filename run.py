@@ -124,8 +124,8 @@ def look_up_article():
         row_data = get_row_for_article(article_number)
         display_data(row_data[0], [row_data[1]])
     else:
-        print("Article not found. Re-routing to main menu.")
-        main_menu()
+        print("Article not found.")
+    lookup_article_end_menu()
 
 
 def get_row_for_article(article_number):
@@ -236,6 +236,25 @@ def back_to_main_menu():
     confirm_response = terminal_menu.show()
 
     if options[confirm_response] == "Go back":
+        os.system("clear")
+        main_menu()
+
+
+def lookup_article_end_menu():
+    """
+    Allows user to lookup another article
+    or to clear terminal and open main menu
+    """
+    options = ["Look up another article", "Back to main menu"]
+    terminal_menu = TerminalMenu(
+        options, title="Do you want to look up another article?"
+    )
+    confirm_response = terminal_menu.show()
+
+    if options[confirm_response] == "Look up another article":
+        look_up_article()
+
+    elif options[confirm_response] == "Back to main menu":
         os.system("clear")
         main_menu()
 
