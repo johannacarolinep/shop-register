@@ -57,7 +57,7 @@ def get_price(type):
     return price
 
 
-def get_article_number():
+def get_article_number() -> int:
     """
     Get an article number from the user. Runs a while loop to collect a valid
     article nr from the user. Needs to be a positive 4 digit integer number.

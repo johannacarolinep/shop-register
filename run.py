@@ -43,6 +43,7 @@ def build_article():
 
         if options[response] == "Yes":
             print("Opening edit function")
+            edit_article(article)
         else:
             # Add another article or open main menu
             add_article_end_menu()
@@ -209,8 +210,10 @@ def edit_menu(article):
             inventory.update_cell(row_index, column_index, new_stock)
 
 
-def edit_article():
-    article = get_article_number()
+def edit_article(article=None):
+    if not article:
+        article = get_article_number()
+
     if data_validator.validate_article_existence(article, inventory):
         # display row
         print("Article to edit:")
@@ -361,8 +364,6 @@ def inventory_menu():
             look_up_article()
         case 2:
             print("Adding article")
-            # article_row = build_article()
-            # add_row(article_row, inventory)
             build_article()
         case 3:
             print("Editing article")
