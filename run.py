@@ -44,7 +44,8 @@ def build_article():
         if options[response] == "Yes":
             print("Opening edit function")
         else:
-            main_menu()
+            # Add another article or open main menu
+            add_article_end_menu()
     else:
         print("Article is ", article)
         article_name = get_article_name()
@@ -64,7 +65,10 @@ def build_article():
         article_instance = Articles(
             article, article_name, price_in, price_out, article_quantity
         )
-        return article_instance.to_row()
+        article_row = article_instance.to_row()
+        add_row(article_row, inventory)
+        # Add another article or open main menu
+        add_article_end_menu()
 
 
 def add_row(row, sheet):
@@ -266,6 +270,22 @@ def lookup_article_end_menu():
         main_menu()
 
 
+def add_article_end_menu():
+    """
+    Asks user to aither add another article or to go back to main menu
+    """
+    options = ["Add another article", "Back to main menu"]
+    terminal_menu = TerminalMenu(options, title="Do you want to add another article?")
+    confirm_response = terminal_menu.show()
+
+    if options[confirm_response] == "Add another article":
+        build_article()
+
+    elif options[confirm_response] == "Back to main menu":
+        os.system("clear")
+        main_menu()
+
+
 def edit_article_end_menu():
     """
     Allows user to edit another article
@@ -341,8 +361,9 @@ def inventory_menu():
             look_up_article()
         case 2:
             print("Adding article")
-            article_row = build_article()
-            add_row(article_row, inventory)
+            # article_row = build_article()
+            # add_row(article_row, inventory)
+            build_article()
         case 3:
             print("Editing article")
             edit_article()
