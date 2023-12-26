@@ -86,12 +86,17 @@ def delete_article():
         response = terminal_menu.show()
         if options[response] == "Yes":
             remove_row(article, inventory)
+            print("Article removed")
+            # Delete different article or go back to main menu
+            delete_article_end_menu()
         else:
-            print("Cancelled. Routing back to main menu")
-            main_menu()
+            print("Cancelled")
+            # Delete different article or go back to main menu
+            delete_article_end_menu()
     else:
-        print("Article not found. Routing back to main menu")
-        main_menu()
+        print("Article not found.")
+        # Delete different article or go back to main menu
+        delete_article_end_menu()
 
 
 def remove_row(article_nr, sheet):
@@ -272,6 +277,25 @@ def edit_article_end_menu():
 
     if options[confirm_response] == "Edit another article":
         edit_article()
+
+    elif options[confirm_response] == "Back to main menu":
+        os.system("clear")
+        main_menu()
+
+
+def delete_article_end_menu():
+    """
+    Allows user to delete another/different article
+    or to clear terminal and open main menu
+    """
+    options = ["Delete another article", "Back to main menu"]
+    terminal_menu = TerminalMenu(
+        options, title="Do you want to delete another article?"
+    )
+    confirm_response = terminal_menu.show()
+
+    if options[confirm_response] == "Delete another article":
+        delete_article()
 
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
