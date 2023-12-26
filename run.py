@@ -158,6 +158,7 @@ def edit_menu(article):
     print("Response = ", response)
     if response is None:
         print("You did not make a selection. Re-routing to main menu.")
+        # edit different article or back to main menu?
         main_menu()
     else:
         response_array = list(terminal_menu.chosen_menu_entries)
@@ -198,8 +199,6 @@ def edit_menu(article):
             column_index = 5
             inventory.update_cell(row_index, column_index, new_stock)
 
-        main_menu()
-
 
 def edit_article():
     article = get_article_number()
@@ -211,18 +210,21 @@ def edit_article():
         options = ["Yes", "No"]
         terminal_menu = TerminalMenu(
             options,
-            title=f"Would you like to edit this article?",
+            title="Would you like to edit this article?",
         )
         response = terminal_menu.show()
         if options[response] == "Yes":
             print("opening multi option menu")
             edit_menu(article)
+            # Edit another article or back to menu
+            edit_article_end_menu()
         else:
-            print("Cancelled. Routing back to main menu")
-            main_menu()
+            # Edit another article or back to menu
+            edit_article_end_menu()
     else:
-        print("Article not found. Routing back to main menu")
-        main_menu()
+        print("Article not found.")
+        # Edit another article or back to menu
+        edit_article_end_menu()
 
 
 def back_to_main_menu():
@@ -253,6 +255,23 @@ def lookup_article_end_menu():
 
     if options[confirm_response] == "Look up another article":
         look_up_article()
+
+    elif options[confirm_response] == "Back to main menu":
+        os.system("clear")
+        main_menu()
+
+
+def edit_article_end_menu():
+    """
+    Allows user to edit another article
+    or to clear terminal and open main menu
+    """
+    options = ["Edit another article", "Back to main menu"]
+    terminal_menu = TerminalMenu(options, title="Do you want to edit another article?")
+    confirm_response = terminal_menu.show()
+
+    if options[confirm_response] == "Edit another article":
+        edit_article()
 
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
