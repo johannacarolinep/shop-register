@@ -3,6 +3,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 from simple_term_menu import TerminalMenu
 from validators import Validators
+from helpers import *
 from get_user_input import (
     get_quantity,
     get_price,
@@ -15,6 +16,7 @@ from prettytable import PrettyTable
 
 data_validator = Validators()
 pretty_table = PrettyTable()
+# article_class = Articles()
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -72,16 +74,12 @@ def build_article():
         add_article_end_menu()
 
 
-def add_row(row, sheet):
-    sheet.append_row(row)
-
-
 def delete_article():
     article = get_article_number()
     if data_validator.validate_article_existence(article, inventory):
         # display row
         print("Article to remove:")
-        row_data = get_row_for_article(article)
+        row_data = Articles.get_row_for_article(inventory, article)
         display_data(row_data[0], [row_data[1]])
         options = ["Yes", "No"]
         terminal_menu = TerminalMenu(
@@ -90,7 +88,7 @@ def delete_article():
         )
         response = terminal_menu.show()
         if options[response] == "Yes":
-            remove_row(article, inventory)
+            Articles.remove_row(article, inventory)
             print("Article removed")
             # Delete different article or go back to main menu
             delete_article_end_menu()
@@ -104,54 +102,14 @@ def delete_article():
         delete_article_end_menu()
 
 
-def remove_row(article_nr, sheet):
-    article_str = str(article_nr)
-    column = sheet.col_values(1)
-    index = column.index(article_str) + 1
-    sheet.delete_rows(index)
-
-
-def display_data(headers, rows):
-    """
-    Display data from sheet
-    """
-    pretty_table.field_names = headers
-    pretty_table.add_rows(rows)
-    print(pretty_table)
-    pretty_table.clear_rows()
-
-
-def display_full_sheet(sheet):
-    data = sheet.get_all_values()
-    headers = data[0]
-    data.pop(0)
-    display_data(headers, data)
-
-
 def look_up_article():
     article_number = get_article_number()
     if data_validator.validate_article_existence(article_number, inventory):
-        row_data = get_row_for_article(article_number)
+        row_data = Articles.get_row_for_article(inventory, article_number)
         display_data(row_data[0], [row_data[1]])
     else:
         print("Article not found.")
     lookup_article_end_menu()
-
-
-def get_row_for_article(article_number):
-    headers = inventory.row_values(1)
-    column = inventory.col_values(1)
-    for index, cell_value in enumerate(column):
-        if str(cell_value) == str(article_number):
-            row_values = inventory.row_values(index + 1)
-            return [headers, row_values]
-
-
-def get_row_index_for_article(article_number):
-    article_str = str(article_number)
-    column = inventory.col_values(1)
-    index = column.index(article_str) + 1
-    return index
 
 
 def edit_menu(article):
@@ -173,7 +131,7 @@ def edit_menu(article):
     else:
         response_array = list(terminal_menu.chosen_menu_entries)
         print("Response array", response_array)
-        row_index = get_row_index_for_article(article)
+        row_index = Articles.get_row_index_for_article(article, inventory)
 
         if "Name" in response_array:
             print("Edit name:")
@@ -217,7 +175,7 @@ def edit_article(article=None):
     if data_validator.validate_article_existence(article, inventory):
         # display row
         print("Article to edit:")
-        row_data = get_row_for_article(article)
+        row_data = Articles.get_row_for_article(inventory, article)
         display_data(row_data[0], [row_data[1]])
         options = ["Yes", "No"]
         terminal_menu = TerminalMenu(
@@ -325,23 +283,6 @@ def delete_article_end_menu():
         main_menu()
 
 
-def main_menu():
-    print("Opening main menu")
-    menu = ["1. Inventory", "2. Sales", "3. Quit"]
-    terminal_menu = TerminalMenu(menu, title="Main menu")
-    menu_index = terminal_menu.show()
-
-    match menu_index:
-        case 0:
-            print("Opening inventory menu")
-            inventory_menu()
-        case 1:
-            print("Opening sales menu")
-        case 2:
-            print("Quitting program")
-            SystemExit
-
-
 def inventory_menu():
     menu = [
         "1. Display inventory",
@@ -376,6 +317,23 @@ def inventory_menu():
             main_menu()
 
 
+def main_menu():
+    print("Opening main menu")
+    menu = ["1. Inventory", "2. Sales", "3. Quit"]
+    terminal_menu = TerminalMenu(menu, title="Main menu")
+    menu_index = terminal_menu.show()
+
+    match menu_index:
+        case 0:
+            print("Opening inventory menu")
+            inventory_menu()
+        case 1:
+            print("Opening sales menu")
+        case 2:
+            print("Quitting program")
+            SystemExit
+
+
 def main():
     """
     Main function
@@ -385,21 +343,3 @@ def main():
 
 
 main()
-
-"""
-quantity = get_quantity()
-print(f"Quantity is: {quantity}")
-print(f"Quantity is of type {type(quantity)}")
-
-article_nr = get_article_number()
-print(f"Artcile nr is {article_nr}")
-
-name = get_article_name()
-print(f"Article name is: {name}")
-
-price_in = get_price("in")
-print(f"Price is: {price_in}")
-
-price_out = get_price("out")
-print(f"Price out: {price_out}")
-"""
