@@ -13,6 +13,7 @@ from get_user_input import (
     get_sales_quantity,
 )
 from articles import Articles
+from orders import Orders
 from prettytable import PrettyTable
 
 data_validator = Validators()
@@ -293,6 +294,15 @@ def build_order(order_id):
     article_number = get_article_number()
     if data_validator.validate_article_existence(article_number, inventory):
         sales_quantity = get_sales_quantity(inventory, article_number)
+        article_index = Articles.get_row_index_for_article(article_number, inventory)
+        price_str = inventory.cell(article_index, 4).value
+        price = float(price_str)
+        sum = price * sales_quantity
+
+        orders_instance = Orders(order_id, article_number, sales_quantity, sum)
+        order_row = orders_instance.to_row()
+        add_row(order_row, orders)
+
         """
         user_confirm = False
         while not user_confirm:

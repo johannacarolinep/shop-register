@@ -47,6 +47,10 @@ def get_sales_quantity(sheet, article_number) -> int:
             else:
                 print("Sales quantity cannot be more than current stock")
                 continue
+        else:
+            print("Not a valid quantity. Please try again")
+            continue
+
     return sales_quantity
 
 
