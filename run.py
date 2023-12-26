@@ -201,10 +201,6 @@ def edit_menu(article):
         main_menu()
 
 
-#    if "Name" in options[response]:
-#        print("edit name")
-
-
 def edit_article():
     article = get_article_number()
     if data_validator.validate_article_existence(article, inventory):
@@ -229,8 +225,22 @@ def edit_article():
         main_menu()
 
 
+def back_to_main_menu():
+    """
+    Clear terminal and open main menu once user clicks enter
+    """
+    options = ["Go back"]
+    terminal_menu = TerminalMenu(
+        options, title="Press enter to go back to the main menu"
+    )
+    confirm_response = terminal_menu.show()
+
+    if options[confirm_response] == "Go back":
+        os.system("clear")
+        main_menu()
+
+
 def main_menu():
-    os.system("clear")
     print("Opening main menu")
     menu = ["1. Inventory", "2. Sales", "3. Quit"]
     terminal_menu = TerminalMenu(menu, title="Main menu")
@@ -263,6 +273,7 @@ def inventory_menu():
         case 0:
             print("Displaying inventory")
             display_full_sheet(inventory)
+            back_to_main_menu()
         case 1:
             print("Looking up article")
             look_up_article()
