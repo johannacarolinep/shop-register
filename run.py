@@ -491,6 +491,16 @@ def lookup_order_by_id():
         print(f"Order ID {order_id}:")
         headers = orders.row_values(1)
         display_data(headers, order_rows)
+        total_order_sum = 0
+        total_order_quantity = 0
+        for rows in order_rows:
+            total_order_sum += float(rows[4])
+            total_order_quantity += int(rows[3])
+        print(
+            f"""Total order sum: {round(total_order_sum, 2)}
+Total order quantity: {total_order_quantity}
+"""
+        )
 
     else:
         print(f"There is no order with id {order_id} in the system.")
