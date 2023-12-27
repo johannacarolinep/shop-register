@@ -304,6 +304,25 @@ def register_order_end_menu():
         main_menu()
 
 
+def display_orders_by_date_end_menu():
+    """
+    Allows user to display orders for another period
+    or to clear terminal and open main menu
+    """
+    options = ["Search for different dates", "Back to main menu"]
+    terminal_menu = TerminalMenu(
+        options, title="Do you want to search for different dates?"
+    )
+    confirm_response = terminal_menu.show()
+
+    if options[confirm_response] == "Search for different dates":
+        display_orders_by_date()
+
+    elif options[confirm_response] == "Back to main menu":
+        os.system("clear")
+        main_menu()
+
+
 def confirm_order_complete() -> bool:
     """
     Ask user if they want to add another row to sales order
@@ -423,6 +442,7 @@ def display_orders_by_date():
     end_index = Orders.get_last_row_index_for_date(end_date, orders)
     orders_data = Orders.get_order_rows_for_dates(orders, start_index, end_index)
     display_data(orders_data[0], orders_data[1])
+    display_orders_by_date_end_menu()
 
 
 def sales_menu():
