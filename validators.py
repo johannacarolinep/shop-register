@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 
 
 class Validators:
@@ -106,3 +107,22 @@ class Validators:
                 print(f"Invalid input: {e}. Please try again.")
                 return False
             return True
+
+    def validate_is_date(self, date_str) -> bool:
+        # first validate input is not empty
+        if self.validate_not_empty(date_str):
+            # strip trailing whitespaces and check format is correct
+            date_str = date_str.strip()
+            pattern = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+            if pattern.match(date_str):
+                date_format = "%Y-%m-%d"
+                # check if it can be parsed to a date object
+                try:
+                    datetime.strptime(date_str, date_format)
+                    return True
+                except ValueError:
+                    print("Date provided does not exist. Please try again.")
+                    return False
+            else:
+                print("Invalid format. Should be YYYY-MM-DD")
+                return False

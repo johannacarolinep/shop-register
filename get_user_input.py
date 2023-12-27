@@ -124,6 +124,27 @@ def get_article_name() -> str:
     return uppercase_name
 
 
+def get_date(type) -> str:
+    """
+    Runs a while loop to collect a valid date from the user.
+    Needs to be a string matching YYYY-MM-DD.
+    Needs to be a real date (eg not 31st of February)
+
+    Returns:
+    - string: the date
+    """
+    while True:
+        if type == "start":
+            date = input("Enter start date (YYYY-MM-DD):\n")
+        elif type == "end":
+            date = input("Enter end date (YYYY-MM-DD):\n")
+
+        if data_validator.validate_is_date(date):
+            break
+
+    return date
+
+
 def confirm_user_entry(user_entry):
     """
     Uses a simple terminal menu to confirm user entry with user.

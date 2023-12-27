@@ -11,6 +11,7 @@ from get_user_input import (
     get_article_name,
     confirm_user_entry,
     get_sales_quantity,
+    get_date,
 )
 from articles import Articles
 from orders import Orders
@@ -393,13 +394,32 @@ def build_order(order_id):
 
         print("Order registered.")
 
-    # decrease inventory by sold amounts
-
 
 def register_order():
     order_id = generate_order_id()
     build_order(order_id)
     register_order_end_menu()
+
+
+def display_orders_by_date():
+    # ask for valid start date
+    start_date = get_date("start")
+    print("Start date is ", start_date)
+    # ask for valid end date, on or later than start date
+    while True:
+        end_date = get_date("end")
+        if end_date < start_date:
+            print(
+                "End date has to be a date which is the same or later than the start date"
+            )
+            continue
+        else:
+            print("End date is ", end_date)
+            break
+    if start_date == end_date:
+        print(f"Displaying orders from {start_date}...")
+    else:
+        print(f"Displaying orders from {start_date} until {end_date}...")
 
 
 def sales_menu():
@@ -418,6 +438,7 @@ def sales_menu():
     match menu_index:
         case 0:
             print("Display orders (by date)")
+            display_orders_by_date()
         case 1:
             print("Look up order by ID")
         case 2:
