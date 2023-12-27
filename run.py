@@ -284,40 +284,92 @@ def delete_article_end_menu():
         main_menu()
 
 
+def confirm_order_complete() -> bool:
+    """
+    Ask user if they want to add another row to sales order
+    """
+    options = ["Add row to sales order", "Order is complete"]
+    terminal_menu = TerminalMenu(
+        options, title="Do you want to add more articles to this order?"
+    )
+    confirm_response = terminal_menu.show()
+
+    if options[confirm_response] == "Add row to sales order":
+        return False
+
+    elif options[confirm_response] == "Order is complete":
+        return True
+
+
+def confirm_order_final() -> bool:
+    """
+    Ask user if they want to finalize the sales order
+    """
+    options = ["Finalize order", "Cancel order"]
+    terminal_menu = TerminalMenu(
+        options,
+        title="Select 'Finalize order' if you want to add this order to the system",
+    )
+    confirm_response = terminal_menu.show()
+
+    if options[confirm_response] == "Finalize order":
+        return True
+
+    elif options[confirm_response] == "Cancel order":
+        return False
+
+
 def generate_order_id():
     current_id = orders.get_all_values()[-1][0]
     return int(current_id) + 1
 
 
 def build_order(order_id):
-    # ask for article id, verify exists
-    article_number = get_article_number()
-    if data_validator.validate_article_existence(article_number, inventory):
-        sales_quantity = get_sales_quantity(inventory, article_number)
-        article_index = Articles.get_row_index_for_article(article_number, inventory)
-        price_str = inventory.cell(article_index, 4).value
-        price = float(price_str)
-        sum = price * sales_quantity
+    order = []
+    order_complete = False
+    while not order_complete:
+        # ask for article id, verify exists
+        article_number = get_article_number()
+        if data_validator.validate_article_existence(article_number, inventory):
+            # get sales quantity from user
+            sales_quantity = get_sales_quantity(inventory, article_number)
+            # calculate sum
+            article_index = Articles.get_row_index_for_article(
+                article_number, inventory
+            )
+            price_str = inventory.cell(article_index, 4).value
+            price = float(price_str)
+            sum = round(price * sales_quantity, 2)
 
-        orders_instance = Orders(order_id, article_number, sales_quantity, sum)
-        order_row = orders_instance.to_row()
-        add_row(order_row, orders)
+            orders_instance = Orders(order_id, article_number, sales_quantity, sum)
+            order_row = orders_instance.to_row()
 
-        """
-        user_confirm = False
-        while not user_confirm:
-            price_out = get_price("out")
-            if price_out < price_in:
-                print("Price out is lower than price in.")
-                user_confirm = confirm_user_entry(price_out)
-            else:
-                user_confirm = True
-        """
-    # sales quantity
-    # verify quantity exists
-    # calculate the sum
+            # add row to order
+            order.append(order_row)
 
-    # create order row
+            # ask user if they want to add more rows
+            order_complete = confirm_order_complete()
+
+    # print order in table
+    total_sum = 0
+    for rows in order:
+        total_sum += rows[4]
+
+    total_sum = round(total_sum, 2)
+
+    print("Order summary:")
+    display_data(["Order ID", "Date", "Article", "Quantity", "Sum"], order)
+    print(f"Total order sum: {total_sum}")
+
+    # Add order to sheet if user confirms
+    if confirm_order_final():
+        for rows in order:
+            add_row(rows, orders)
+        print("Order registered.")
+
+    # decrease inventory by sold amounts
+
+    # create another order or go back to menu?
 
 
 def register_order():
