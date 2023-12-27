@@ -501,41 +501,59 @@ def lookup_order_by_id():
 Total order quantity: {total_order_quantity}
 """
         )
-
     else:
         print(f"There is no order with id {order_id} in the system.")
-
     lookup_order_end_menu()
 
 
 def sales_menu():
     """
-    Displays the sales menu
+    Displays the sales menu using simple terminal menu. Uses
+    a switch statement to call different functions based on the user's choice.
     """
+    print(
+        f"""SALES MENU
+--------------------------------------------
+Make your selection with the up and down arrows on your keyboard,
+then press ENTER
+"""
+    )
     options = [
         "Display orders (by date)",
         "Look up order by ID",
         "Register an order",
         "Back to main menu",
     ]
-    terminal_menu = TerminalMenu(options, title="Sales menu")
+    terminal_menu = TerminalMenu(options)
     menu_index = terminal_menu.show()
 
     match menu_index:
         case 0:
-            print("Display orders (by date)")
+            os.system("clear")
             display_orders_by_date()
         case 1:
-            print("Look up order by ID")
+            os.system("clear")
             lookup_order_by_id()
         case 2:
-            print("Register an order")
+            os.system("clear")
             register_order()
         case 3:
+            os.system("clear")
             main_menu()
 
 
 def inventory_menu():
+    """
+    Displays the inventory menu using simple terminal menu. Uses
+    a switch statement to call different functions based on the user's choice.
+    """
+    print(
+        f"""INVENTORY MENU
+--------------------------------------------
+Make your selection with the up and down arrows on your keyboard,
+then press ENTER
+"""
+    )
     menu = [
         "1. Display inventory",
         "2. Look up article",
@@ -544,52 +562,72 @@ def inventory_menu():
         "5. Delete article",
         "6. Back to main menu",
     ]
-    terminal_menu = TerminalMenu(menu, title="Inventory menu:")
+    terminal_menu = TerminalMenu(menu)
     menu_index = terminal_menu.show()
 
     match menu_index:
         case 0:
+            os.system("clear")
             print("Displaying inventory")
             display_full_sheet(inventory)
             back_to_main_menu()
         case 1:
-            print("Looking up article")
+            os.system("clear")
             look_up_article()
         case 2:
-            print("Adding article")
+            os.system("clear")
             build_article()
         case 3:
-            print("Editing article")
+            os.system("clear")
             edit_article()
         case 4:
-            print("Deleting article")
+            os.system("clear")
             delete_article()
         case 5:
-            print("Back to main menu")
+            os.system("clear")
             main_menu()
 
 
 def main_menu():
-    print("Opening main menu")
+    """Displays the main menu using simple terminal menu"""
+    print(
+        f"""MAIN MENU
+--------------------------------------------
+Make your selection with the up and down arrows on your keyboard,
+then press ENTER
+"""
+    )
     menu = ["1. Inventory", "2. Sales", "3. Quit"]
-    terminal_menu = TerminalMenu(menu, title="Main menu")
+    terminal_menu = TerminalMenu(menu)
     menu_index = terminal_menu.show()
 
     match menu_index:
         case 0:
-            print("Opening inventory menu")
+            os.system("clear")
             inventory_menu()
         case 1:
-            print("Opening sales menu")
+            os.system("clear")
             sales_menu()
         case 2:
+            os.system("clear")
             print("Quitting program")
             SystemExit
 
 
 def main():
-    """Main function"""
-    print("Welcome to shop register!")
+    """Prints welcome message and calls main menu"""
+    os.system("clear")
+    print(
+        f"""WELCOME TO SHOP REGISTER!
+--------------------------------------------
+A simulation of a simple inventory and sales management program
+for a toys shop.
+
+The program allows it's users to display, add to, and edit, the
+shop's inventory and order history data, hosted in a spreadsheet.
+--------------------------------------------
+"""
+    )
     main_menu()
 
 
