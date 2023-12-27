@@ -404,7 +404,6 @@ def register_order():
 def display_orders_by_date():
     # ask for valid start date
     start_date = get_date("start")
-    print("Start date is ", start_date)
     # ask for valid end date, on or later than start date
     while True:
         end_date = get_date("end")
@@ -414,12 +413,16 @@ def display_orders_by_date():
             )
             continue
         else:
-            print("End date is ", end_date)
             break
     if start_date == end_date:
-        print(f"Displaying orders from {start_date}...")
+        print(f"Displaying orders from {start_date}:")
     else:
-        print(f"Displaying orders from {start_date} until {end_date}...")
+        print(f"Displaying orders from {start_date} until {end_date}:")
+
+    start_index = Orders.get_first_row_index_for_date(start_date, orders)
+    end_index = Orders.get_last_row_index_for_date(end_date, orders)
+    orders_data = Orders.get_order_rows_for_dates(orders, start_index, end_index)
+    display_data(orders_data[0], orders_data[1])
 
 
 def sales_menu():
