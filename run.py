@@ -284,6 +284,25 @@ def delete_article_end_menu():
         main_menu()
 
 
+def register_order_end_menu():
+    """
+    Allows user to register another order
+    or to clear terminal and open main menu
+    """
+    options = ["Register another order", "Back to main menu"]
+    terminal_menu = TerminalMenu(
+        options, title="Do you want to register another order?"
+    )
+    confirm_response = terminal_menu.show()
+
+    if options[confirm_response] == "Register another order":
+        register_order()
+
+    elif options[confirm_response] == "Back to main menu":
+        os.system("clear")
+        main_menu()
+
+
 def confirm_order_complete() -> bool:
     """
     Ask user if they want to add another row to sales order
@@ -332,7 +351,7 @@ def build_order(order_id):
         article_number = get_article_number()
         if data_validator.validate_article_existence(article_number, inventory):
             # get sales quantity from user
-            sales_quantity = get_sales_quantity(inventory, article_number)
+            sales_quantity = get_sales_quantity(inventory, article_number, order)
             # calculate sum
             article_index = Articles.get_row_index_for_article(
                 article_number, inventory
@@ -365,16 +384,22 @@ def build_order(order_id):
     if confirm_order_final():
         for rows in order:
             add_row(rows, orders)
+            # decrement inventory stock level by sold quantity
+            article_id = rows[2]
+            article_index = Articles.get_row_index_for_article(article_id, inventory)
+            stock = int(inventory.cell(article_index, 5).value)
+            new_stock_level = stock - rows[3]
+            inventory.update_cell(article_index, 5, new_stock_level)
+
         print("Order registered.")
 
     # decrease inventory by sold amounts
-
-    # create another order or go back to menu?
 
 
 def register_order():
     order_id = generate_order_id()
     build_order(order_id)
+    register_order_end_menu()
 
 
 def sales_menu():

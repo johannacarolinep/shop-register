@@ -31,10 +31,13 @@ def get_quantity():
     return quantity
 
 
-def get_sales_quantity(sheet, article_number) -> int:
+def get_sales_quantity(sheet, article_number, order) -> int:
     article_index = Articles.get_row_index_for_article(article_number, sheet)
     stock_quantity_str = sheet.cell(article_index, 5).value
     stock_quantity = int(stock_quantity_str)
+    for rows in order:
+        if rows[2] == article_number:
+            stock_quantity -= rows[3]
     while True:
         sales_quantity = input(
             f"Enter sales quantity (Current stock level is {stock_quantity}):"
