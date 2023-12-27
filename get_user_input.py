@@ -1,6 +1,7 @@
 from simple_term_menu import TerminalMenu
 from validators import Validators
 from articles import Articles
+from datetime import datetime
 import re
 
 data_validator = Validators()
@@ -133,11 +134,16 @@ def get_date(type) -> str:
     Returns:
     - string: the date
     """
+    current_date = datetime.now().strftime("%Y-%m-%d")
     while True:
         if type == "start":
-            date = input("Enter start date (YYYY-MM-DD):\n")
+            date = input(
+                f"Enter start date (YYYY-MM-DD). Can't be greater than {current_date}:\n"
+            )
         elif type == "end":
-            date = input("Enter end date (YYYY-MM-DD):\n")
+            date = input(
+                f"Enter end date (YYYY-MM-DD). Can't be greater than {current_date}:\n"
+            )
 
         if data_validator.validate_is_date(date):
             break

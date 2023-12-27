@@ -21,14 +21,23 @@ class Orders:
     @classmethod
     def get_first_row_index_for_date(self, date_str, sheet):
         column = sheet.col_values(2)
-        index = column.index(date_str) + 1
+        column.pop(0)
+        for item in column:
+            if item >= date_str:
+                date_str = item
+                break
+        index = column.index(date_str) + 2
         return index
 
     @classmethod
     def get_last_row_index_for_date(self, date_str, sheet):
         column = sheet.col_values(2)
-        index = len(column) - 1 - column[::-1].index(date_str)
-        return index + 1
+        column.pop(0)
+        for item in column:
+            if item <= date_str:
+                temp_date = item
+        index = len(column) - 1 - column[::-1].index(temp_date)
+        return index + 2
 
     @classmethod
     def get_order_rows_for_dates(self, orders, start_index, end_index):

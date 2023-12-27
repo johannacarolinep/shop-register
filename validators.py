@@ -118,8 +118,13 @@ class Validators:
                 date_format = "%Y-%m-%d"
                 # check if it can be parsed to a date object
                 try:
-                    datetime.strptime(date_str, date_format)
-                    return True
+                    date_to_check = datetime.strptime(date_str, date_format)
+                    current_date = datetime.now()
+                    if date_to_check <= current_date:
+                        return True
+                    else:
+                        print("Date cannot be greater than current date.")
+                        return False
                 except ValueError:
                     print("Date provided does not exist. Please try again.")
                     return False

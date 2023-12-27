@@ -433,16 +433,26 @@ def display_orders_by_date():
             continue
         else:
             break
-    if start_date == end_date:
-        print(f"Displaying orders from {start_date}:")
-    else:
-        print(f"Displaying orders from {start_date} until {end_date}:")
+    # check if there is no orders for requested period:
+    registered_dates = orders.col_values(2)
+    registered_dates.pop(0)
+    data_exists = False
+    for reg_date in registered_dates:
+        if reg_date >= start_date and reg_date <= end_date:
+            data_exists = True
+    if data_exists:
+        if start_date == end_date:
+            print(f"Displaying orders from {start_date}:")
+        else:
+            print(f"Displaying orders from {start_date} until {end_date}:")
 
-    start_index = Orders.get_first_row_index_for_date(start_date, orders)
-    end_index = Orders.get_last_row_index_for_date(end_date, orders)
-    orders_data = Orders.get_order_rows_for_dates(orders, start_index, end_index)
-    display_data(orders_data[0], orders_data[1])
-    display_orders_by_date_end_menu()
+        start_index = Orders.get_first_row_index_for_date(start_date, orders)
+        end_index = Orders.get_last_row_index_for_date(end_date, orders)
+        orders_data = Orders.get_order_rows_for_dates(orders, start_index, end_index)
+        display_data(orders_data[0], orders_data[1])
+        display_orders_by_date_end_menu()
+    else:
+        print("No orders to display for your chosen dates")
 
 
 def sales_menu():
