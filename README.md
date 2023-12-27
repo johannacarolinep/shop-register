@@ -1,32 +1,34 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Shop Register
 
-Welcome,
+Description
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **March 14, 2023**
+Link to [Shop Register](https://shop-register-ce8149331475.herokuapp.com/)
 
-## Reminders
+## User stories
 
-- Your code must be placed in the `run.py` file
-- Your dependencies must be placed in the `requirements.txt` file
-- Do not edit any of the other files or your code may not deploy properly
+## Instructions
 
-## Creating the Heroku app
+## Flowcharts
 
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
+## Technologies used
+### Languages
+### Frameworks/Libraries
+#### Standard library imports
+#### Third-party-imports
+### API's
+### Other tools
 
-1. `heroku/python`
-2. `heroku/nodejs`
+## Deployment
 
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
+## Testing
+All test-related documentation can be found in [TESTING.md](TESTING.md).
 
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
+## Bugs
+### Solved bugs
+### Unsolved bugs
 
-Connect your GitHub repository and deploy as normal.
 
-## Constraints
 
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
+## Credits
 
----
-
-Happy coding!
+## Acknowledgements
