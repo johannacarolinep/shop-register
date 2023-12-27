@@ -12,6 +12,7 @@ from get_user_input import (
     confirm_user_entry,
     get_sales_quantity,
     get_date,
+    get_order_id,
 )
 from articles import Articles
 from orders import Orders
@@ -323,6 +324,25 @@ def display_orders_by_date_end_menu():
         main_menu()
 
 
+def lookup_order_end_menu():
+    """
+    Allows user to lookup another order
+    or to clear terminal and open main menu
+    """
+    options = ["Search for different order", "Back to main menu"]
+    terminal_menu = TerminalMenu(
+        options, title="Do you want to search for another order ID?"
+    )
+    confirm_response = terminal_menu.show()
+
+    if options[confirm_response] == "Search for different order":
+        lookup_order_by_id()
+
+    elif options[confirm_response] == "Back to main menu":
+        os.system("clear")
+        main_menu()
+
+
 def confirm_order_complete() -> bool:
     """
     Ask user if they want to add another row to sales order
@@ -455,6 +475,29 @@ def display_orders_by_date():
         print("No orders to display for your chosen dates")
 
 
+def lookup_order_by_id():
+    # get order id until valid
+    order_id = get_order_id()
+    # check if it exists
+    order_nr_column = orders.col_values(1)
+    order_nr_column.pop(0)
+    order_rows = []
+    for index, cell_value in enumerate(order_nr_column):
+        if str(cell_value) == order_id:
+            row_values = orders.row_values(index + 2)
+            order_rows.append(row_values)
+
+    if order_rows != []:
+        print(f"Order ID {order_id}:")
+        headers = orders.row_values(1)
+        display_data(headers, order_rows)
+
+    else:
+        print(f"There is no order with id {order_id} in the system.")
+
+    lookup_order_end_menu()
+
+
 def sales_menu():
     """
     Displays the sales menu
@@ -474,6 +517,7 @@ def sales_menu():
             display_orders_by_date()
         case 1:
             print("Look up order by ID")
+            lookup_order_by_id()
         case 2:
             print("Register an order")
             register_order()

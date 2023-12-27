@@ -131,3 +131,19 @@ class Validators:
             else:
                 print("Invalid format. Should be YYYY-MM-DD")
                 return False
+
+    def validate_order_nr(self, data) -> bool:
+        if (
+            self.validate_not_empty(data)
+            and self.validate_is_positive(data)
+            and self.validate_is_int(data)
+        ):
+            try:
+                temp_int = int(data)
+                # checks if outside of scope for art. numbers
+                if temp_int > 99999 or temp_int < 10000:
+                    raise ValueError("Must be a positive 5 digit integer. Try again")
+            except ValueError as e:
+                print(f"Invalid: {e} Please try again.\n")
+                return False
+            return True

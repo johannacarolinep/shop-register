@@ -100,6 +100,19 @@ def get_article_number() -> int:
     return article_nr
 
 
+def get_order_id() -> str:
+    """
+    Get an order id from the user. Runs a while loop to collect a valid
+    order nr from the user. Needs to be a positive 5 digit integer number.
+    """
+    while True:
+        order_id = input("Enter order ID, a 5 digit number, eg 10001:")
+        if data_validator.validate_order_nr(order_id):
+            break
+
+    return order_id
+
+
 def get_article_name() -> str:
     """
     Runs a while loop to collect a valid name from the user.
