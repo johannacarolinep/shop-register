@@ -9,7 +9,7 @@ class Validators:
         """
         try:
             if not data:
-                raise ValueError("Data cannot be empty. Please try again.")
+                raise ValueError("Data cannot be empty.")
         except ValueError as e:
             print(f"Invalid: {e} Please try again.\n")
             return False
@@ -19,7 +19,7 @@ class Validators:
         try:
             temp_float = float(data)
             if temp_float <= 0:
-                raise ValueError("Data must be a positive value. Please try again")
+                raise ValueError("Data must be a positive value.")
         except ValueError as e:
             print(f"Invalid: {e} Please try again.\n")
             return False
@@ -37,7 +37,9 @@ class Validators:
         try:
             temp_float = float(data)
         except ValueError:
-            print("Invalid input. Data must be an decimal number. Please try again")
+            print(
+                "Invalid. Data must be a decimal number. Please try again",
+            )
             return False
         return True
 
@@ -78,7 +80,7 @@ class Validators:
                 temp_int = int(data)
                 # checks if outside of scope for art. numbers
                 if temp_int > 9999 or temp_int < 1000:
-                    raise ValueError("Must be a positive 4 digit integer. Try again")
+                    raise ValueError("Must be a positive 4 digit integer.")
             except ValueError as e:
                 print(f"Invalid: {e} Please try again.\n")
                 return False
@@ -92,14 +94,15 @@ class Validators:
             try:
                 # Check the maximum length
                 if len(cleaned_str) > 90:
-                    raise ValueError("The max length for names is 90 characters.")
+                    raise ValueError("The max length is 90 characters.")
 
                 if len(cleaned_str) < 5:
                     raise ValueError("The minimum length is 5 characters")
 
-                # Use a regular expression to check for letters and optional max 2 digit nr
+                # Check data has letters and optional max 2 digit nr
                 pattern = re.compile(
-                    r"(?:[a-zA-Z0-9\s.,!-]*[a-zA-Z]+\s*\d{0,2}\s*[a-zA-Z0-9\s.,!-]*)+"
+                    r"(?:[a-zA-Z0-9\s.,!-]*[a-zA-Z]+\s*\d{0,2}\s*"
+                    r"[a-zA-Z0-9\s.,!-]*)+"
                 )
                 if bool(pattern.search(cleaned_str)) is False:
                     raise ValueError("Format incorrect.")
@@ -142,7 +145,7 @@ class Validators:
                 temp_int = int(data)
                 # checks if outside of scope for art. numbers
                 if temp_int > 99999 or temp_int < 10000:
-                    raise ValueError("Must be a positive 5 digit integer. Try again")
+                    raise ValueError("Must be a positive 5 digit integer.")
             except ValueError as e:
                 print(f"Invalid: {e} Please try again.\n")
                 return False

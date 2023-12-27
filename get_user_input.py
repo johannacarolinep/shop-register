@@ -66,9 +66,13 @@ def get_price(type):
     """
     while True:
         if type == "in":
-            price = input("Enter price in, a positive decimal value, e.g. 10.99:\n")
+            price = input(
+                "Enter price in, a positive decimal value, e.g. 10.99:\n",
+            )
         else:
-            price = input("Enter price out, a positive decimal value, e.g. 10.99:\n")
+            price = input(
+                "Enter price out, a positive decimal value, e.g. 10.99:\n",
+            )
 
         if data_validator.validate_price(price):
             price = round(float(price), 2)
@@ -149,14 +153,13 @@ def get_date(type) -> str:
     """
     current_date = datetime.now().strftime("%Y-%m-%d")
     while True:
+        print(
+            f"Date should not be greater than {current_date} (today's date).",
+        )
         if type == "start":
-            date = input(
-                f"Enter start date (YYYY-MM-DD). Can't be greater than {current_date}:\n"
-            )
+            date = input("Enter start date (YYYY-MM-DD):\n")
         elif type == "end":
-            date = input(
-                f"Enter end date (YYYY-MM-DD). Can't be greater than {current_date}:\n"
-            )
+            date = input("Enter end date (YYYY-MM-DD):\n")
 
         if data_validator.validate_is_date(date):
             break

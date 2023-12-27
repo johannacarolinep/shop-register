@@ -37,25 +37,48 @@ orders = SHEET.worksheet("orders")
 
 
 def build_article():
+    """
+    Asks user for an article number. If article already exists, asks user if
+    they instead want to edit the article. If article number available,
+    asks user for article name, price in, price out, and stock quantity.
+    Adds the new article to the inventory sheet.
+    """
+    print(
+        f"""ADD ARTICLES
+
+Add a new article to the inventory.
+--------------------------------------------
+"""
+    )
     article = get_article_number()
     if data_validator.validate_article_existence(article, inventory):
         options = ["Yes", "No"]
         terminal_menu = TerminalMenu(
             options,
-            title=f"Article {article} already exists. Would you like to edit this article?",
+            title=f"""Article {article} already exists.
+Would you like to edit this article instead?""",
         )
         response = terminal_menu.show()
 
         if options[response] == "Yes":
-            print("Opening edit function")
+            os.system("clear")
             edit_article(article)
         else:
             # Add another article or open main menu
+            os.system("clear")
             add_article_end_menu()
     else:
-        print("Article is ", article)
+        print("")
+        print("Starting article creation")
+        headers = inventory.row_values(1)
+        temp_row = [[str(article), "-", "-", "-", "-"]]
+        display_data(headers, temp_row)
         article_name = get_article_name()
+        temp_row[0][1] = article_name
+        display_data(headers, temp_row)
         price_in = get_price("in")
+        temp_row[0][2] = price_in
+        display_data(headers, temp_row)
         user_confirm = False
         while not user_confirm:
             price_out = get_price("out")
@@ -64,10 +87,13 @@ def build_article():
                 user_confirm = confirm_user_entry(price_out)
             else:
                 user_confirm = True
+        temp_row[0][3] = price_out
+        display_data(headers, temp_row)
         article_quantity = get_quantity()
-        print(
-            f"Article nr: {article}, Article name: {article_name}, Price in: {price_in}, Price out: {price_out}, Stock: {article_quantity}"
-        )
+        temp_row[0][4] = article_quantity
+        print("")
+        print("Finished article:")
+        display_data(headers, temp_row)
         article_instance = Articles(
             article, article_name, price_in, price_out, article_quantity
         )
@@ -106,12 +132,31 @@ def delete_article():
 
 
 def look_up_article():
+    """
+    Gets an article number from user and looks for it in the inventory
+    If found, prints its row in a table format.
+    Finally asks user if they want to look up more articles.
+    """
+    print(
+        f"""LOOK UP ARTICLES
+
+Search for articles in the inventory (by article number)
+--------------------------------------------
+"""
+    )
     article_number = get_article_number()
+    # checks if article_number exists in sheet
     if data_validator.validate_article_existence(article_number, inventory):
         row_data = Articles.get_row_for_article(inventory, article_number)
+        # prints table of the article
+        print("")
+        print(f"Article {article_number}:")
         display_data(row_data[0], [row_data[1]])
+        print("")
     else:
+        print("")
         print("Article not found.")
+        print("")
     lookup_article_end_menu()
 
 
@@ -172,6 +217,14 @@ def edit_menu(article):
 
 
 def edit_article(article=None):
+    print(
+        f"""EDIT ARTICLES
+
+Search for articles in the inventory (by article number).
+Edit article name, price in, price out, and/or stock quantity.
+--------------------------------------------
+"""
+    )
     if not article:
         article = get_article_number()
 
@@ -201,9 +254,7 @@ def edit_article(article=None):
 
 
 def back_to_main_menu():
-    """
-    Clear terminal and open main menu once user clicks enter
-    """
+    """Clear terminal and open main menu once user clicks enter"""
     options = ["Go back"]
     terminal_menu = TerminalMenu(
         options, title="Press enter to go back to the main menu"
@@ -217,8 +268,8 @@ def back_to_main_menu():
 
 def lookup_article_end_menu():
     """
-    Allows user to lookup another article
-    or to clear terminal and open main menu
+    Prints menu asking user to lookup another article or go back to
+    the main menu.
     """
     options = ["Look up another article", "Back to main menu"]
     terminal_menu = TerminalMenu(
@@ -227,6 +278,7 @@ def lookup_article_end_menu():
     confirm_response = terminal_menu.show()
 
     if options[confirm_response] == "Look up another article":
+        os.system("clear")
         look_up_article()
 
     elif options[confirm_response] == "Back to main menu":
@@ -239,10 +291,14 @@ def add_article_end_menu():
     Asks user to aither add another article or to go back to main menu
     """
     options = ["Add another article", "Back to main menu"]
-    terminal_menu = TerminalMenu(options, title="Do you want to add another article?")
+    terminal_menu = TerminalMenu(
+        options,
+        title="Do you want to add another article?",
+    )
     confirm_response = terminal_menu.show()
 
     if options[confirm_response] == "Add another article":
+        os.system("clear")
         build_article()
 
     elif options[confirm_response] == "Back to main menu":
@@ -256,7 +312,10 @@ def edit_article_end_menu():
     or to clear terminal and open main menu
     """
     options = ["Edit another article", "Back to main menu"]
-    terminal_menu = TerminalMenu(options, title="Do you want to edit another article?")
+    terminal_menu = TerminalMenu(
+        options,
+        title="Do you want to edit another article?",
+    )
     confirm_response = terminal_menu.show()
 
     if options[confirm_response] == "Edit another article":
@@ -361,13 +420,11 @@ def confirm_order_complete() -> bool:
 
 
 def confirm_order_final() -> bool:
-    """
-    Ask user if they want to finalize the sales order
-    """
+    """Ask user if they want to finalize the sales order"""
     options = ["Finalize order", "Cancel order"]
     terminal_menu = TerminalMenu(
         options,
-        title="Select 'Finalize order' if you want to add this order to the system",
+        title="Select 'Finalize order' to add it to the system.",
     )
     confirm_response = terminal_menu.show()
 
@@ -389,9 +446,16 @@ def build_order(order_id):
     while not order_complete:
         # ask for article id, verify exists
         article_number = get_article_number()
-        if data_validator.validate_article_existence(article_number, inventory):
+        if data_validator.validate_article_existence(
+            article_number,
+            inventory,
+        ):
             # get sales quantity from user
-            sales_quantity = get_sales_quantity(inventory, article_number, order)
+            sales_quantity = get_sales_quantity(
+                inventory,
+                article_number,
+                order,
+            )
             # calculate sum
             article_index = Articles.get_row_index_for_article(
                 article_number, inventory
@@ -400,7 +464,12 @@ def build_order(order_id):
             price = float(price_str)
             sum = round(price * sales_quantity, 2)
 
-            orders_instance = Orders(order_id, article_number, sales_quantity, sum)
+            orders_instance = Orders(
+                order_id,
+                article_number,
+                sales_quantity,
+                sum,
+            )
             order_row = orders_instance.to_row()
 
             # add row to order
@@ -426,7 +495,10 @@ def build_order(order_id):
             add_row(rows, orders)
             # decrement inventory stock level by sold quantity
             article_id = rows[2]
-            article_index = Articles.get_row_index_for_article(article_id, inventory)
+            article_index = Articles.get_row_index_for_article(
+                article_id,
+                inventory,
+            )
             stock = int(inventory.cell(article_index, 5).value)
             new_stock_level = stock - rows[3]
             inventory.update_cell(article_index, 5, new_stock_level)
@@ -447,9 +519,7 @@ def display_orders_by_date():
     while True:
         end_date = get_date("end")
         if end_date < start_date:
-            print(
-                "End date has to be a date which is the same or later than the start date"
-            )
+            print("End date has to the same as or later than the start date")
             continue
         else:
             break
@@ -468,7 +538,11 @@ def display_orders_by_date():
 
         start_index = Orders.get_first_row_index_for_date(start_date, orders)
         end_index = Orders.get_last_row_index_for_date(end_date, orders)
-        orders_data = Orders.get_order_rows_for_dates(orders, start_index, end_index)
+        orders_data = Orders.get_order_rows_for_dates(
+            orders,
+            start_index,
+            end_index,
+        )
         display_data(orders_data[0], orders_data[1])
         display_orders_by_date_end_menu()
     else:
@@ -568,7 +642,8 @@ then press ENTER
     match menu_index:
         case 0:
             os.system("clear")
-            print("Displaying inventory")
+            print("DISPLAYING INVENTORY")
+            print("")
             display_full_sheet(inventory)
             back_to_main_menu()
         case 1:
