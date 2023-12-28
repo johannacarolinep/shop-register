@@ -1,4 +1,17 @@
 from datetime import datetime
+from get_user_input import (
+    get_date,
+    get_order_id,
+    get_article_number,
+    get_sales_quantity,
+    confirm_order_complete,
+    confirm_order_final,
+)
+from validators import Validators
+from articles import Articles
+from helpers import display_data, add_row
+
+data_validator = Validators()
 
 
 class Orders:
@@ -121,3 +134,150 @@ class Orders:
         orders_range = "A" + str(start_index) + ":E" + str(end_index)
         rows = orders.get(orders_range)
         return [headers, rows]
+
+    @classmethod
+    def generate_order_id(self, orders):
+        """
+        Generates a new order ID based on the existing greatest order ID in the
+        sheet.
+
+        Parameters:
+        - orders: The orders sheet.
+
+        Returns:
+        int: the new order ID.
+        """
+        current_id = orders.get_all_values()[-1][0]
+        return int(current_id) + 1
+
+    @classmethod
+    def display_orders_by_date(self, orders):
+        # ask for valid start date
+        start_date = get_date("start")
+        # ask for valid end date, on or later than start date
+        while True:
+            end_date = get_date("end")
+            if end_date < start_date:
+                print("End date has to the same as or later than the start date")
+                continue
+            else:
+                break
+        # check if there is no orders for requested period:
+        registered_dates = orders.col_values(2)
+        registered_dates.pop(0)
+        data_exists = False
+        for reg_date in registered_dates:
+            if reg_date >= start_date and reg_date <= end_date:
+                data_exists = True
+        if data_exists:
+            if start_date == end_date:
+                print(f"Displaying orders from {start_date}:")
+            else:
+                print(f"Displaying orders from {start_date} until {end_date}:")
+
+            start_index = Orders.get_first_row_index_for_date(start_date, orders)
+            end_index = Orders.get_last_row_index_for_date(end_date, orders)
+            orders_data = Orders.get_order_rows_for_dates(
+                orders,
+                start_index,
+                end_index,
+            )
+            display_data(orders_data[0], orders_data[1])
+        else:
+            print("No orders to display for your chosen dates")
+
+    @classmethod
+    def lookup_order_by_id(self, orders):
+        # get order id until valid
+        order_id = get_order_id()
+        # check if it exists
+        order_nr_column = orders.col_values(1)
+        order_nr_column.pop(0)
+        order_rows = []
+        for index, cell_value in enumerate(order_nr_column):
+            if str(cell_value) == order_id:
+                row_values = orders.row_values(index + 2)
+                order_rows.append(row_values)
+
+        if order_rows != []:
+            print(f"Order ID {order_id}:")
+            headers = orders.row_values(1)
+            display_data(headers, order_rows)
+            total_order_sum = 0
+            total_order_quantity = 0
+            for rows in order_rows:
+                total_order_sum += float(rows[4])
+                total_order_quantity += int(rows[3])
+            print(
+                f"""Total order sum: {round(total_order_sum, 2)}
+    Total order quantity: {total_order_quantity}
+    """
+            )
+        else:
+            print(f"There is no order with id {order_id} in the system.")
+
+    @classmethod
+    def build_order(self, order_id, orders, inventory):
+        order = []
+        order_complete = False
+        while not order_complete:
+            # ask for article id, verify exists
+            article_number = get_article_number()
+            if data_validator.validate_article_existence(
+                article_number,
+                inventory,
+            ):
+                # get sales quantity from user
+                sales_quantity = get_sales_quantity(
+                    inventory,
+                    article_number,
+                    order,
+                )
+                # calculate sum
+                article_index = Articles.get_row_index_for_article(
+                    article_number, inventory
+                )
+                price_str = inventory.cell(article_index, 4).value
+                price = float(price_str)
+                sum = round(price * sales_quantity, 2)
+
+                orders_instance = Orders(
+                    order_id,
+                    article_number,
+                    sales_quantity,
+                    sum,
+                )
+                order_row = orders_instance.to_row()
+
+                # add row to order
+                order.append(order_row)
+
+                # ask user if they want to add more rows
+                order_complete = confirm_order_complete()
+
+        # print order in table
+        total_sum = 0
+        for rows in order:
+            total_sum += rows[4]
+
+        total_sum = round(total_sum, 2)
+
+        print("Order summary:")
+        display_data(["Order ID", "Date", "Article", "Quantity", "Sum"], order)
+        print(f"Total order sum: {total_sum}")
+
+        # Add order to sheet if user confirms
+        if confirm_order_final():
+            for rows in order:
+                add_row(rows, orders)
+                # decrement inventory stock level by sold quantity
+                article_id = rows[2]
+                article_index = Articles.get_row_index_for_article(
+                    article_id,
+                    inventory,
+                )
+                stock = int(inventory.cell(article_index, 5).value)
+                new_stock_level = stock - rows[3]
+                inventory.update_cell(article_index, 5, new_stock_level)
+
+            print("Order registered.")

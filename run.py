@@ -4,16 +4,7 @@ from google.oauth2.service_account import Credentials
 from simple_term_menu import TerminalMenu
 from validators import Validators
 from helpers import *
-from get_user_input import (
-    get_quantity,
-    get_price,
-    get_article_number,
-    get_article_name,
-    confirm_user_entry,
-    get_sales_quantity,
-    get_date,
-    get_order_id,
-)
+from get_user_input import *
 from articles import Articles
 from orders import Orders
 from prettytable import PrettyTable
@@ -63,6 +54,7 @@ Would you like to edit this article instead?""",
         if options[response] == "Yes":
             os.system("clear")
             edit_article(article)
+            edit_article_end_menu()
         else:
             # Add another article or open main menu
             os.system("clear")
@@ -119,16 +111,10 @@ def delete_article():
         if options[response] == "Yes":
             Articles.remove_row(article, inventory)
             print("Article removed")
-            # Delete different article or go back to main menu
-            delete_article_end_menu()
         else:
             print("Cancelled")
-            # Delete different article or go back to main menu
-            delete_article_end_menu()
     else:
         print("Article not found.")
-        # Delete different article or go back to main menu
-        delete_article_end_menu()
 
 
 def look_up_article():
@@ -157,7 +143,6 @@ Search for articles in the inventory (by article number)
         print("")
         print("Article not found.")
         print("")
-    lookup_article_end_menu()
 
 
 def edit_menu(article):
@@ -173,9 +158,7 @@ def edit_menu(article):
     response = terminal_menu.show()
     print("Response = ", response)
     if response is None:
-        print("You did not make a selection. Re-routing to main menu.")
-        # edit different article or back to main menu?
-        main_menu()
+        print("You did not make a selection.")
     else:
         response_array = list(terminal_menu.chosen_menu_entries)
         print("Response array", response_array)
@@ -242,15 +225,8 @@ Edit article name, price in, price out, and/or stock quantity.
         if options[response] == "Yes":
             print("opening multi option menu")
             edit_menu(article)
-            # Edit another article or back to menu
-            edit_article_end_menu()
-        else:
-            # Edit another article or back to menu
-            edit_article_end_menu()
     else:
         print("Article not found.")
-        # Edit another article or back to menu
-        edit_article_end_menu()
 
 
 def back_to_main_menu():
@@ -280,6 +256,7 @@ def lookup_article_end_menu():
     if options[confirm_response] == "Look up another article":
         os.system("clear")
         look_up_article()
+        lookup_article_end_menu()
 
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
@@ -320,6 +297,7 @@ def edit_article_end_menu():
 
     if options[confirm_response] == "Edit another article":
         edit_article()
+        edit_article_end_menu()
 
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
@@ -339,6 +317,7 @@ def delete_article_end_menu():
 
     if options[confirm_response] == "Delete another article":
         delete_article()
+        delete_article_end_menu()
 
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
@@ -357,7 +336,10 @@ def register_order_end_menu():
     confirm_response = terminal_menu.show()
 
     if options[confirm_response] == "Register another order":
-        register_order()
+        # register_order()
+        order_id = Orders.generate_order_id(orders)
+        Orders.build_order(order_id, orders, inventory)
+        register_order_end_menu()
 
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
@@ -376,7 +358,8 @@ def display_orders_by_date_end_menu():
     confirm_response = terminal_menu.show()
 
     if options[confirm_response] == "Search for different dates":
-        display_orders_by_date()
+        Orders.display_orders_by_date(orders)
+        display_orders_by_date_end_menu()
 
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
@@ -395,189 +378,12 @@ def lookup_order_end_menu():
     confirm_response = terminal_menu.show()
 
     if options[confirm_response] == "Search for different order":
-        lookup_order_by_id()
+        Orders.lookup_order_by_id(orders)
+        lookup_order_end_menu()
 
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
         main_menu()
-
-
-def confirm_order_complete() -> bool:
-    """
-    Ask user if they want to add another row to sales order
-    """
-    options = ["Add row to sales order", "Order is complete"]
-    terminal_menu = TerminalMenu(
-        options, title="Do you want to add more articles to this order?"
-    )
-    confirm_response = terminal_menu.show()
-
-    if options[confirm_response] == "Add row to sales order":
-        return False
-
-    elif options[confirm_response] == "Order is complete":
-        return True
-
-
-def confirm_order_final() -> bool:
-    """Ask user if they want to finalize the sales order"""
-    options = ["Finalize order", "Cancel order"]
-    terminal_menu = TerminalMenu(
-        options,
-        title="Select 'Finalize order' to add it to the system.",
-    )
-    confirm_response = terminal_menu.show()
-
-    if options[confirm_response] == "Finalize order":
-        return True
-
-    elif options[confirm_response] == "Cancel order":
-        return False
-
-
-def generate_order_id():
-    current_id = orders.get_all_values()[-1][0]
-    return int(current_id) + 1
-
-
-def build_order(order_id):
-    order = []
-    order_complete = False
-    while not order_complete:
-        # ask for article id, verify exists
-        article_number = get_article_number()
-        if data_validator.validate_article_existence(
-            article_number,
-            inventory,
-        ):
-            # get sales quantity from user
-            sales_quantity = get_sales_quantity(
-                inventory,
-                article_number,
-                order,
-            )
-            # calculate sum
-            article_index = Articles.get_row_index_for_article(
-                article_number, inventory
-            )
-            price_str = inventory.cell(article_index, 4).value
-            price = float(price_str)
-            sum = round(price * sales_quantity, 2)
-
-            orders_instance = Orders(
-                order_id,
-                article_number,
-                sales_quantity,
-                sum,
-            )
-            order_row = orders_instance.to_row()
-
-            # add row to order
-            order.append(order_row)
-
-            # ask user if they want to add more rows
-            order_complete = confirm_order_complete()
-
-    # print order in table
-    total_sum = 0
-    for rows in order:
-        total_sum += rows[4]
-
-    total_sum = round(total_sum, 2)
-
-    print("Order summary:")
-    display_data(["Order ID", "Date", "Article", "Quantity", "Sum"], order)
-    print(f"Total order sum: {total_sum}")
-
-    # Add order to sheet if user confirms
-    if confirm_order_final():
-        for rows in order:
-            add_row(rows, orders)
-            # decrement inventory stock level by sold quantity
-            article_id = rows[2]
-            article_index = Articles.get_row_index_for_article(
-                article_id,
-                inventory,
-            )
-            stock = int(inventory.cell(article_index, 5).value)
-            new_stock_level = stock - rows[3]
-            inventory.update_cell(article_index, 5, new_stock_level)
-
-        print("Order registered.")
-
-
-def register_order():
-    order_id = generate_order_id()
-    build_order(order_id)
-    register_order_end_menu()
-
-
-def display_orders_by_date():
-    # ask for valid start date
-    start_date = get_date("start")
-    # ask for valid end date, on or later than start date
-    while True:
-        end_date = get_date("end")
-        if end_date < start_date:
-            print("End date has to the same as or later than the start date")
-            continue
-        else:
-            break
-    # check if there is no orders for requested period:
-    registered_dates = orders.col_values(2)
-    registered_dates.pop(0)
-    data_exists = False
-    for reg_date in registered_dates:
-        if reg_date >= start_date and reg_date <= end_date:
-            data_exists = True
-    if data_exists:
-        if start_date == end_date:
-            print(f"Displaying orders from {start_date}:")
-        else:
-            print(f"Displaying orders from {start_date} until {end_date}:")
-
-        start_index = Orders.get_first_row_index_for_date(start_date, orders)
-        end_index = Orders.get_last_row_index_for_date(end_date, orders)
-        orders_data = Orders.get_order_rows_for_dates(
-            orders,
-            start_index,
-            end_index,
-        )
-        display_data(orders_data[0], orders_data[1])
-        display_orders_by_date_end_menu()
-    else:
-        print("No orders to display for your chosen dates")
-
-
-def lookup_order_by_id():
-    # get order id until valid
-    order_id = get_order_id()
-    # check if it exists
-    order_nr_column = orders.col_values(1)
-    order_nr_column.pop(0)
-    order_rows = []
-    for index, cell_value in enumerate(order_nr_column):
-        if str(cell_value) == order_id:
-            row_values = orders.row_values(index + 2)
-            order_rows.append(row_values)
-
-    if order_rows != []:
-        print(f"Order ID {order_id}:")
-        headers = orders.row_values(1)
-        display_data(headers, order_rows)
-        total_order_sum = 0
-        total_order_quantity = 0
-        for rows in order_rows:
-            total_order_sum += float(rows[4])
-            total_order_quantity += int(rows[3])
-        print(
-            f"""Total order sum: {round(total_order_sum, 2)}
-Total order quantity: {total_order_quantity}
-"""
-        )
-    else:
-        print(f"There is no order with id {order_id} in the system.")
-    lookup_order_end_menu()
 
 
 def sales_menu():
@@ -604,13 +410,18 @@ then press ENTER
     match menu_index:
         case 0:
             os.system("clear")
-            display_orders_by_date()
+            Orders.display_orders_by_date(orders)
+            display_orders_by_date_end_menu()
         case 1:
             os.system("clear")
-            lookup_order_by_id()
+            Orders.lookup_order_by_id(orders)
+            lookup_order_end_menu()
         case 2:
             os.system("clear")
-            register_order()
+            # register_order()
+            order_id = Orders.generate_order_id(orders)
+            Orders.build_order(order_id, orders, inventory)
+            register_order_end_menu()
         case 3:
             os.system("clear")
             main_menu()
@@ -649,15 +460,18 @@ then press ENTER
         case 1:
             os.system("clear")
             look_up_article()
+            lookup_article_end_menu()
         case 2:
             os.system("clear")
             build_article()
         case 3:
             os.system("clear")
             edit_article()
+            edit_article_end_menu()
         case 4:
             os.system("clear")
             delete_article()
+            delete_article_end_menu()
         case 5:
             os.system("clear")
             main_menu()
