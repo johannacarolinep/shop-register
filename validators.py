@@ -64,7 +64,9 @@ class Validators:
             if temp_float <= 0:
                 raise ValueError("Data must be a positive value.")
         except ValueError as e:
-            print(f"Invalid: {e} Please try again.")
+            print(
+                Fore.RED + f"Invalid: {e} Please try again." + Style.RESET_ALL,
+            )
             return False
         return True
 
@@ -81,7 +83,11 @@ class Validators:
         try:
             temp_int = int(data)
         except ValueError:
-            print("Invalid input. Data must be an integer. Please try again")
+            print(
+                Fore.RED
+                + "Invalid input. Data must be an integer. Please try again"
+                + Style.RESET_ALL
+            )
             return False
         return True
 
@@ -99,7 +105,9 @@ class Validators:
             temp_float = float(data)
         except ValueError:
             print(
-                "Invalid. Data must be a decimal number. Please try again",
+                Fore.RED
+                + "Invalid. Data must be a decimal number. Please try again"
+                + Style.RESET_ALL
             )
             return False
         return True
@@ -183,7 +191,9 @@ class Validators:
                 if temp_int > 9999 or temp_int < 1000:
                     raise ValueError("Must be a positive 4 digit integer.")
             except ValueError as e:
-                print(f"Invalid: {e} Please try again.\n")
+                print(
+                    Fore.RED + f"Invalid: {e} Please try again." + Style.RESET_ALL,
+                )
                 return False
             return True
 
