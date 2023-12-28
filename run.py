@@ -28,98 +28,6 @@ orders = SHEET.worksheet("orders")
 inactive_articles = SHEET.worksheet("inactive_articles")
 
 
-def build_article():
-    """
-    Asks user for an article number. If article already exists, asks user if
-    they instead want to edit the article. If article number available,
-    asks user for article name, price in, price out, and stock quantity.
-    Adds the new article to the inventory sheet.
-    """
-    print(
-        f"""ADD ARTICLES
-
-Add a new article to the inventory.
---------------------------------------------
-"""
-    )
-    article = get_article_number()
-    if data_validator.validate_article_exists(article, inactive_articles):
-        print(f"""Article with ID {article} already exists and is inactive.""")
-    else:
-        if data_validator.validate_article_exists(article, inventory):
-            options = ["Yes", "No"]
-            terminal_menu = TerminalMenu(
-                options,
-                title=f"""Article {article} already exists.
-    Would you like to edit this article instead?""",
-            )
-            response = terminal_menu.show()
-
-            if options[response] == "Yes":
-                os.system("clear")
-                Articles.edit_article(inventory, article)
-                edit_article_end_menu()
-            else:
-                # Add another article or open main menu
-                os.system("clear")
-                add_article_end_menu()
-        else:
-            print("")
-            print("Starting article creation")
-            headers = inventory.row_values(1)
-            temp_row = [[str(article), "-", "-", "-", "-"]]
-            display_data(headers, temp_row)
-            article_name = get_article_name()
-            temp_row[0][1] = article_name
-            display_data(headers, temp_row)
-            price_in = get_price("in")
-            temp_row[0][2] = price_in
-            display_data(headers, temp_row)
-            user_confirm = False
-            while not user_confirm:
-                price_out = get_price("out")
-                if price_out < price_in:
-                    print("Price out is lower than price in.")
-                    user_confirm = confirm_user_entry(price_out)
-                else:
-                    user_confirm = True
-            temp_row[0][3] = price_out
-            display_data(headers, temp_row)
-            article_quantity = get_quantity()
-            temp_row[0][4] = article_quantity
-            print("")
-            print("Finished article:")
-            display_data(headers, temp_row)
-            article_instance = Articles(
-                article, article_name, price_in, price_out, article_quantity
-            )
-            article_row = article_instance.to_row()
-            add_row(article_row, inventory)
-
-
-def delete_article():
-    article = get_article_number()
-    if data_validator.validate_article_exists(article, inventory):
-        # display row
-        print("Article to remove:")
-        row_data = Articles.get_row_for_article(inventory, article)
-        display_data(row_data[0], [row_data[1]])
-        options = ["Yes", "No"]
-        terminal_menu = TerminalMenu(
-            options,
-            title=f"Would you like to delete this article?",
-        )
-        response = terminal_menu.show()
-        if options[response] == "Yes":
-            add_row(row_data[1], inactive_articles)
-            Articles.remove_row(article, inventory)
-            print("Article removed")
-        else:
-            print("Cancelled")
-    else:
-        print("Article not found.")
-
-
 def back_to_main_menu():
     """Clear terminal and open main menu once user clicks enter"""
     options = ["Go back"]
@@ -167,8 +75,10 @@ def add_article_end_menu():
 
     if options[confirm_response] == "Add another article":
         os.system("clear")
-        build_article()
-        add_article_end_menu()
+        if Articles.build_article(inventory, inactive_articles):
+            add_article_end_menu()
+        else:
+            edit_article_end_menu()
 
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
@@ -208,7 +118,7 @@ def delete_article_end_menu():
     confirm_response = terminal_menu.show()
 
     if options[confirm_response] == "Delete another article":
-        delete_article()
+        Articles.delete_article(inventory, inactive_articles)
         delete_article_end_menu()
 
     elif options[confirm_response] == "Back to main menu":
@@ -310,7 +220,6 @@ then press ENTER
             lookup_order_end_menu()
         case 2:
             os.system("clear")
-            # register_order()
             order_id = Orders.generate_order_id(orders)
             Orders.build_order(order_id, orders, inventory)
             register_order_end_menu()
@@ -355,15 +264,17 @@ then press ENTER
             lookup_article_end_menu()
         case 2:
             os.system("clear")
-            build_article()
-            add_article_end_menu()
+            if Articles.build_article(inventory, inactive_articles):
+                add_article_end_menu()
+            else:
+                edit_article_end_menu()
         case 3:
             os.system("clear")
             Articles.edit_article(inventory)
             edit_article_end_menu()
         case 4:
             os.system("clear")
-            delete_article()
+            Articles.delete_article(inventory, inactive_articles)
             delete_article_end_menu()
         case 5:
             os.system("clear")

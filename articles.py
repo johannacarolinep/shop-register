@@ -1,3 +1,4 @@
+import os
 from simple_term_menu import TerminalMenu
 from get_user_input import (
     get_article_number,
@@ -6,7 +7,7 @@ from get_user_input import (
     get_quantity,
     confirm_user_entry,
 )
-from helpers import display_data
+from helpers import display_data, add_row
 from validators import Validators
 
 data_validator = Validators()
@@ -238,3 +239,98 @@ Edit article name, price in, price out, and/or stock quantity.
                 new_stock = get_quantity()
                 column_index = 5
                 inventory.update_cell(row_index, column_index, new_stock)
+
+    @classmethod
+    def delete_article(self, inventory, inactive_articles):
+        article = get_article_number()
+        if data_validator.validate_article_exists(article, inventory):
+            # display row
+            print("Article to remove:")
+            row_data = Articles.get_row_for_article(inventory, article)
+            display_data(row_data[0], [row_data[1]])
+            options = ["Yes", "No"]
+            terminal_menu = TerminalMenu(
+                options,
+                title=f"Would you like to delete this article?",
+            )
+            response = terminal_menu.show()
+            if options[response] == "Yes":
+                add_row(row_data[1], inactive_articles)
+                Articles.remove_row(article, inventory)
+                print("Article removed")
+            else:
+                print("Cancelled")
+        else:
+            print("Article not found.")
+
+    @classmethod
+    def build_article(self, inventory, inactive_articles):
+        """
+        Asks user for an article number. If article already exists, asks user if
+        they instead want to edit the article. If article number available,
+        asks user for article name, price in, price out, and stock quantity.
+        Adds the new article to the inventory sheet.
+        """
+        print(
+            f"""ADD ARTICLES
+
+    Add a new article to the inventory.
+    --------------------------------------------
+    """
+        )
+        article = get_article_number()
+        if data_validator.validate_article_exists(article, inactive_articles):
+            print(f"""Article with ID {article} already exists and is inactive.""")
+        else:
+            if data_validator.validate_article_exists(article, inventory):
+                options = ["Yes", "No"]
+                terminal_menu = TerminalMenu(
+                    options,
+                    title=f"""Article {article} already exists.
+        Would you like to edit this article instead?""",
+                )
+                response = terminal_menu.show()
+
+                if options[response] == "Yes":
+                    os.system("clear")
+                    Articles.edit_article(inventory, article)
+                    # edit_article_end_menu()
+                    return False
+                else:
+                    # Add another article or open main menu
+                    os.system("clear")
+                    # add_article_end_menu()
+                    return True
+            else:
+                print("")
+                print("Starting article creation")
+                headers = inventory.row_values(1)
+                temp_row = [[str(article), "-", "-", "-", "-"]]
+                display_data(headers, temp_row)
+                article_name = get_article_name()
+                temp_row[0][1] = article_name
+                display_data(headers, temp_row)
+                price_in = get_price("in")
+                temp_row[0][2] = price_in
+                display_data(headers, temp_row)
+                user_confirm = False
+                while not user_confirm:
+                    price_out = get_price("out")
+                    if price_out < price_in:
+                        print("Price out is lower than price in.")
+                        user_confirm = confirm_user_entry(price_out)
+                    else:
+                        user_confirm = True
+                temp_row[0][3] = price_out
+                display_data(headers, temp_row)
+                article_quantity = get_quantity()
+                temp_row[0][4] = article_quantity
+                print("")
+                print("Finished article:")
+                display_data(headers, temp_row)
+                article_instance = Articles(
+                    article, article_name, price_in, price_out, article_quantity
+                )
+                article_row = article_instance.to_row()
+                add_row(article_row, inventory)
+                return True
