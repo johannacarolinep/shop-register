@@ -58,7 +58,7 @@ def lookup_article_end_menu():
 
 def add_article_end_menu():
     """
-    Asks user to aither add another article or to go back to main menu
+    Asks user to either add another article or to go back to main menu
     """
     options = ["Add another article", "Back to main menu"]
     terminal_menu = TerminalMenu(
@@ -132,7 +132,6 @@ def register_order_end_menu():
     confirm_response = terminal_menu.show()
 
     if options[confirm_response] == "Register another order":
-        # register_order()
         order_id = Orders.generate_order_id(orders)
         Orders.build_order(order_id, orders, inventory)
         register_order_end_menu()

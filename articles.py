@@ -32,6 +32,20 @@ class Articles:
     article number from the sheet.
     - get_row_index_for_article(article_number, sheet): gets the row index for
     a specific article from the sheet
+    - look_up_article(inventory): Gets an article number from the user and
+    looks for it in the inventory. If found, prints its row in a table format.
+    - edit_article(inventory, article=None): Asks for an article nr if none
+    provided. Confirms user wants to edit the article, and calls the edit_menu
+    method.
+    - edit_menu(article, inventory): Displays a menu for editing one or more
+    attributes of an article. Handles the user's choice, and updates the
+    inventory sheet accordingly.
+    - delete_article(inventory, inactive_articles): confirms with user which
+    article to delete, then moves the article from the inventory to the
+    inactive_articles sheet
+    - build_article(inventory, inactive_articles): Adds a new article to the
+    inventory by collecting data from the user, or redirects user to edit the
+    article if the article number already exists.
     """
 
     def __init__(
@@ -130,7 +144,9 @@ class Articles:
         """
         Gets an article number from user and looks for it in the inventory
         If found, prints its row in a table format.
-        Finally asks user if they want to look up more articles.
+
+        Parameters:
+        - inventory: The inventory sheet.
         """
         print(
             f"""LOOK UP ARTICLES
@@ -155,6 +171,15 @@ class Articles:
 
     @classmethod
     def edit_article(self, inventory, article=None):
+        """
+        If article nr is not provided, asks user for one. Checks if the
+        article exists, displays its details, and asks if the user wants to
+        edit it. If confirmed, calls edit_menu method.
+
+        Parameters:
+        - inventory: The inventory sheet.
+        - article (optional): The article number to edit.
+        """
         print(
             f"""EDIT ARTICLES
 
@@ -163,11 +188,12 @@ Edit article name, price in, price out, and/or stock quantity.
 --------------------------------------------
 """
         )
+        # get article nr from user if none provided
         if not article:
             article = get_article_number()
 
         if data_validator.validate_article_exists(article, inventory):
-            # display row
+            # if article found in inventory, display it and confirm intent
             print("Article to edit:")
             row_data = Articles.get_row_for_article(inventory, article)
             display_data(row_data[0], [row_data[1]])
@@ -178,13 +204,22 @@ Edit article name, price in, price out, and/or stock quantity.
             )
             response = terminal_menu.show()
             if options[response] == "Yes":
-                print("opening multi option menu")
+                # if user confirmed, call edit_menu method
                 self.edit_menu(article, inventory)
         else:
             print("Article not found.")
 
     @classmethod
     def edit_menu(self, article, inventory):
+        """
+        Displays a menu for editing one or more attributes of an article.
+        Handles the user's choice to edit the name, price in, price out,
+        and/or stock. Updates the inventory sheet accordingly.
+
+        Parameters:
+        - article: The article number, identifier for the article to edit.
+        - inventory: The inventory sheet.
+        """
         options = ["Name", "Price_in", "Price_out", "Stock"]
         terminal_menu = TerminalMenu(
             options,
@@ -192,33 +227,30 @@ Edit article name, price in, price out, and/or stock quantity.
             show_multi_select_hint=True,
             multi_select_select_on_accept=False,
             multi_select_empty_ok=True,
-            title=f"Would you like to edit this article?",
+            title=f"Which attributes would you like to edit?",
         )
         response = terminal_menu.show()
-        print("Response = ", response)
         if response is None:
             print("You did not make a selection.")
         else:
+            # store user's selection of attributes to edit
             response_array = list(terminal_menu.chosen_menu_entries)
-            print("Response array", response_array)
             row_index = Articles.get_row_index_for_article(article, inventory)
-
+            # ask for new value and update sheet if attribute in user selection
             if "Name" in response_array:
                 print("Edit name:")
                 new_name = get_article_name()
                 column_index = 2
                 inventory.update_cell(row_index, column_index, new_name)
-
             if "Price_in" in response_array:
                 print("Edit price in:")
                 new_price_in = get_price("in")
                 column_index = 3
                 inventory.update_cell(row_index, column_index, new_price_in)
-
             if "Price_out" in response_array:
                 print("Edit price out:")
                 current_price_in = inventory.cell(row_index, 3).value
-
+                # ask for new price_out until it's greater than price_in
                 user_confirm = False
                 while not user_confirm:
                     new_price_out = get_price("out")
@@ -227,10 +259,8 @@ Edit article name, price in, price out, and/or stock quantity.
                         user_confirm = confirm_user_entry(new_price_out)
                     else:
                         user_confirm = True
-
                 column_index = 4
                 inventory.update_cell(row_index, column_index, new_price_out)
-
             if "Stock" in response_array:
                 print("Edit stock:")
                 new_stock = get_quantity()
@@ -239,11 +269,21 @@ Edit article name, price in, price out, and/or stock quantity.
 
     @classmethod
     def delete_article(self, inventory, inactive_articles):
+        """
+        Asks the user for an article number to delete. Looks for the article in
+        the inventory. If found, displays it and asks for confirmation.
+        If confirmed, deletes the row from the inventory sheet, and adds it to
+        the inactive_articles sheet.
+
+        Parameters:
+        - inventory: The inventory sheet.
+        - inactive_articles: The sheet for inactive articles.
+        """
         article = get_article_number()
         if data_validator.validate_article_exists(article, inventory):
             print("Article to remove:")
             row_data = Articles.get_row_for_article(inventory, article)
-            # display the article
+            # display the article and confirm deletion with user
             display_data(row_data[0], [row_data[1]])
             options = ["Yes", "No"]
             terminal_menu = TerminalMenu(
@@ -252,21 +292,30 @@ Edit article name, price in, price out, and/or stock quantity.
             )
             response = terminal_menu.show()
             if options[response] == "Yes":
+                # add article to inactive_articles sheet
                 add_row(row_data[1], inactive_articles)
+                # remove article from inventory sheet
                 Articles.remove_row(article, inventory)
                 print("Article removed")
             else:
-                print("Cancelled")
+                print("Cancelled.")
         else:
             print("Article not found.")
 
     @classmethod
     def build_article(self, inventory, inactive_articles):
         """
-        Asks user for an article number. If article already exists, asks user if
-        they instead want to edit the article. If article number available,
-        asks user for article name, price in, price out, and stock quantity.
-        Adds the new article to the inventory sheet.
+        Adds a new article to the inventory by collecting data from the user.
+        If provided article nr already exists, asks user if they instead want
+        to edit the article.
+
+        Parameters:
+        - inventory: The inventory sheet.
+        - inactive_articles: The sheet for inactive articles.
+
+        Returns:
+        bool: True if reaching end of build article, False if user is
+        redirected to edit article.
         """
         print(
             f"""ADD ARTICLES
@@ -276,9 +325,13 @@ Edit article name, price in, price out, and/or stock quantity.
     """
         )
         article = get_article_number()
+        # if article nr belongs to an inactive article, print message
         if data_validator.validate_article_exists(article, inactive_articles):
-            print(f"""Article with ID {article} already exists and is inactive.""")
+            print(
+                f"""Article with ID {article} already exists and is inactive. Please choose a different article number."""
+            )
         else:
+            # if article nr exists in inventory, offer to edit existing article
             if data_validator.validate_article_exists(article, inventory):
                 options = ["Yes", "No"]
                 terminal_menu = TerminalMenu(
@@ -287,7 +340,6 @@ Edit article name, price in, price out, and/or stock quantity.
         Would you like to edit this article instead?""",
                 )
                 response = terminal_menu.show()
-
                 if options[response] == "Yes":
                     os.system("clear")
                     Articles.edit_article(inventory, article)
@@ -297,13 +349,17 @@ Edit article name, price in, price out, and/or stock quantity.
                     return True
             else:
                 print("\nStarting article creation")
+                # display progress, article with empty values
                 headers = inventory.row_values(1)
                 temp_row = [[str(article), "-", "-", "-", "-"]]
                 display_data(headers, temp_row)
+                # get article name from user
                 temp_row[0][1] = get_article_name()
                 display_data(headers, temp_row)
+                # get price in from user
                 temp_row[0][2] = get_price("in")
                 display_data(headers, temp_row)
+                # ask user for price out until it's greater than price in
                 user_confirm = False
                 while not user_confirm:
                     temp_row[0][3] = get_price("out")
@@ -313,10 +369,11 @@ Edit article name, price in, price out, and/or stock quantity.
                     else:
                         user_confirm = True
                 display_data(headers, temp_row)
+                # get quantity/stock from user
                 temp_row[0][4] = get_quantity()
                 print("\nFinished article:")
                 display_data(headers, temp_row)
-
+                # create the article and add it to the inventory sheet
                 article_instance = Articles(
                     article,
                     temp_row[0][1],

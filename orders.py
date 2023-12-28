@@ -240,7 +240,6 @@ class Orders:
                 price_str = inventory.cell(article_index, 4).value
                 price = float(price_str)
                 sum = round(price * sales_quantity, 2)
-
                 orders_instance = Orders(
                     order_id,
                     article_number,
@@ -248,10 +247,8 @@ class Orders:
                     sum,
                 )
                 order_row = orders_instance.to_row()
-
                 # add row to order
                 order.append(order_row)
-
                 # ask user if they want to add more rows
                 order_complete = confirm_order_complete()
             else:
@@ -260,13 +257,11 @@ class Orders:
         total_sum = 0
         for rows in order:
             total_sum += rows[4]
-
         total_sum = round(total_sum, 2)
-
+        headers = orders.row_values(1)
         print("Order summary:")
-        display_data(["Order ID", "Date", "Article", "Quantity", "Sum"], order)
+        display_data(headers, order)
         print(f"Total order sum: {total_sum}")
-
         # Add order to sheet if user confirms
         if confirm_order_final():
             for rows in order:
@@ -280,5 +275,4 @@ class Orders:
                 stock = int(inventory.cell(article_index, 5).value)
                 new_stock_level = stock - rows[3]
                 inventory.update_cell(article_index, 5, new_stock_level)
-
             print("Order registered.")
