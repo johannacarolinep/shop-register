@@ -254,7 +254,8 @@ class Orders:
 
                 # ask user if they want to add more rows
                 order_complete = confirm_order_complete()
-
+            else:
+                print("Article does not exist")
         # print order in table
         total_sum = 0
         for rows in order:
