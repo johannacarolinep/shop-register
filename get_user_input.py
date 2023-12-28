@@ -52,7 +52,7 @@ def get_sales_quantity(sheet, article_number, order) -> int:
     article_index = Articles.get_row_index_for_article(article_number, sheet)
     stock_quantity_str = sheet.cell(article_index, 5).value
     stock_quantity = int(stock_quantity_str)
-    # decrement stock quantity if current order already contains article
+    # decrease stock quantity if current order already contains article
     for rows in order:
         if rows[2] == article_number:
             stock_quantity -= rows[3]
@@ -63,7 +63,6 @@ def get_sales_quantity(sheet, article_number, order) -> int:
         )
         if data_validator.validate_quantity(sales_quantity):
             sales_quantity = int(sales_quantity)
-
             if sales_quantity <= stock_quantity:
                 break
             else:
@@ -218,31 +217,37 @@ def confirm_user_entry(user_entry) -> bool:
 def confirm_order_complete() -> bool:
     """
     Ask user if they want to add another row to sales order
+
+    Returns:
+    bool: True if user confirms order is complete, False if user chose to add
+    more rows
     """
     options = ["Add row to sales order", "Order is complete"]
     terminal_menu = TerminalMenu(
         options, title="Do you want to add more articles to this order?"
     )
     confirm_response = terminal_menu.show()
-
     if options[confirm_response] == "Add row to sales order":
         return False
-
     elif options[confirm_response] == "Order is complete":
         return True
 
 
 def confirm_order_final() -> bool:
-    """Ask user if they want to finalize the sales order"""
+    """
+    Ask user if they want to finalize the sales order
+
+    Returns:
+    bool: True if user chooses "Finalize order", False if user chooses
+    "Cancel order"
+    """
     options = ["Finalize order", "Cancel order"]
     terminal_menu = TerminalMenu(
         options,
         title="Select 'Finalize order' to add it to the system.",
     )
     confirm_response = terminal_menu.show()
-
     if options[confirm_response] == "Finalize order":
         return True
-
     elif options[confirm_response] == "Cancel order":
         return False
