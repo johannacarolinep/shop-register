@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from colorama import Fore, Style
 
 
 class Validators:
@@ -39,7 +40,11 @@ class Validators:
         bool: True if data exists, else False
         """
         if not data:
-            print("Invalid: You submitted an empty input. Please try again.")
+            print(
+                Fore.RED
+                + "Invalid: You submitted an empty input. Please try again."
+                + Style.RESET_ALL
+            )
             return False
         else:
             return True
