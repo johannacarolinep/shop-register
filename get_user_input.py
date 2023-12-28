@@ -2,7 +2,6 @@ import re
 from datetime import datetime
 from simple_term_menu import TerminalMenu
 from validators import Validators
-from articles import Articles
 
 data_validator = Validators()
 
@@ -48,6 +47,8 @@ def get_sales_quantity(sheet, article_number, order) -> int:
     Returns:
     int: The sales quantity
     """
+    from articles import Articles
+
     article_index = Articles.get_row_index_for_article(article_number, sheet)
     stock_quantity_str = sheet.cell(article_index, 5).value
     stock_quantity = int(stock_quantity_str)

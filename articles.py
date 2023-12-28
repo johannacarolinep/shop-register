@@ -1,3 +1,17 @@
+from simple_term_menu import TerminalMenu
+from get_user_input import (
+    get_article_number,
+    get_article_name,
+    get_price,
+    get_quantity,
+    confirm_user_entry,
+)
+from helpers import display_data
+from validators import Validators
+
+data_validator = Validators()
+
+
 class Articles:
     """
     Represents an inventory management class for articles.
@@ -109,3 +123,118 @@ class Articles:
         column = sheet.col_values(1)
         index = column.index(article_str) + 1
         return index
+
+    @classmethod
+    def look_up_article(self, inventory):
+        """
+        Gets an article number from user and looks for it in the inventory
+        If found, prints its row in a table format.
+        Finally asks user if they want to look up more articles.
+        """
+        print(
+            f"""LOOK UP ARTICLES
+
+    Search for articles in the inventory (by article number)
+    --------------------------------------------
+    """
+        )
+        article_number = get_article_number()
+        # checks if article_number exists in sheet
+        if data_validator.validate_article_existence(
+            article_number,
+            inventory,
+        ):
+            row_data = self.get_row_for_article(inventory, article_number)
+            # prints table of the article
+            print("")
+            print(f"Article {article_number}:")
+            display_data(row_data[0], [row_data[1]])
+            print("")
+        else:
+            print("")
+            print("Article not found.")
+            print("")
+
+    @classmethod
+    def edit_article(self, inventory, article=None):
+        print(
+            f"""EDIT ARTICLES
+
+Search for articles in the inventory (by article number).
+Edit article name, price in, price out, and/or stock quantity.
+--------------------------------------------
+"""
+        )
+        if not article:
+            article = get_article_number()
+
+        if data_validator.validate_article_existence(article, inventory):
+            # display row
+            print("Article to edit:")
+            row_data = Articles.get_row_for_article(inventory, article)
+            display_data(row_data[0], [row_data[1]])
+            options = ["Yes", "No"]
+            terminal_menu = TerminalMenu(
+                options,
+                title="Would you like to edit this article?",
+            )
+            response = terminal_menu.show()
+            if options[response] == "Yes":
+                print("opening multi option menu")
+                self.edit_menu(article, inventory)
+        else:
+            print("Article not found.")
+
+    @classmethod
+    def edit_menu(self, article, inventory):
+        options = ["Name", "Price_in", "Price_out", "Stock"]
+        terminal_menu = TerminalMenu(
+            options,
+            multi_select=True,
+            show_multi_select_hint=True,
+            multi_select_select_on_accept=False,
+            multi_select_empty_ok=True,
+            title=f"Would you like to edit this article?",
+        )
+        response = terminal_menu.show()
+        print("Response = ", response)
+        if response is None:
+            print("You did not make a selection.")
+        else:
+            response_array = list(terminal_menu.chosen_menu_entries)
+            print("Response array", response_array)
+            row_index = Articles.get_row_index_for_article(article, inventory)
+
+            if "Name" in response_array:
+                print("Edit name:")
+                new_name = get_article_name()
+                column_index = 2
+                inventory.update_cell(row_index, column_index, new_name)
+
+            if "Price_in" in response_array:
+                print("Edit price in:")
+                new_price_in = get_price("in")
+                column_index = 3
+                inventory.update_cell(row_index, column_index, new_price_in)
+
+            if "Price_out" in response_array:
+                print("Edit price out:")
+                current_price_in = inventory.cell(row_index, 3).value
+
+                user_confirm = False
+                while not user_confirm:
+                    new_price_out = get_price("out")
+                    if new_price_out < float(current_price_in):
+                        print("Price out is lower than price in.")
+                        user_confirm = confirm_user_entry(new_price_out)
+                    else:
+                        user_confirm = True
+
+                column_index = 4
+                inventory.update_cell(row_index, column_index, new_price_out)
+
+            if "Stock" in response_array:
+                print("Edit stock:")
+                new_stock = get_quantity()
+                column_index = 5
+                inventory.update_cell(row_index, column_index, new_stock)
