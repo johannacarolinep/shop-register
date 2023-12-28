@@ -182,8 +182,8 @@ class Validators:
         """
         if (
             self.validate_not_empty(data)
-            and self.validate_is_positive(data)
             and self.validate_is_int(data)
+            and self.validate_is_positive(data)
         ):
             try:
                 temp_int = int(data)
@@ -261,13 +261,25 @@ class Validators:
                     if date_to_check <= current_date:
                         return True
                     else:
-                        print("Date cannot be greater than current date.")
+                        print(
+                            Fore.RED
+                            + "Date cannot be greater than current date."
+                            + Style.RESET_ALL
+                        )
                         return False
                 except ValueError:
-                    print("Date provided does not exist. Please try again.")
+                    print(
+                        Fore.RED
+                        + "Date provided does not exist. Please try again."
+                        + Style.RESET_ALL
+                    )
                     return False
             else:
-                print("Invalid format. Should be YYYY-MM-DD")
+                print(
+                    Fore.RED
+                    + "Invalid format. Format must be YYYY-MM-DD. Try again."
+                    + Style.RESET_ALL,
+                )
                 return False
 
     def validate_order_nr(self, data) -> bool:
@@ -293,6 +305,10 @@ class Validators:
                 if temp_int > 99999 or temp_int < 10000:
                     raise ValueError("Must be a positive 5 digit integer.")
             except ValueError as e:
-                print(f"Invalid: {e} Please try again.\n")
+                print(
+                    Fore.RED
+                    + f"Invalid input: {e} Please try again.\n"
+                    + Style.RESET_ALL,
+                )
                 return False
             return True
