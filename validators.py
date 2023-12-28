@@ -3,7 +3,30 @@ from datetime import datetime
 
 
 class Validators:
-    """A class of validators for input."""
+    """
+    A class of validators for input.
+
+    Methods:
+    - validate_not_empty(data) -> bool: Validates data is not empty.
+    - validate_is_positive(data) -> bool: Validates data is a positive number.
+    - validate_is_int(data) -> bool: Validates data can be parsed to an
+    integer.
+    - validate_is_float(data) -> bool: Validates data can be parsed to a float.
+    - validate_article_existence(article_nr, sheet) -> bool: Validates if an
+    article number exists in the first column of a sheet.
+    - validate_price(data) -> bool: Validates if data (user input) has the
+    right format for a price.
+    - validate_quantity(data) -> bool: Validates if data (user input) has the
+    right format for a quantity.
+    - validate_article_nr(data) -> bool: Validates if data (user input) has
+    the right format for an article number.
+    - validate_is_name(data) -> bool: Validates if data (user input) has the
+    right format for an article name.
+    - validate_is_date(date_str) -> bool: Validates if a string is a valid date
+    in the format YYYY-MM-DD.
+    - validate_order_nr(data) -> bool: Validates if data (user input) has the
+    correct format for an order number.
+    """
 
     def validate_not_empty(self, data) -> bool:
         """
