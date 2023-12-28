@@ -36,6 +36,15 @@ class Orders:
     for a specific date, or the first date preceding that date, from the sheet.
     - get_order_rows_for_dates(orders, start_index, end_index): Retrieves order
     rows within a specified range from the orders sheet.
+    - generate_order_id(orders): Generates a new order ID based on the existing
+    greatest order ID in the sheet.
+    - display_orders_by_date(orders): Asks user for a date range and displays
+    orders within the range.
+    - lookup_order_by_id(orders): Asks user for an order id. Looks for it in
+    the orders sheet, and if found, displays the order.
+    - build_order(order_id, orders, inventory): Builds a new order, collecting
+    information from the user. Adds order row to orders sheet, and adjusts
+    stock quantity in inventory sheet.
     """
 
     def __init__(self, order_number, article_number, quantity, sum):
@@ -152,13 +161,21 @@ class Orders:
 
     @classmethod
     def display_orders_by_date(self, orders):
-        # ask for valid start date
+        """
+        Gets date range from user. If there are orders registered in the date
+        range, gets the data from the orders sheet and calls method to display
+        it.
+
+        Parameters:
+        - orders: The orders sheet.
+        """
         start_date = get_date("start")
-        # ask for valid end date, on or later than start date
         while True:
             end_date = get_date("end")
             if end_date < start_date:
-                print("End date has to the same as or later than the start date")
+                print(
+                    "End date has to the same as or later than the start date",
+                )
                 continue
             else:
                 break
@@ -174,31 +191,42 @@ class Orders:
                 print(f"Displaying orders from {start_date}:")
             else:
                 print(f"Displaying orders from {start_date} until {end_date}:")
-
-            start_index = Orders.get_first_row_index_for_date(start_date, orders)
+            # if orders in the date range, gets the data from orders sheet
+            start_index = Orders.get_first_row_index_for_date(
+                start_date,
+                orders,
+            )
             end_index = Orders.get_last_row_index_for_date(end_date, orders)
             orders_data = Orders.get_order_rows_for_dates(
                 orders,
                 start_index,
                 end_index,
             )
+            # call method to display the data
             display_data(orders_data[0], orders_data[1])
         else:
             print("No orders to display for your chosen dates")
 
     @classmethod
     def lookup_order_by_id(self, orders):
-        # get order id until valid
+        """
+        Asks user for an order id. Looks for it in the orders sheet, and if
+        found, displays the order.
+
+        Parameters:
+        - orders: The orders sheet.
+        """
         order_id = get_order_id()
-        # check if it exists
         order_nr_column = orders.col_values(1)
         order_nr_column.pop(0)
         order_rows = []
+        # iterate order numbers
         for index, cell_value in enumerate(order_nr_column):
+            # if match, save row to order_rows
             if str(cell_value) == order_id:
                 row_values = orders.row_values(index + 2)
                 order_rows.append(row_values)
-
+        # if min 1 order row found, display the order
         if order_rows != []:
             print(f"Order ID {order_id}:")
             headers = orders.row_values(1)
@@ -218,10 +246,20 @@ class Orders:
 
     @classmethod
     def build_order(self, order_id, orders, inventory):
+        """
+        Builds a new order row, collecting information from the user.
+        Adds order row to orders sheet once user selects to finalize the order,
+        and adjusts stock quantity in inventory sheet.
+
+        Parameters:
+        - order_id: The order ID for the new order.
+        - orders: The orders sheet.
+        - inventory: The inventory sheet.
+        """
         order = []
         order_complete = False
         while not order_complete:
-            # ask for article id, verify exists
+            # ask for article id, verify it exists in inventory
             article_number = get_article_number()
             if data_validator.validate_article_exists(
                 article_number,
@@ -233,13 +271,14 @@ class Orders:
                     article_number,
                     order,
                 )
-                # calculate sum
+                # calculate sum for the order row
                 article_index = Articles.get_row_index_for_article(
                     article_number, inventory
                 )
                 price_str = inventory.cell(article_index, 4).value
                 price = float(price_str)
                 sum = round(price * sales_quantity, 2)
+                # create the order row
                 orders_instance = Orders(
                     order_id,
                     article_number,

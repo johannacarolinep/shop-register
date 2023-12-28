@@ -29,7 +29,6 @@ def back_to_main_menu():
         options, title="Press enter to go back to the main menu"
     )
     confirm_response = terminal_menu.show()
-
     if options[confirm_response] == "Go back":
         os.system("clear")
         main_menu()
@@ -45,12 +44,10 @@ def lookup_article_end_menu():
         options, title="Do you want to look up another article?"
     )
     confirm_response = terminal_menu.show()
-
     if options[confirm_response] == "Look up another article":
         os.system("clear")
         Articles.look_up_article(inventory)
         lookup_article_end_menu()
-
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
         main_menu()
@@ -66,14 +63,12 @@ def add_article_end_menu():
         title="Do you want to add another article?",
     )
     confirm_response = terminal_menu.show()
-
     if options[confirm_response] == "Add another article":
         os.system("clear")
         if Articles.build_article(inventory, inactive_articles):
             add_article_end_menu()
         else:
             edit_article_end_menu()
-
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
         main_menu()
@@ -90,11 +85,9 @@ def edit_article_end_menu():
         title="Do you want to edit another article?",
     )
     confirm_response = terminal_menu.show()
-
     if options[confirm_response] == "Edit another article":
         Articles.edit_article(inventory)
         edit_article_end_menu()
-
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
         main_menu()
@@ -110,11 +103,9 @@ def delete_article_end_menu():
         options, title="Do you want to delete another article?"
     )
     confirm_response = terminal_menu.show()
-
     if options[confirm_response] == "Delete another article":
         Articles.delete_article(inventory, inactive_articles)
         delete_article_end_menu()
-
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
         main_menu()
@@ -130,12 +121,10 @@ def register_order_end_menu():
         options, title="Do you want to register another order?"
     )
     confirm_response = terminal_menu.show()
-
     if options[confirm_response] == "Register another order":
         order_id = Orders.generate_order_id(orders)
         Orders.build_order(order_id, orders, inventory)
         register_order_end_menu()
-
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
         main_menu()
@@ -151,11 +140,9 @@ def display_orders_by_date_end_menu():
         options, title="Do you want to search for different dates?"
     )
     confirm_response = terminal_menu.show()
-
     if options[confirm_response] == "Search for different dates":
         Orders.display_orders_by_date(orders)
         display_orders_by_date_end_menu()
-
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
         main_menu()
@@ -171,11 +158,9 @@ def lookup_order_end_menu():
         options, title="Do you want to search for another order ID?"
     )
     confirm_response = terminal_menu.show()
-
     if options[confirm_response] == "Search for different order":
         Orders.lookup_order_by_id(orders)
         lookup_order_end_menu()
-
     elif options[confirm_response] == "Back to main menu":
         os.system("clear")
         main_menu()
@@ -201,7 +186,6 @@ then press ENTER
     ]
     terminal_menu = TerminalMenu(options)
     menu_index = terminal_menu.show()
-
     match menu_index:
         case 0:
             os.system("clear")
@@ -243,12 +227,10 @@ then press ENTER
     ]
     terminal_menu = TerminalMenu(menu)
     menu_index = terminal_menu.show()
-
     match menu_index:
         case 0:
             os.system("clear")
-            print("DISPLAYING INVENTORY")
-            print("")
+            print("DISPLAYING INVENTORY\n")
             display_full_sheet(inventory)
             back_to_main_menu()
         case 1:
@@ -286,7 +268,6 @@ then press ENTER
     menu = ["1. Inventory", "2. Sales", "3. Quit"]
     terminal_menu = TerminalMenu(menu)
     menu_index = terminal_menu.show()
-
     match menu_index:
         case 0:
             os.system("clear")
