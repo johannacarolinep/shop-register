@@ -191,9 +191,8 @@ class Validators:
                 if temp_int > 9999 or temp_int < 1000:
                     raise ValueError("Must be a positive 4 digit integer.")
             except ValueError as e:
-                print(
-                    Fore.RED + f"Invalid: {e} Please try again." + Style.RESET_ALL,
-                )
+                message = f"Invalid: {e} Please try again."
+                print(Fore.RED + message + Style.RESET_ALL)
                 return False
             return True
 
