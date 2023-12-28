@@ -27,6 +27,16 @@ class Articles:
         price_out,
         article_quantity,
     ):
+        """
+        Initializes a new Articles instance.
+
+        Parameters:
+        - article (int): The unique identifier for the article.
+        - article_name (str): The name of the article.
+        - price_in (float): The cost of purchasing the article.
+        - price_out (float): The selling price of the article.
+        - article_quantity (int): The stock quantity of the article.
+        """
         self.article = article
         self.article_name = article_name
         self.price_in = price_in
