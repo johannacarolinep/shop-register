@@ -223,7 +223,7 @@ class Orders:
         while not order_complete:
             # ask for article id, verify exists
             article_number = get_article_number()
-            if data_validator.validate_article_existence(
+            if data_validator.validate_article_exists(
                 article_number,
                 inventory,
             ):

@@ -140,7 +140,7 @@ class Articles:
         )
         article_number = get_article_number()
         # checks if article_number exists in sheet
-        if data_validator.validate_article_existence(
+        if data_validator.validate_article_exists(
             article_number,
             inventory,
         ):
@@ -168,7 +168,7 @@ Edit article name, price in, price out, and/or stock quantity.
         if not article:
             article = get_article_number()
 
-        if data_validator.validate_article_existence(article, inventory):
+        if data_validator.validate_article_exists(article, inventory):
             # display row
             print("Article to edit:")
             row_data = Articles.get_row_for_article(inventory, article)

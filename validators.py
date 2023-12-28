@@ -12,7 +12,7 @@ class Validators:
     - validate_is_int(data) -> bool: Validates data can be parsed to an
     integer.
     - validate_is_float(data) -> bool: Validates data can be parsed to a float.
-    - validate_article_existence(article_nr, sheet) -> bool: Validates if an
+    - validate_article_exists(article_nr, sheet) -> bool: Validates if an
     article number exists in the first column of a sheet.
     - validate_price(data) -> bool: Validates if data (user input) has the
     right format for a price.
@@ -99,7 +99,7 @@ class Validators:
             return False
         return True
 
-    def validate_article_existence(self, article_nr, sheet) -> bool:
+    def validate_article_exists(self, article_nr, sheet) -> bool:
         """
         Validates if an article nr exists in the first column of a sheet.
 
