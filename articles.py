@@ -147,14 +147,11 @@ class Articles:
         ):
             row_data = self.get_row_for_article(inventory, article_number)
             # prints table of the article
-            print("")
-            print(f"Article {article_number}:")
+            print(f"\nArticle {article_number}:")
             display_data(row_data[0], [row_data[1]])
             print("")
         else:
-            print("")
-            print("Article not found.")
-            print("")
+            print("\nArticle not found.\n")
 
     @classmethod
     def edit_article(self, inventory, article=None):
@@ -244,9 +241,9 @@ Edit article name, price in, price out, and/or stock quantity.
     def delete_article(self, inventory, inactive_articles):
         article = get_article_number()
         if data_validator.validate_article_exists(article, inventory):
-            # display row
             print("Article to remove:")
             row_data = Articles.get_row_for_article(inventory, article)
+            # display the article
             display_data(row_data[0], [row_data[1]])
             options = ["Yes", "No"]
             terminal_menu = TerminalMenu(
@@ -294,42 +291,38 @@ Edit article name, price in, price out, and/or stock quantity.
                 if options[response] == "Yes":
                     os.system("clear")
                     Articles.edit_article(inventory, article)
-                    # edit_article_end_menu()
                     return False
                 else:
-                    # Add another article or open main menu
                     os.system("clear")
-                    # add_article_end_menu()
                     return True
             else:
-                print("")
-                print("Starting article creation")
+                print("\nStarting article creation")
                 headers = inventory.row_values(1)
                 temp_row = [[str(article), "-", "-", "-", "-"]]
                 display_data(headers, temp_row)
-                article_name = get_article_name()
-                temp_row[0][1] = article_name
+                temp_row[0][1] = get_article_name()
                 display_data(headers, temp_row)
-                price_in = get_price("in")
-                temp_row[0][2] = price_in
+                temp_row[0][2] = get_price("in")
                 display_data(headers, temp_row)
                 user_confirm = False
                 while not user_confirm:
-                    price_out = get_price("out")
-                    if price_out < price_in:
+                    temp_row[0][3] = get_price("out")
+                    if temp_row[0][3] < temp_row[0][2]:
                         print("Price out is lower than price in.")
-                        user_confirm = confirm_user_entry(price_out)
+                        user_confirm = confirm_user_entry(temp_row[0][3])
                     else:
                         user_confirm = True
-                temp_row[0][3] = price_out
                 display_data(headers, temp_row)
-                article_quantity = get_quantity()
-                temp_row[0][4] = article_quantity
-                print("")
-                print("Finished article:")
+                temp_row[0][4] = get_quantity()
+                print("\nFinished article:")
                 display_data(headers, temp_row)
+
                 article_instance = Articles(
-                    article, article_name, price_in, price_out, article_quantity
+                    article,
+                    temp_row[0][1],
+                    temp_row[0][2],
+                    temp_row[0][3],
+                    temp_row[0][4],
                 )
                 article_row = article_instance.to_row()
                 add_row(article_row, inventory)

@@ -2,15 +2,9 @@ import os
 import gspread
 from google.oauth2.service_account import Credentials
 from simple_term_menu import TerminalMenu
-from validators import Validators
-from helpers import *
-from get_user_input import *
 from articles import Articles
 from orders import Orders
-from prettytable import PrettyTable
-
-data_validator = Validators()
-pretty_table = PrettyTable()
+from helpers import display_full_sheet
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
