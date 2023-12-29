@@ -320,7 +320,7 @@ Press ENTER to submit your selection."""
             + Style.RESET_ALL
             + f"""
 --------------------------------------------
-Delete articles from the inventory. 
+Delete articles from the inventory.
 Deleted articles are saved in "Inactive articles" (a separate worksheet) to
 ensure the article numbers cannot be reused.
 """
