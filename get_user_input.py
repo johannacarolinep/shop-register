@@ -56,6 +56,9 @@ def get_sales_quantity(sheet, article_number, order) -> int:
     for rows in order:
         if rows[2] == article_number:
             stock_quantity -= rows[3]
+    # check if stock_quantity is 0
+    if stock_quantity == 0:
+        return 0
     # ask for sales quantity until valid input
     while True:
         sales_quantity = input(

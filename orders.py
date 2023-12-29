@@ -314,6 +314,16 @@ adjust this manually.
                     article_number,
                     order,
                 )
+                # if stock quantity is 0, get_sales_quantity returns 0
+                if sales_quantity == 0:
+                    print(
+                        Fore.YELLOW
+                        + f"No items of article {article_number} in stock."
+                        + Style.RESET_ALL,
+                    )
+                    # ask user if they want to add more rows
+                    order_complete = confirm_order_complete()
+                    continue
                 # calculate sum for the order row
                 article_index = Articles.get_row_index_for_article(
                     article_number, inventory
