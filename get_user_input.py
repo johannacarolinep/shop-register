@@ -17,7 +17,11 @@ def get_quantity():
     int: the quantity
     """
     while True:
-        quantity = input("Enter quantity, a positive integer, e.g. 17 or 2:\n")
+        quantity = input(
+            Fore.MAGENTA
+            + "Enter quantity, a positive integer, e.g. 17 or 2:\n"
+            + Style.RESET_ALL
+        )
         # if input is valid format for quantity
         if data_validator.validate_quantity(quantity):
             quantity = int(quantity)
@@ -62,7 +66,10 @@ def get_sales_quantity(sheet, article_number, order) -> int:
     # ask for sales quantity until valid input
     while True:
         sales_quantity = input(
-            f"Enter sales quantity (Current stock level: {stock_quantity}):\n"
+            Fore.MAGENTA
+            + f"""Enter sales quantity (Current stock level: {stock_quantity}):
+"""
+            + Style.RESET_ALL
         )
         if data_validator.validate_quantity(sales_quantity):
             sales_quantity = int(sales_quantity)
@@ -100,11 +107,15 @@ def get_price(type) -> float:
     while True:
         if type == "in":
             price = input(
-                "Enter price in, a positive decimal value, e.g. 10.99:\n",
+                Fore.MAGENTA
+                + "Enter price in, a positive decimal value, e.g. 10.99:\n"
+                + Style.RESET_ALL
             )
         else:
             price = input(
-                "Enter price out, a positive decimal value, e.g. 10.99:\n",
+                Fore.MAGENTA
+                + "Enter price out, a positive decimal value, e.g. 10.99:\n"
+                + Style.RESET_ALL
             )
         # check if input is valid format for price
         if data_validator.validate_price(price):
@@ -129,7 +140,11 @@ def get_article_number() -> int:
     - int: the article nr
     """
     while True:
-        article_nr = input("Enter article nr, a 4 digit number, e.g. 1001:\n")
+        article_nr = input(
+            Fore.MAGENTA
+            + "Enter article nr, a 4 digit number, e.g. 1001:\n"
+            + Style.RESET_ALL
+        )
         if data_validator.validate_article_nr(article_nr):
             article_nr = int(article_nr)
             break
@@ -145,7 +160,11 @@ def get_order_id() -> str:
     - string: the order nr
     """
     while True:
-        order_id = input("Enter order ID, a 5 digit number, eg 10001:\n")
+        order_id = input(
+            Fore.MAGENTA
+            + "Enter order ID, a 5 digit number, eg 10001:\n"
+            + Style.RESET_ALL
+        )
         if data_validator.validate_order_nr(order_id):
             break
     return order_id
@@ -168,7 +187,7 @@ Special characters not allowed, with exception of '!/./,/-'.
 Spaces are allowed, but superflous spaces will be removed.
 You can one 2-digit number."""
         )
-        name = input("Enter article name:\n")
+        name = input(Fore.MAGENTA + "Enter article name:\n" + Style.RESET_ALL)
         if data_validator.validate_is_name(name):
             cleaned_name = re.sub(r"\s+", " ", name).strip()
             uppercase_name = cleaned_name.upper()
@@ -199,7 +218,7 @@ def get_date(type) -> str:
             f"""- Today is: {current_date}. Please don't enter a future date.
 - Format should be YYYY-MM-DD"""
         )
-        date = input("Enter date here:\n")
+        date = input(Fore.MAGENTA + "Enter date here:\n" + Style.RESET_ALL)
         # break if validation returns true
         if data_validator.validate_is_date(date):
             break
