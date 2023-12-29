@@ -70,11 +70,11 @@ Create a local copy of the GitHub repository by following one of the two process
 ### Run the project as a remote web application by deploying to Heroku:
 
 - Clone the repository:
-  1. Open a folder on your computer with the terminal.
-  2. Run the following command
+  1. Open the terminal on your computer.
+  2. Run the command
   - `git clone git@github.com:johannacarolinep/shop-register.git`
 
-  3. Create your own GitHub repository to host the code.
+  3. Create your own GitHub repository to host the code. You will need to host this code on your repository for the following to work.
   4. Run the command `git remote set-url origin <Your GitHub Repo Path>` to set the remote repository location to your repository.
 
   5. Push the files to your repository with the following command:
