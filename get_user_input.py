@@ -234,7 +234,7 @@ def confirm_order_complete() -> bool:
     """
     options = ["Add row to sales order", "Order is complete"]
     terminal_menu = TerminalMenu(
-        options, title="Do you want to add more articles to this order?"
+        options, title="\nDo you want to add more articles to this order?"
     )
     confirm_response = terminal_menu.show()
     if options[confirm_response] == "Add row to sales order":

@@ -125,6 +125,7 @@ def register_order_end_menu():
     )
     confirm_response = terminal_menu.show()
     if options[confirm_response] == "Register another order":
+        os.system("clear")
         order_id = Orders.generate_order_id(orders)
         Orders.build_order(order_id, orders, inventory)
         register_order_end_menu()
@@ -163,6 +164,7 @@ def lookup_order_end_menu():
     )
     confirm_response = terminal_menu.show()
     if options[confirm_response] == "Search for different order":
+        os.system("clear")
         Orders.lookup_order_by_id(orders)
         lookup_order_end_menu()
     elif options[confirm_response] == "Back to main menu":
@@ -176,7 +178,7 @@ def sales_menu():
     a switch statement to call different functions based on the user's choice.
     """
     print(
-        Fore.GREEN
+        Fore.LIGHTGREEN_EX
         + "SALES MENU"
         + Style.RESET_ALL
         + f"""
@@ -218,7 +220,7 @@ def inventory_menu():
     a switch statement to call different functions based on the user's choice.
     """
     print(
-        Fore.GREEN
+        Fore.LIGHTGREEN_EX
         + "INVENTORY MENU"
         + Style.RESET_ALL
         + f"""
@@ -241,7 +243,7 @@ then press ENTER
         case 0:
             os.system("clear")
             print(
-                Fore.GREEN
+                Fore.LIGHTGREEN_EX
                 + "INVENTORY - DISPLAYING FULL INVENTORY"
                 + Style.RESET_ALL
                 + f"""
@@ -276,7 +278,7 @@ The below table contains the shop's full inventory."""
 def main_menu():
     """Displays the main menu using simple terminal menu"""
     print(
-        Fore.GREEN
+        Fore.LIGHTGREEN_EX
         + "MAIN MENU"
         + Style.RESET_ALL
         + f"""
@@ -298,7 +300,7 @@ then press ENTER
         case 2:
             os.system("clear")
             print(
-                Fore.GREEN
+                Fore.LIGHTGREEN_EX
                 + "QUITTING PROGRAM"
                 + Style.RESET_ALL
                 + f"""
@@ -315,7 +317,7 @@ def main():
     """Prints welcome message and calls main menu"""
     os.system("clear")
     print(
-        Fore.GREEN
+        Fore.LIGHTGREEN_EX
         + "WELCOME TO SHOP REGISTER!"
         + Style.RESET_ALL
         + f"""

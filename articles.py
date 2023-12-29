@@ -150,7 +150,7 @@ class Articles:
         - inventory: The inventory sheet.
         """
         print(
-            Fore.GREEN
+            Fore.LIGHTGREEN_EX
             + "INVENTORY - LOOK UP ARTICLES"
             + Style.RESET_ALL
             + f"""
@@ -184,7 +184,7 @@ Search for articles in the inventory (by article number)
         - article (optional): The article number to edit.
         """
         print(
-            Fore.GREEN
+            Fore.LIGHTGREEN_EX
             + "INVENTORY - EDIT ARTICLES"
             + Style.RESET_ALL
             + f"""
@@ -295,7 +295,7 @@ Press ENTER to submit your selection."""
         - inactive_articles: The sheet for inactive articles.
         """
         print(
-            Fore.GREEN
+            Fore.LIGHTGREEN_EX
             + "INVENTORY - DELETE ARTICLE"
             + Style.RESET_ALL
             + f"""
@@ -344,7 +344,7 @@ ensure the article numbers cannot be reused.
         redirected to edit article.
         """
         print(
-            Fore.GREEN
+            Fore.LIGHTGREEN_EX
             + "INVENTORY - ADD ARTICLE"
             + Style.RESET_ALL
             + f"""

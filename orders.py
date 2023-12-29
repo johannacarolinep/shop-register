@@ -171,7 +171,7 @@ class Orders:
         - orders: The orders sheet.
         """
         print(
-            Fore.GREEN
+            Fore.LIGHTGREEN_EX
             + "SALES - DISPLAY ORDER HISTORY"
             + Style.RESET_ALL
             + f"""
@@ -234,6 +234,15 @@ Display orders registered within a date range (start date - end date).
         Parameters:
         - orders: The orders sheet.
         """
+        print(
+            Fore.LIGHTGREEN_EX
+            + "SALES - LOOK UP ORDER"
+            + Style.RESET_ALL
+            + f"""
+--------------------------------------------
+Display an order by searching for an order ID.
+"""
+        )
         order_id = get_order_id()
         order_nr_column = orders.col_values(1)
         order_nr_column.pop(0)
@@ -246,7 +255,7 @@ Display orders registered within a date range (start date - end date).
                 order_rows.append(row_values)
         # if min 1 order row found, display the order
         if order_rows != []:
-            print(f"Order ID {order_id}:")
+            print(f"\nOrder ID {order_id}:")
             headers = orders.row_values(1)
             display_data(headers, order_rows)
             total_order_sum = 0
@@ -256,21 +265,21 @@ Display orders registered within a date range (start date - end date).
                 total_order_quantity += int(rows[3])
             print(
                 f"""Total order sum: {round(total_order_sum, 2)}
-    Total order quantity: {total_order_quantity}
-    """
+Total order quantity: {total_order_quantity}
+"""
             )
         else:
             print(
                 Fore.YELLOW
-                + f"There is no order with id {order_id} in the system."
+                + f"\nThere is no order with id {order_id} in the system.\n"
                 + Style.RESET_ALL
             )
 
     @classmethod
     def build_order(self, order_id, orders, inventory):
         """
-        Builds a new order row, collecting information from the user.
-        Adds order row to orders sheet once user selects to finalize the order,
+        Builds a new order, collecting information from the user.
+        Adds order to orders sheet once user selects to finalize the order,
         and adjusts stock quantity in inventory sheet.
 
         Parameters:
@@ -278,6 +287,18 @@ Display orders registered within a date range (start date - end date).
         - orders: The orders sheet.
         - inventory: The inventory sheet.
         """
+        print(
+            Fore.LIGHTGREEN_EX
+            + "SALES - REGISTER ORDER"
+            + Style.RESET_ALL
+            + f"""
+--------------------------------------------
+Build a new order with one row per article ID in the order.
+Add the new order to the "Orders" worksheet once the order is complete.
+Stock levels in the inventory will decrease by the sold amount - no need to
+adjust this manually.
+"""
+        )
         order = []
         order_complete = False
         while not order_complete:
@@ -312,6 +333,7 @@ Display orders registered within a date range (start date - end date).
                 order.append(order_row)
                 # ask user if they want to add more rows
                 order_complete = confirm_order_complete()
+                print("")
             else:
                 print(Fore.YELLOW + "Article does not exist" + Style.RESET_ALL)
         # print order in table
@@ -320,9 +342,9 @@ Display orders registered within a date range (start date - end date).
             total_sum += rows[4]
         total_sum = round(total_sum, 2)
         headers = orders.row_values(1)
-        print("Order summary:")
+        print("\nOrder summary:")
         display_data(headers, order)
-        print(f"Total order sum: {total_sum}")
+        print(f"Total order sum: {total_sum}\n")
         # Add order to sheet if user confirms
         if confirm_order_final():
             for rows in order:
@@ -336,4 +358,4 @@ Display orders registered within a date range (start date - end date).
                 stock = int(inventory.cell(article_index, 5).value)
                 new_stock_level = stock - rows[3]
                 inventory.update_cell(article_index, 5, new_stock_level)
-            print("Order registered.")
+            print("Order registered.\n")
