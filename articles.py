@@ -166,9 +166,9 @@ Search for articles in the inventory (by article number)
         ):
             row_data = self.get_row_for_article(inventory, article_number)
             # prints table of the article
-            print(f"\nArticle {article_number}:")
+            print(Fore.CYAN + f"\nArticle {article_number}:")
             display_data(row_data[0], [row_data[1]])
-            print("")
+            print("" + Style.RESET_ALL)
         else:
             print(Fore.YELLOW + "\nArticle not found.\n" + Style.RESET_ALL)
 
@@ -257,11 +257,21 @@ Press ENTER to submit your selection."""
                 new_name = get_article_name()
                 column_index = 2
                 inventory.update_cell(row_index, column_index, new_name)
+                print(
+                    Fore.GREEN
+                    + f"Name attribute updated to '{new_name}'"
+                    + Style.RESET_ALL
+                )
             if "Price_in" in response_array:
                 print("Edit price in:")
                 new_price_in = get_price("in")
                 column_index = 3
                 inventory.update_cell(row_index, column_index, new_price_in)
+                print(
+                    Fore.GREEN
+                    + f"Price in attribute updated to '{new_price_in}'"
+                    + Style.RESET_ALL
+                )
             if "Price_out" in response_array:
                 print("Edit price out:")
                 current_price_in = inventory.cell(row_index, 3).value
@@ -276,11 +286,21 @@ Press ENTER to submit your selection."""
                         user_confirm = True
                 column_index = 4
                 inventory.update_cell(row_index, column_index, new_price_out)
+                print(
+                    Fore.GREEN
+                    + f"Price out attribute updated to '{new_price_out}'"
+                    + Style.RESET_ALL
+                )
             if "Stock" in response_array:
                 print("Edit stock:")
                 new_stock = get_quantity()
                 column_index = 5
                 inventory.update_cell(row_index, column_index, new_stock)
+                print(
+                    Fore.GREEN
+                    + f"Stock attribute updated to '{new_stock}'"
+                    + Style.RESET_ALL
+                )
 
     @classmethod
     def delete_article(self, inventory, inactive_articles):
@@ -307,10 +327,11 @@ ensure the article numbers cannot be reused.
         )
         article = get_article_number()
         if data_validator.validate_article_exists(article, inventory):
-            print("\nArticle to remove:")
+            print(Fore.CYAN + "\nArticle to remove:")
             row_data = Articles.get_row_for_article(inventory, article)
             # display the article and confirm deletion with user
             display_data(row_data[0], [row_data[1]])
+            print(Style.RESET_ALL)
             options = ["Yes", "No"]
             terminal_menu = TerminalMenu(
                 options,
@@ -322,9 +343,9 @@ ensure the article numbers cannot be reused.
                 add_row(row_data[1], inactive_articles)
                 # remove article from inventory sheet
                 Articles.remove_row(article, inventory)
-                print("Article removed")
+                print(Fore.GREEN + "Article removed" + Style.RESET_ALL)
             else:
-                print("Cancelled.\n")
+                print(Fore.GREEN + "Cancelled.\n" + Style.RESET_ALL)
         else:
             print(Fore.YELLOW + "Article not found." + Style.RESET_ALL)
 
@@ -379,17 +400,22 @@ Please choose a different article number."""
                     os.system("clear")
                     return True
             else:
-                print("\nStarting article creation")
+                print(Fore.CYAN + "\nStarting article creation")
                 # display progress, article with empty values
                 headers = inventory.row_values(1)
                 temp_row = [[str(article), "-", "-", "-", "-"]]
                 display_data(headers, temp_row)
+                print(Style.RESET_ALL)
                 # get article name from user
                 temp_row[0][1] = get_article_name()
+                print(Fore.CYAN)
                 display_data(headers, temp_row)
+                print(Style.RESET_ALL)
                 # get price in from user
                 temp_row[0][2] = get_price("in")
+                print(Fore.CYAN)
                 display_data(headers, temp_row)
+                print(Style.RESET_ALL)
                 # ask user for price out until it's greater than price in
                 user_confirm = False
                 while not user_confirm:
@@ -403,11 +429,14 @@ Please choose a different article number."""
                         user_confirm = confirm_user_entry(temp_row[0][3])
                     else:
                         user_confirm = True
+                print(Fore.CYAN)
                 display_data(headers, temp_row)
+                print(Style.RESET_ALL)
                 # get quantity/stock from user
                 temp_row[0][4] = get_quantity()
-                print("\nFinished article:")
+                print(Fore.CYAN + "\nFinished article:")
                 display_data(headers, temp_row)
+                print(Style.RESET_ALL)
                 # create the article and add it to the inventory sheet
                 article_instance = Articles(
                     article,
@@ -418,4 +447,9 @@ Please choose a different article number."""
                 )
                 article_row = article_instance.to_row()
                 add_row(article_row, inventory)
+                print(
+                    Fore.GREEN
+                    + "Article successfully added to inventory.\n"
+                    + Style.RESET_ALL
+                )
                 return True

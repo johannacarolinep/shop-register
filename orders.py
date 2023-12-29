@@ -199,6 +199,7 @@ Display orders registered within a date range (start date - end date).
             if reg_date >= start_date and reg_date <= end_date:
                 data_exists = True
         if data_exists:
+            print(Fore.CYAN)
             if start_date == end_date:
                 print(f"\nDisplaying orders from {start_date}:")
             else:
@@ -218,6 +219,7 @@ Display orders registered within a date range (start date - end date).
             )
             # call method to display the data
             display_data(orders_data[0], orders_data[1])
+            print(Style.RESET_ALL)
         else:
             print(
                 Fore.YELLOW
@@ -255,7 +257,7 @@ Display an order by searching for an order ID.
                 order_rows.append(row_values)
         # if min 1 order row found, display the order
         if order_rows != []:
-            print(f"\nOrder ID {order_id}:")
+            print(Fore.CYAN + f"\nOrder ID {order_id}:")
             headers = orders.row_values(1)
             display_data(headers, order_rows)
             total_order_sum = 0
@@ -267,6 +269,7 @@ Display an order by searching for an order ID.
                 f"""Total order sum: {round(total_order_sum, 2)}
 Total order quantity: {total_order_quantity}
 """
+                + Style.RESET_ALL
             )
         else:
             print(
@@ -352,9 +355,9 @@ adjust this manually.
             total_sum += rows[4]
         total_sum = round(total_sum, 2)
         headers = orders.row_values(1)
-        print("\nOrder summary:")
+        print(Fore.CYAN + "\nOrder summary:")
         display_data(headers, order)
-        print(f"Total order sum: {total_sum}\n")
+        print(f"Total order sum: {total_sum}\n" + Style.RESET_ALL)
         # Add order to sheet if user confirms
         if confirm_order_final():
             for rows in order:
@@ -368,4 +371,4 @@ adjust this manually.
                 stock = int(inventory.cell(article_index, 5).value)
                 new_stock_level = stock - rows[3]
                 inventory.update_cell(article_index, 5, new_stock_level)
-            print("Order registered.\n")
+            print(Fore.GREEN + "Order registered.\n" + Style.RESET_ALL)

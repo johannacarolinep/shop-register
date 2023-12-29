@@ -250,7 +250,9 @@ then press ENTER
 --------------------------------------------
 The below table contains the shop's full inventory."""
             )
+            print(Fore.CYAN)
             display_full_sheet(inventory)
+            print(Style.RESET_ALL)
             back_to_main_menu()
         case 1:
             os.system("clear")
