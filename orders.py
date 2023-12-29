@@ -1,4 +1,5 @@
 from datetime import datetime
+from colorama import Fore, Style
 from get_user_input import (
     get_date,
     get_order_id,
@@ -169,12 +170,23 @@ class Orders:
         Parameters:
         - orders: The orders sheet.
         """
+        print(
+            Fore.GREEN
+            + "SALES - DISPLAY ORDER HISTORY"
+            + Style.RESET_ALL
+            + f"""
+--------------------------------------------
+Display orders registered within a date range (start date - end date).
+"""
+        )
         start_date = get_date("start")
         while True:
             end_date = get_date("end")
             if end_date < start_date:
                 print(
-                    "End date has to the same as or later than the start date",
+                    Fore.RED
+                    + "End date has to the same as or later than start date."
+                    + Style.RESET_ALL
                 )
                 continue
             else:
@@ -188,9 +200,11 @@ class Orders:
                 data_exists = True
         if data_exists:
             if start_date == end_date:
-                print(f"Displaying orders from {start_date}:")
+                print(f"\nDisplaying orders from {start_date}:")
             else:
-                print(f"Displaying orders from {start_date} until {end_date}:")
+                print(
+                    f"\nDisplaying orders from {start_date} until {end_date}:",
+                )
             # if orders in the date range, gets the data from orders sheet
             start_index = Orders.get_first_row_index_for_date(
                 start_date,
@@ -205,7 +219,11 @@ class Orders:
             # call method to display the data
             display_data(orders_data[0], orders_data[1])
         else:
-            print("No orders to display for your chosen dates")
+            print(
+                Fore.YELLOW
+                + "\nNo orders to display for your chosen dates\n"
+                + Style.RESET_ALL
+            )
 
     @classmethod
     def lookup_order_by_id(self, orders):
@@ -242,7 +260,11 @@ class Orders:
     """
             )
         else:
-            print(f"There is no order with id {order_id} in the system.")
+            print(
+                Fore.YELLOW
+                + f"There is no order with id {order_id} in the system."
+                + Style.RESET_ALL
+            )
 
     @classmethod
     def build_order(self, order_id, orders, inventory):
@@ -291,7 +313,7 @@ class Orders:
                 # ask user if they want to add more rows
                 order_complete = confirm_order_complete()
             else:
-                print("Article does not exist")
+                print(Fore.YELLOW + "Article does not exist" + Style.RESET_ALL)
         # print order in table
         total_sum = 0
         for rows in order:

@@ -1,5 +1,6 @@
 import os
 from simple_term_menu import TerminalMenu
+from colorama import Fore, Style
 from get_user_input import (
     get_article_number,
     get_article_name,
@@ -149,11 +150,13 @@ class Articles:
         - inventory: The inventory sheet.
         """
         print(
-            f"""LOOK UP ARTICLES
-
-    Search for articles in the inventory (by article number)
-    --------------------------------------------
-    """
+            Fore.GREEN
+            + "INVENTORY - LOOK UP ARTICLES"
+            + Style.RESET_ALL
+            + f"""
+--------------------------------------------
+Search for articles in the inventory (by article number)
+"""
         )
         article_number = get_article_number()
         # checks if article_number exists in sheet
@@ -167,7 +170,7 @@ class Articles:
             display_data(row_data[0], [row_data[1]])
             print("")
         else:
-            print("\nArticle not found.\n")
+            print(Fore.YELLOW + "\nArticle not found.\n" + Style.RESET_ALL)
 
     @classmethod
     def edit_article(self, inventory, article=None):
@@ -181,11 +184,13 @@ class Articles:
         - article (optional): The article number to edit.
         """
         print(
-            f"""EDIT ARTICLES
-
+            Fore.GREEN
+            + "INVENTORY - EDIT ARTICLES"
+            + Style.RESET_ALL
+            + f"""
+--------------------------------------------
 Search for articles in the inventory (by article number).
 Edit article name, price in, price out, and/or stock quantity.
---------------------------------------------
 """
         )
         # get article nr from user if none provided
@@ -194,9 +199,10 @@ Edit article name, price in, price out, and/or stock quantity.
 
         if data_validator.validate_article_exists(article, inventory):
             # if article found in inventory, display it and confirm intent
-            print("Article to edit:")
+            print(Fore.CYAN + "\nArticle to edit:")
             row_data = Articles.get_row_for_article(inventory, article)
             display_data(row_data[0], [row_data[1]])
+            print(Style.RESET_ALL)
             options = ["Yes", "No"]
             terminal_menu = TerminalMenu(
                 options,
@@ -207,7 +213,7 @@ Edit article name, price in, price out, and/or stock quantity.
                 # if user confirmed, call edit_menu method
                 self.edit_menu(article, inventory)
         else:
-            print("Article not found.")
+            print(Fore.YELLOW + "Article not found." + Style.RESET_ALL)
 
     @classmethod
     def edit_menu(self, article, inventory):
@@ -224,14 +230,23 @@ Edit article name, price in, price out, and/or stock quantity.
         terminal_menu = TerminalMenu(
             options,
             multi_select=True,
-            show_multi_select_hint=True,
             multi_select_select_on_accept=False,
             multi_select_empty_ok=True,
             title=f"Which attributes would you like to edit?",
         )
+        print(
+            Fore.YELLOW
+            + f"""Press SPACE or TAB to select an attribute.
+Press ENTER to submit your selection."""
+            + Style.RESET_ALL
+        )
         response = terminal_menu.show()
         if response is None:
-            print("You did not make a selection.")
+            print(
+                Fore.YELLOW
+                + "You did not select any attributes to edit."
+                + Style.RESET_ALL,
+            )
         else:
             # store user's selection of attributes to edit
             response_array = list(terminal_menu.chosen_menu_entries)
@@ -279,9 +294,20 @@ Edit article name, price in, price out, and/or stock quantity.
         - inventory: The inventory sheet.
         - inactive_articles: The sheet for inactive articles.
         """
+        print(
+            Fore.GREEN
+            + "INVENTORY - DELETE ARTICLE"
+            + Style.RESET_ALL
+            + f"""
+--------------------------------------------
+Delete articles from the inventory. 
+Deleted articles are saved in "Inactive articles" (a separate worksheet) to
+ensure the article numbers cannot be reused.
+"""
+        )
         article = get_article_number()
         if data_validator.validate_article_exists(article, inventory):
-            print("Article to remove:")
+            print("\nArticle to remove:")
             row_data = Articles.get_row_for_article(inventory, article)
             # display the article and confirm deletion with user
             display_data(row_data[0], [row_data[1]])
@@ -298,9 +324,9 @@ Edit article name, price in, price out, and/or stock quantity.
                 Articles.remove_row(article, inventory)
                 print("Article removed")
             else:
-                print("Cancelled.")
+                print("Cancelled.\n")
         else:
-            print("Article not found.")
+            print(Fore.YELLOW + "Article not found." + Style.RESET_ALL)
 
     @classmethod
     def build_article(self, inventory, inactive_articles):
@@ -318,17 +344,22 @@ Edit article name, price in, price out, and/or stock quantity.
         redirected to edit article.
         """
         print(
-            f"""ADD ARTICLES
-
-    Add a new article to the inventory.
-    --------------------------------------------
-    """
+            Fore.GREEN
+            + "INVENTORY - ADD ARTICLE"
+            + Style.RESET_ALL
+            + f"""
+--------------------------------------------
+Add a new article to the inventory.
+"""
         )
         article = get_article_number()
         # if article nr belongs to an inactive article, print message
         if data_validator.validate_article_exists(article, inactive_articles):
             print(
-                f"""Article with ID {article} already exists and is inactive. Please choose a different article number."""
+                Fore.YELLOW
+                + f"""Article with ID {article} already exists and is inactive.
+Please choose a different article number."""
+                + Style.RESET_ALL
             )
         else:
             # if article nr exists in inventory, offer to edit existing article
@@ -364,7 +395,11 @@ Edit article name, price in, price out, and/or stock quantity.
                 while not user_confirm:
                     temp_row[0][3] = get_price("out")
                     if temp_row[0][3] < temp_row[0][2]:
-                        print("Price out is lower than price in.")
+                        print(
+                            Fore.YELLOW
+                            + "Price out is lower than price in."
+                            + Style.RESET_ALL
+                        )
                         user_confirm = confirm_user_entry(temp_row[0][3])
                     else:
                         user_confirm = True

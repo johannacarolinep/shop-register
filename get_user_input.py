@@ -1,6 +1,7 @@
 import re
 from datetime import datetime
 from simple_term_menu import TerminalMenu
+from colorama import Fore, Style
 from validators import Validators
 
 data_validator = Validators()
@@ -27,7 +28,6 @@ def get_quantity():
                 else:
                     print("Not registering quantity")
                     continue
-            print("Quantity is valid")
             break
     return quantity
 
@@ -66,10 +66,18 @@ def get_sales_quantity(sheet, article_number, order) -> int:
             if sales_quantity <= stock_quantity:
                 break
             else:
-                print("Sales quantity cannot be more than current stock")
+                print(
+                    Fore.RED
+                    + "Sales quantity cannot be more than current stock"
+                    + Style.RESET_ALL
+                )
                 continue
         else:
-            print("Not a valid quantity. Please try again")
+            print(
+                Fore.RED
+                + "Input is not a valid quantity. Please try again"
+                + Style.RESET_ALL
+            )
             continue
     return sales_quantity
 
@@ -134,7 +142,7 @@ def get_order_id() -> str:
     - string: the order nr
     """
     while True:
-        order_id = input("Enter order ID, a 5 digit number, eg 10001:")
+        order_id = input("Enter order ID, a 5 digit number, eg 10001:\n")
         if data_validator.validate_order_nr(order_id):
             break
     return order_id
@@ -180,13 +188,15 @@ def get_date(type) -> str:
     """
     current_date = datetime.now().strftime("%Y-%m-%d")
     while True:
-        print(
-            f"Date should not be greater than {current_date} (today's date).",
-        )
         if type == "start":
-            date = input("Enter start date (YYYY-MM-DD):\n")
+            print("\nPlease enter a START date")
         elif type == "end":
-            date = input("Enter end date (YYYY-MM-DD):\n")
+            print("\nPlease enter an END date")
+        print(
+            f"""- Today is: {current_date}. Please don't enter a future date.
+- Format should be YYYY-MM-DD"""
+        )
+        date = input("Enter date here:\n")
         # break if validation returns true
         if data_validator.validate_is_date(date):
             break

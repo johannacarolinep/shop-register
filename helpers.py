@@ -1,4 +1,5 @@
 from prettytable import PrettyTable
+from colorama import Fore, Style
 
 pretty_table = PrettyTable()
 
@@ -40,4 +41,5 @@ def display_data(headers, rows):
     pretty_table.field_names = headers
     pretty_table.add_rows(rows)
     print(pretty_table)
+    print("")
     pretty_table.clear_rows()

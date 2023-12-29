@@ -2,6 +2,7 @@ import os
 import gspread
 from google.oauth2.service_account import Credentials
 from simple_term_menu import TerminalMenu
+from colorama import Fore, Style
 from articles import Articles
 from orders import Orders
 from helpers import display_full_sheet
@@ -86,6 +87,7 @@ def edit_article_end_menu():
     )
     confirm_response = terminal_menu.show()
     if options[confirm_response] == "Edit another article":
+        os.system("clear")
         Articles.edit_article(inventory)
         edit_article_end_menu()
     elif options[confirm_response] == "Back to main menu":
@@ -104,6 +106,7 @@ def delete_article_end_menu():
     )
     confirm_response = terminal_menu.show()
     if options[confirm_response] == "Delete another article":
+        os.system("clear")
         Articles.delete_article(inventory, inactive_articles)
         delete_article_end_menu()
     elif options[confirm_response] == "Back to main menu":
@@ -141,6 +144,7 @@ def display_orders_by_date_end_menu():
     )
     confirm_response = terminal_menu.show()
     if options[confirm_response] == "Search for different dates":
+        os.system("clear")
         Orders.display_orders_by_date(orders)
         display_orders_by_date_end_menu()
     elif options[confirm_response] == "Back to main menu":
@@ -172,7 +176,10 @@ def sales_menu():
     a switch statement to call different functions based on the user's choice.
     """
     print(
-        f"""SALES MENU
+        Fore.GREEN
+        + "SALES MENU"
+        + Style.RESET_ALL
+        + f"""
 --------------------------------------------
 Make your selection with the up and down arrows on your keyboard,
 then press ENTER
@@ -211,7 +218,10 @@ def inventory_menu():
     a switch statement to call different functions based on the user's choice.
     """
     print(
-        f"""INVENTORY MENU
+        Fore.GREEN
+        + "INVENTORY MENU"
+        + Style.RESET_ALL
+        + f"""
 --------------------------------------------
 Make your selection with the up and down arrows on your keyboard,
 then press ENTER
@@ -230,7 +240,14 @@ then press ENTER
     match menu_index:
         case 0:
             os.system("clear")
-            print("DISPLAYING INVENTORY\n")
+            print(
+                Fore.GREEN
+                + "INVENTORY - DISPLAYING FULL INVENTORY"
+                + Style.RESET_ALL
+                + f"""
+--------------------------------------------
+The below table contains the shop's full inventory."""
+            )
             display_full_sheet(inventory)
             back_to_main_menu()
         case 1:
@@ -259,7 +276,10 @@ then press ENTER
 def main_menu():
     """Displays the main menu using simple terminal menu"""
     print(
-        f"""MAIN MENU
+        Fore.GREEN
+        + "MAIN MENU"
+        + Style.RESET_ALL
+        + f"""
 --------------------------------------------
 Make your selection with the up and down arrows on your keyboard,
 then press ENTER
@@ -277,7 +297,17 @@ then press ENTER
             sales_menu()
         case 2:
             os.system("clear")
-            print("Quitting program")
+            print(
+                Fore.GREEN
+                + "QUITTING PROGRAM"
+                + Style.RESET_ALL
+                + f"""
+--------------------------------------------
+Thank you for using SHOP REGISTER!
+
+This program was created by Johanna Petersson, for educational purposes only.
+"""
+            )
             SystemExit
 
 
@@ -285,7 +315,10 @@ def main():
     """Prints welcome message and calls main menu"""
     os.system("clear")
     print(
-        f"""WELCOME TO SHOP REGISTER!
+        Fore.GREEN
+        + "WELCOME TO SHOP REGISTER!"
+        + Style.RESET_ALL
+        + f"""
 --------------------------------------------
 A simulation of a simple inventory and sales management program
 for a toys shop.
