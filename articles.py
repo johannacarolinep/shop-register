@@ -383,6 +383,7 @@ Add a new article to the inventory.
 Please choose a different article number."""
                 + Style.RESET_ALL
             )
+            return True
         else:
             # if article number exists in inventory, offer to edit article
             if data_validator.validate_article_exists(article, inventory):
