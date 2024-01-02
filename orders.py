@@ -4,10 +4,10 @@ from get_user_input import (
     get_date,
     get_order_id,
     get_article_number,
-    get_sales_quantity,
     confirm_order_complete,
     confirm_order_final,
 )
+from get_sales_quantity import get_sales_quantity
 from validators import Validators
 from articles import Articles
 from helpers import display_data, add_row
