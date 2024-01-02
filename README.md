@@ -243,6 +243,11 @@ Example:
 ## Instructions
 
 ## Flowcharts
+Overarching:
+![Flowchart of the overarching program logic](documentation/drawio-overarching.png)
+
+Inventory:
+![Flowchart of the inventory part of the program](documentation/drawio-inventory.png)
 
 ## Technologies used
 ### Languages:
