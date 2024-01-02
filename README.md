@@ -1,8 +1,16 @@
 # Shop Register
 
-Description
+Shop Register is a Python terminal project simulating a simple inventory and order management system for a fictive toy shop.
+
+The Shop Register program allows its users to display inventory data, add new articles to the inventory, edit existing articles, and delete articles (moving them to a separate worksheet). 
+
+The program also allows its users to display order history data, as well as to register a new order.
+
+The inventory, order history, and inactive articles data is hosted in a Google Spreadsheet, which is connected to the program.
 
 Link to [Shop Register](https://shop-register-ce8149331475.herokuapp.com/)
+
+Link to the [spreadsheet hosting the data](https://docs.google.com/spreadsheets/d/1l5ltxH_z8xA3u476ee2l4rZuZOsTOB6hkCA9jZtMG6U/edit?usp=sharing).
 
 ## User stories
 
