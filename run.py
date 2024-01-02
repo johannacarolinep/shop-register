@@ -191,10 +191,10 @@ then press ENTER
 """
     )
     options = [
-        "Display orders (by date)",
-        "Look up order by ID",
-        "Register an order",
-        "Back to main menu",
+        "1. Display orders (by date)",
+        "2. Look up order by ID",
+        "3. Register an order",
+        "4. Back to main menu",
     ]
     terminal_menu = TerminalMenu(options)
     menu_index = terminal_menu.show()
