@@ -1,5 +1,7 @@
 # Shop Register
 
+![Shop Register](documentation/ss-welcome.png)
+
 Shop Register is a Python terminal project simulating a simple inventory and order management system for a fictive toy shop.
 
 The Shop Register program allows its users to display inventory data, add new articles to the inventory, edit existing articles, and delete articles (moving them to a separate worksheet). 
@@ -13,6 +15,59 @@ Link to [Shop Register](https://shop-register-ce8149331475.herokuapp.com/)
 Link to the [spreadsheet hosting the data](https://docs.google.com/spreadsheets/d/1l5ltxH_z8xA3u476ee2l4rZuZOsTOB6hkCA9jZtMG6U/edit?usp=sharing).
 
 ## User stories
+
+## Features
+### Program start, main menu:
+![Program start](documentation/ss-program-load.png)
+
+### Inventory menu:
+![Inventory menu](documentation/ss-inventory-menu.png)
+
+#### Display inventory
+![Displaying full inventory](documentation/ss-display-inventory.png)
+
+![End of display inventory](documentation/ss-display-inventory-back-to-main.png)
+
+#### Look up article
+![Look up article](documentation/ss-look-up-article.png)
+
+![Look up article - not found](documentation/ss-look-up-article-not-found.png)
+
+![Look up article - invalid input](documentation/ss-look-up-article-invalid.png)
+
+#### Add article
+![Add article](documentation/ss-add-article.png)
+
+![Add article](documentation/ss-add-article-finished.png)
+
+![Add article - article already exists](documentation/ss-add-article-existing.png)
+
+add scenario article exists in inactive articles
+
+#### Edit article
+![Edit article](documentation/ss-edit-article-confirm.png)
+
+![Edit article - multi-selection menu](documentation/ss-edit-article-selection.png)
+
+![Edit article - updated values](documentation/ss-edit-article-values-changed.png)
+
+![Edit article - article not found](documentation/ss-edit-article-not-found.png)
+
+#### Delete article
+![Delete article](documentation/ss-delete-article.png)
+
+![Delete article - article deleted](documentation/ss-delete-article-deletion-confirmed.png)
+
+![Delete article - article not found](documentation/ss-delete-article-deletion-confirmed.png)
+
+### Sales menu
+
+#### Display orders (by date)
+
+#### Look up order by ID
+
+#### Register an order
+
 
 ## Instructions
 
