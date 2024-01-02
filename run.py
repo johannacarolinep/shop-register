@@ -1,4 +1,5 @@
 import os
+import sys
 import gspread
 from google.oauth2.service_account import Credentials
 from simple_term_menu import TerminalMenu
@@ -314,7 +315,7 @@ Thank you for using SHOP REGISTER!
 This program was created by Johanna Petersson, for educational purposes only.
 """
             )
-            SystemExit
+            sys.exit()
 
 
 def main():
