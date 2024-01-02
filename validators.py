@@ -153,7 +153,8 @@ class Validators:
             else:
                 print(
                     Fore.RED
-                    + f"""Sorry, entered value is above the upper limit for a price.
+                    + f"""
+Sorry, the entered value is above the upper limit for a price.
 You entered {temp_price}. The upper limit is 99999.99. Try again."""
                 )
                 return False
@@ -184,7 +185,8 @@ You entered {temp_price}. The upper limit is 99999.99. Try again."""
             else:
                 print(
                     Fore.RED
-                    + f"""Sorry, entered value is above the upper limit for a quantity.
+                    + f"""
+Sorry, the entered value is above the upper limit for a quantity.
 You entered {temp_quantity}. The upper limit is 999999. Try again."""
                 )
         else:
