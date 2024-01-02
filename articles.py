@@ -29,13 +29,13 @@ class Articles:
     - to_row(): Converts the article information to a list.
     - get_row_for_article(inventory, article_number): Retrieves a row of
     information for a specific article from the inventory sheet
-    - remove_row(article_nr, sheet): Removes a row corresponding to the given
-    article number from the sheet.
+    - remove_row(article_number, sheet): Removes a row corresponding to the
+    given article number from the sheet.
     - get_row_index_for_article(article_number, sheet): gets the row index for
     a specific article from the sheet
     - look_up_article(inventory): Gets an article number from the user and
     looks for it in the inventory. If found, prints its row in a table format.
-    - edit_article(inventory, article=None): Asks for an article nr if none
+    - edit_article(inventory, article=None): Asks for an article number if none
     provided. Confirms user wants to edit the article, and calls the edit_menu
     method.
     - edit_menu(article, inventory): Displays a menu for editing one or more
@@ -110,15 +110,15 @@ class Articles:
                 return [headers, row_values]
 
     @classmethod
-    def remove_row(self, article_nr, sheet):
+    def remove_row(self, article_number, sheet):
         """
         Finds the row of a given article number in a sheet, and removes  it.
 
         Parameters:
-        - article_nr (int): The identifier of the article to remove
+        - article_number (int): The identifier of the article to remove
         - sheet: The sheet from which the row will be removed
         """
-        article_str = str(article_nr)
+        article_str = str(article_number)
         column = sheet.col_values(1)
         index = column.index(article_str) + 1
         sheet.delete_rows(index)
@@ -175,7 +175,7 @@ Search for articles in the inventory (by article number)
     @classmethod
     def edit_article(self, inventory, article=None):
         """
-        If article nr is not provided, asks user for one. Checks if the
+        If article number is not provided, asks user for one. Checks if the
         article exists, displays its details, and asks if the user wants to
         edit it. If confirmed, calls edit_menu method.
 
@@ -193,7 +193,7 @@ Search for articles in the inventory (by article number).
 Edit article name, price in, price out, and/or stock quantity.
 """
         )
-        # get article nr from user if none provided
+        # get article number from user if none provided
         if not article:
             article = get_article_number()
 
@@ -353,8 +353,8 @@ ensure the article numbers cannot be reused.
     def build_article(self, inventory, inactive_articles):
         """
         Adds a new article to the inventory by collecting data from the user.
-        If provided article nr already exists, asks user if they instead want
-        to edit the article.
+        If provided article number already exists, asks user if they instead
+        want to edit the article.
 
         Parameters:
         - inventory: The inventory sheet.
@@ -374,7 +374,7 @@ Add a new article to the inventory.
 """
         )
         article = get_article_number()
-        # if article nr belongs to an inactive article, print message
+        # if article number belongs to an inactive article, print message
         if data_validator.validate_article_exists(article, inactive_articles):
             print(
                 Fore.YELLOW
@@ -383,13 +383,13 @@ Please choose a different article number."""
                 + Style.RESET_ALL
             )
         else:
-            # if article nr exists in inventory, offer to edit existing article
+            # if article number exists in inventory, offer to edit article
             if data_validator.validate_article_exists(article, inventory):
                 options = ["Yes", "No"]
                 terminal_menu = TerminalMenu(
                     options,
                     title=f"""Article {article} already exists.
-        Would you like to edit this article instead?""",
+Would you like to edit this article instead?""",
                 )
                 response = terminal_menu.show()
                 if options[response] == "Yes":

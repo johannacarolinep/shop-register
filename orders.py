@@ -246,11 +246,11 @@ Display an order by searching for an order ID.
 """
         )
         order_id = get_order_id()
-        order_nr_column = orders.col_values(1)
-        order_nr_column.pop(0)
+        order_number_column = orders.col_values(1)
+        order_number_column.pop(0)
         order_rows = []
         # iterate order numbers
-        for index, cell_value in enumerate(order_nr_column):
+        for index, cell_value in enumerate(order_number_column):
             # if match, save row to order_rows
             if str(cell_value) == order_id:
                 row_values = orders.row_values(index + 2)

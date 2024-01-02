@@ -13,19 +13,19 @@ class Validators:
     - validate_is_int(data) -> bool: Validates data can be parsed to an
     integer.
     - validate_is_float(data) -> bool: Validates data can be parsed to a float.
-    - validate_article_exists(article_nr, sheet) -> bool: Validates if an
+    - validate_article_exists(article_number, sheet) -> bool: Validates if an
     article number exists in the first column of a sheet.
     - validate_price(data) -> bool: Validates if data (user input) has the
     right format for a price.
     - validate_quantity(data) -> bool: Validates if data (user input) has the
     right format for a quantity.
-    - validate_article_nr(data) -> bool: Validates if data (user input) has
+    - validate_article_number(data) -> bool: Validates if data (user input) has
     the right format for an article number.
     - validate_is_name(data) -> bool: Validates if data (user input) has the
     right format for an article name.
     - validate_is_date(date_str) -> bool: Validates if a string is a valid date
     in the format YYYY-MM-DD.
-    - validate_order_nr(data) -> bool: Validates if data (user input) has the
+    - validate_order_number(data) -> bool: Validates if data (user input) has the
     correct format for an order number.
     """
 
@@ -112,19 +112,19 @@ class Validators:
             return False
         return True
 
-    def validate_article_exists(self, article_nr, sheet) -> bool:
+    def validate_article_exists(self, article_number, sheet) -> bool:
         """
-        Validates if an article nr exists in the first column of a sheet.
+        Validates if an article number exists in the first column of a sheet.
 
         Parameters:
-        article_nr (int): the article number to look for
+        article_number (int): the article number to look for
         sheet (Worksheet): the worksheet to look in
 
         Returns:
         bool: True if article number is found, else False
         """
         column = sheet.col_values(1)
-        if str(article_nr) in column:
+        if str(article_number) in column:
             return True
         else:
             return False
@@ -169,7 +169,7 @@ class Validators:
         else:
             return False
 
-    def validate_article_nr(self, data) -> bool:
+    def validate_article_number(self, data) -> bool:
         """
         Validates if data (user input) has the right format for an article
         number; is not empty, is positive, and is in the range 1000 - 9999.
@@ -220,7 +220,7 @@ class Validators:
                     raise ValueError("The max length is 90 characters.")
                 if len(cleaned_str) < 5:
                     raise ValueError("The minimum length is 5 characters")
-                # Check data has letters and optional max 2 digit nr
+                # Check data has letters and optional max 2 digit number
                 pattern = re.compile(
                     r"(?:[a-zA-Z0-9\s.,!-]*[a-zA-Z]+\s*\d{0,2}\s*"
                     r"[a-zA-Z0-9\s.,!-]*)+"
@@ -282,7 +282,7 @@ class Validators:
                 )
                 return False
 
-    def validate_order_nr(self, data) -> bool:
+    def validate_order_number(self, data) -> bool:
         """
         Validates if data (user input) has correct format for an order number:
         is not empty, can be parsed to an integer, is positive, and in the

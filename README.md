@@ -107,11 +107,11 @@ Create a local copy of the GitHub repository by following one of the two process
   13. Next, in the "Config Vars" section, click "Click "Reveal Config Vars". You will need to add 2 Config Vars
   ![Heroku - Reveal Config Vars button](documentation/heroku-reveal-config-vars-btn.png)
 
-- Config Var nr 1:
+- Config Var number 1:
     - Key: PORT Value: 8000 
     - This Config Var was provided by [CODE INSTITUTE](https://codeinstitute.net/)
 
-- Config Var nr 2:
+- Config Var number 2:
     - Key: CREDS Value: (Reach out for this value)
     - This Config Var contains the credentials necessary for accessing the Google Sheet linked to the program.
     ![Heroku - Config Vars](documentation/heroku-config-vars.png)

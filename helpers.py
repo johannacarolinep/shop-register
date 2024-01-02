@@ -1,5 +1,4 @@
 from prettytable import PrettyTable
-from colorama import Fore, Style
 
 pretty_table = PrettyTable()
 
