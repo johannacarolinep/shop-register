@@ -186,7 +186,7 @@ Display orders registered within a date range (start date - end date).
             if end_date < start_date:
                 print(
                     Fore.RED
-                    + "End date has to the same as or later than start date."
+                    + "The END date cannot come before the START date."
                     + Style.RESET_ALL
                 )
                 continue

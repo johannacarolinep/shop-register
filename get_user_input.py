@@ -158,13 +158,20 @@ def get_date(type) -> str:
     current_date = datetime.now().strftime("%Y-%m-%d")
     while True:
         if type == "start":
-            print("\nPlease enter a START date")
+            print(
+                f"""
+Please enter a START date (YYYY-MM-DD).
+Today's date is: {current_date}.
+Entered date should not be tomorrow or any future date."""
+            )
         elif type == "end":
-            print("\nPlease enter an END date")
-        print(
-            f"""- Today is: {current_date}. Please don't enter a future date.
-- Format should be YYYY-MM-DD"""
-        )
+            print(
+                f"""
+Please enter an END date (YYYY-MM-DD).
+Today's date is: {current_date}.
+Entered date should not be tomorrow or any future date.
+The END date cannot come before the START date."""
+            )
         date = input(
             Fore.LIGHTMAGENTA_EX + "Enter date here:\n" + Style.RESET_ALL,
         )

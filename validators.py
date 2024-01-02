@@ -16,9 +16,9 @@ class Validators:
     - validate_article_exists(article_number, sheet) -> bool: Validates if an
     article number exists in the first column of a sheet.
     - validate_price(data) -> bool: Validates if data (user input) has the
-    right format for a price.
+    right format and a valid value for a price.
     - validate_quantity(data) -> bool: Validates if data (user input) has the
-    right format for a quantity.
+    right format and a valid value for a quantity.
     - validate_article_number(data) -> bool: Validates if data (user input) has
     the right format for an article number.
     - validate_is_name(data) -> bool: Validates if data (user input) has the
@@ -133,12 +133,14 @@ class Validators:
         """
         Validates if data (user input) has the right format for a price;
         is not empty, can be parsed to a float, and is positive.
+        Validates if data has a valid value for a price;
+        should be less or equal to 99999.99.
 
         Parameters:
         data (str): the input to check
 
         Returns:
-        bool: True if input has format of price, else False
+        bool: True if input has format and value of price, else False
         """
         if (
             self.validate_not_empty(data)
@@ -162,12 +164,14 @@ You entered {temp_price}. The upper limit is 99999.99. Try again."""
         """
         Validates if data (user input) has the right format for a quantity;
         is not empty, can be parsed to an integer, and is positive.
+        Validates if data has a valid value for a quantity;
+        should be less than 1000000.
 
         Parameters:
         data (str): the input to check
 
         Returns:
-        bool: True if input has format of quantity, else False
+        bool: True if input has format and value of quantity, else False
         """
         if (
             self.validate_not_empty(data)
@@ -219,7 +223,7 @@ You entered {temp_quantity}. The upper limit is 999999. Try again."""
     def validate_is_name(self, data) -> bool:
         """
         Validates if data (user input) has the right format for an article
-        name; is not empty, once stripped of extra spaces, has length of 5-90
+        name; is not empty, once stripped of extra spaces, has length of 5-34
         characters,
 
         Parameters:
