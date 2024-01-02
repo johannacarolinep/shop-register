@@ -127,7 +127,7 @@ def get_article_name() -> str:
     """
     while True:
         print(
-            f"""Article names are of length 5-90 characters.
+            f"""Article names are of length 5-34 characters.
 Special characters not allowed, with exception of '!/./,/-'.
 Spaces are allowed, but superflous spaces will be removed.
 You can include a maximum of one 2-digit number."""

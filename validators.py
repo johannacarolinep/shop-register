@@ -145,7 +145,16 @@ class Validators:
             and self.validate_is_float(data)
             and self.validate_is_positive(data)
         ):
-            return True
+            temp_price = float(data)
+            if temp_price <= 99999.99:
+                return True
+            else:
+                print(
+                    Fore.RED
+                    + f"""Sorry, entered value is above the upper limit for a price.
+You entered {temp_price}. The upper limit is 99999.99. Try again."""
+                )
+                return False
         else:
             return False
 
@@ -165,7 +174,15 @@ class Validators:
             and self.validate_is_int(data)
             and self.validate_is_positive(data)
         ):
-            return True
+            temp_quantity = int(data)
+            if temp_quantity < 1000000:
+                return True
+            else:
+                print(
+                    Fore.RED
+                    + f"""Sorry, entered value is above the upper limit for a quantity.
+You entered {temp_quantity}. The upper limit is 999999. Try again."""
+                )
         else:
             return False
 
@@ -216,8 +233,8 @@ class Validators:
             cleaned_str = re.sub(r"\s+", " ", data).strip()
             try:
                 # Check the maximum and minimum length
-                if len(cleaned_str) > 90:
-                    raise ValueError("The max length is 90 characters.")
+                if len(cleaned_str) > 34:
+                    raise ValueError("The max length is 34 characters.")
                 if len(cleaned_str) < 5:
                     raise ValueError("The minimum length is 5 characters")
                 # Check data has letters and optional max 2 digit number
