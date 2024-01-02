@@ -12,6 +12,7 @@ from validators import Validators
 from articles import Articles
 from helpers import display_data, add_row
 
+
 data_validator = Validators()
 
 

@@ -11,6 +11,7 @@ from get_user_input import (
 from helpers import display_data, add_row
 from validators import Validators
 
+
 data_validator = Validators()
 
 

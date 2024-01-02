@@ -1,5 +1,6 @@
 from prettytable import PrettyTable
 
+
 pretty_table = PrettyTable()
 
 

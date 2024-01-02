@@ -25,8 +25,8 @@ class Validators:
     right format for an article name.
     - validate_is_date(date_str) -> bool: Validates if a string is a valid date
     in the format YYYY-MM-DD.
-    - validate_order_number(data) -> bool: Validates if data (user input) has the
-    correct format for an order number.
+    - validate_order_number(data) -> bool: Validates if data (user input) has
+    the correct format for an order number.
     """
 
     def validate_not_empty(self, data) -> bool:
