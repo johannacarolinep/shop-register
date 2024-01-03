@@ -306,6 +306,230 @@ Sales:
 
 ![Flowchart of the sales/orders part of the program](documentation/drawio-sales.png)
 
+## Code
+
+The program is written in Python 3.12.1 and split into 7 different files implementing object-orientated programming and best practices to enhance the modularity and readability of the project.
+
+Each file deals with different aspects of the program and are listed below as such:
+
+ 1. **run.py**: The run.py file acts as the main file of the program. It is required to start the program and through the implementation of switch statements, calls all the other functionality from the rest of the files.
+
+    <details>
+      <summary>run.py Code Summary</summary>
+
+      <br>
+
+      **Code Summary:**
+
+      - `back_to_main_menu()`: Function that clears the terminal and opens the main menu.
+      - `lookup_article_end_menu()`: A function that uses simple-term-menu to display 2 options, one to go back to main menu and the other to look up another article.
+      - `add_article_end_menu()`: Defines a function that uses simple-term-menu to add another article or go back to the main menu.
+      - `edit_article_end_menu()`: Function that uses simple-term-menu to display two options, one to edit another article and the other will clear the terminal and open the main menu.
+      - `delete_article_end_menu()`: A function that uses simple-term-menu to display two options, one to delete another article, the other will clear the terminal and go back to the main menu.
+      - `register_order_end_menu()`: Defines a function that uses simple-term-menu to display two options, one to register another order, the other will clear the terminal and go back to the main menu.
+      - `display_orders_by_date_end_menu()`: Function that uses simple-term-menu to display two options, one to search for different dates, the other will clear the terminal and return back to main menu.
+      - `lookup_order_end_menu()`: A function that uses simple-term-menu to display two options, one to search for a different order and the other will clear the terminal and return back to the main menu.
+      - `sales_menu()`: Defines a function that uses simple-term-menu to display four options of the sales menu:
+          - Display orders (by date)
+          - Look up order by ID
+          - Register an order
+          - Back to main menu
+      - `inventory_menu()`: Defines a function that uses the simple-term-menu to display the 6 options of the inventory menu:
+        - Display inventory
+        - Look up article
+        - Add article
+        - Edit article
+        - Delete article
+        - Back to main menu
+      - `main_menu()`: A function that uses simple-term-menu to display the three options of the main menu. The inventory menu, the sales menu or to quit the program. If the first two are selected then they will be redirected to the menus above, if "Quit" is selected the program will exit gracefully.
+      - `main()`: Defines a function which uses simple-term-menu to display a welcome message and call main_menu() function to begin the application flow.
+      - `if __name__ == "__main__":` Is called to check the file is run when called directly and not when imported as a module.
+    
+     <br>
+
+     **Summary of functionality in `run.py`:**
+
+      - Description: The `run.py` file is responsible for implementing the "menu" side of the logic for the program, this is where the displaying of the options is handled.
+    
+     <br>
+
+    </details>
+
+    <br>
+    
+
+ 2. **validators.py**: The validators.py file defines the Validators class, this is responsible for managing the validating functions uses in the rest of the application.
+
+    <details>
+      <summary>validators.py Summary</summary>
+
+      <br>
+      
+      **Code Summary:**
+
+      - `validate_not_empty(data)`: Defines a function to check an input data, if data is not empty it returns True, else it returns False.
+      - `validate_is_positive(data)`: A function to check that the input data is a positive float, if it is positive it returns True else it returns False.
+      - `validate_is_int(data)`: Defines a function to check if input data is an integer, if it is an integer it returns True, else it returns False.
+      - `validate_is_float(data)`: A function that given an input data checks if it is a float, if it is a float then it returns True else it returns False.
+      - `validate_price(data)`: Function that checks given an input data that it is not empty and it is a float and it is positive returns True otherwise it returns False.
+      - `validate_quantity(data)`:A function that given an input data checks if the input is not empty and it is an integer and it is a positive integer, if these conditions are met then it returns True, else it returns False.
+      - `validate_article_number(data)`: Defines a function given an input data that if the input is a positive integer and is higher than 1000 and lower than 9999 returns True else it returns False.
+      - `validate_article_exists(article_number, sheet)`: Function that given an article_number and a sheet returns True if the article number is found in the sheet, else it returns False.
+      - `validate_is_name(data)`: Defines a function to check given an input data that it is not empty and it is larger than 5 characters and lower than 34 characters, if conditions are met it returns True else it returns False.
+      - `validate_is_date(date_str)`: Defines a function which given an input date_str uses regex to check that it is in an appropriate date format, if so it returns True else it returns False.
+      - `validate_order_number(data)`: A function that given an input data checks to see if the input is a positive integer lower than 99999 and higher than 10000 it returns True, otherwise it returns False.
+     <br>
+  
+      **Summary of functionality in `validators.py`:**
+
+      - Description: The validators.py file is responsible for running functions which will validate the inputs given by the user, whether it is numbers or names, all have to be validated before they can be accepted by the program for further processing. 
+    
+     <br>
+  
+      </details>
+
+      <br>
+
+ 3. **helpers.py**: The helpers.py file defines three functions which help in the displaying of the data from google sheets to the terminal
+
+    <details>
+     <summary>helpers.py Summary</summary>
+
+      <br>
+
+      **Code Summary:**
+
+     - `add_row(row, sheet)`: Defines a function which given a google sheet and a row in list format, appends that row to the bottom of the sheet
+     - `display_full_sheet(sheet)`: A function which separates the headers and data from a sheet and passes it to be displayed in display_data
+     - `display_data(headers, rows)`:A function which given 2 lists, "headers" and "rows" uses the preetytable python package to display them in tabular format to the terminal.
+
+  
+     <br>
+
+     **Summary of functionality in `helpers.py`:**
+
+     - Description: A file with functions responsible for appending a row to a sheet and for displaying the data in a sheet in tabular format to the terminal.
+    
+     <br>
+
+     </details>
+
+     <br>
+
+
+ 4. **get_sales_quantity.py**: The get_sales_quantity.py file defines a function which takes care of the logic around getting a sales quantity when a sales order is being constructed.
+
+    <details>
+     <summary>get_sales_quantity.py Summary</summary>
+
+     <br>
+
+      **Code Summary:**
+
+     - `get_sales_quantity(sheet, article_number, order)`: A function given the sheet, article_number and order amount will return an integer displaying the real amount of stock left that can be ordered.
+
+     <br>
+
+      **Summary of functionality in `get_sales_quantity.py`:**
+
+     - Description: This function is necessary due to when building a sales order one can order 5 of stock X and given that stock X is represented in the sheet as having 10 that should be possible, however the changes in the sheet are only made when the order is finalized but the second order in our order flow could be that 6 of stock X are also ordered, since we already used 5 to fulfill the first order another 6 stock should not be possible. That is the purpose of this function, to keep track of the amount of a specific stock that has been ordered and to make sure that someone cannot order more than is available.
+    
+     <br>
+
+     </details>
+
+     <br>
+
+ 5. **get_user_input.py**: The get_user_input.py file defines a function which takes care of the logic around getting a sales quantity when a sales order is being constructed.
+
+    <details>
+     <summary>get_user_input.py Summary</summary>
+
+     <br>
+
+      **Code Summary:**
+
+     - `get_quantity()`: A function that runs a while loop to get a valid quantity from the user, if quantity is valid it returns that quantity.
+     - `get_price(type)`: Function that runs a while loop to get price input from the user, fi the price is valid it returns the price.
+     - `get_article_number()`: Defines a function that runs a while loop to get a article number from the user, if the article number is valid it breaks the loop and returns the article number
+     - `get_order_id()`: A function that runs a while loop to get an order ID from a user, if the order ID is valid it breaks the loop and returns that order ID.
+     - `get_article_name()`: Function that runs a while loop to get an article name from a user, if the name is valid it breaks the loop and returns that article name.
+     - `get_date(type)`: Defines a function given a type that runs a while loop to get a date from the user, if the date is valid it breaks the while loop and returns the date.
+     - `confirm_user_entry(user_entry)`: A function which is given a user input and presents the user with an option to reconfirm or cancel their selection.
+     - `confirm_order_complete()`: Function which asks the user if they wish to add another row to their order or complete the order, returns False if user wishes to continue and True if they wish to complete order.
+     - `confirm_order_final()`: Defines a function which asks the user if they wish to finalize their order, returns True if the user wishes to finalize order otherwise returning False.
+     <br>
+
+      **Summary of functionality in `get_user_input.py`:**
+
+     - Description: The functions in the file are responsible for asking the user for different types of inputs, whether these are about strings or integers or dates. The last three functions are also responsible for asking the user to re-confirms their choice, this can be important when finalizing a large order or confirming a large input.
+    
+     <br>
+
+     </details>
+
+     <br>
+
+ 6. **articles.py**: The articles.py file defines the Articles class, this is responsible for creating the articles and managing the input functions.
+
+    <details>
+     <summary>articles.py Summary</summary>
+
+     <br>
+
+      **Code Summary:**
+
+     - `__init__(self, article, article_name, price_in, price_out, article_quantity)`: A function that is responsible for initializing an Articles object with the following variables.
+     - `to_row()`: Function that returns the data of the object to a list format when called.
+     - `get_row_for_article(inventory, article_number)`: Defines a function given a google sheet and an article number, retrieves a row of information for a specific article from the
+        inventory google sheet.
+     - `remove_row(article_number, sheet)`: A function that given an article_number and google sheet removes that specific row from the google sheet where the article_number exists.
+     - `get_row_index_for_article(article_number, sheet)`: Function that given an article_number and google sheet, retrieves the index number of the row for the specific article_number on the google sheet.
+     - `look_up_article(inventory)`: Defines a function that given an inventory sheet will ask the user for an article number and display the data for that article number from the sheet.
+     - `edit_article(inventory, article)`: A function that given an inventory and article number will display the data for the article number and ask what data in the specific article the user would like to edit.
+     - `edit_menu(article, inventory)`: Function which given the article and inventory sheet asks the user which attributes they would like to edit and displays the edited information back to them.
+     - `delete_article(inventory, inactive_articles)`: Defines a function which given the inventory sheet and the inactive inventory sheet removes the article from the inventory sheet and then appends it into the next free row of the inactive inventory sheet.
+     - `build_article(inventory, inactive_articles)`: Defines a function which given the inventory sheet and the inactive inventory sheet builds the data in list format to be appended in the inventory sheet. It requires the inactive inventory sheet to check that the inventory item being added in did not previously exist, thus inheriting the sales of a previous inventory item.
+     <br>
+
+      **Summary of functionality in `articles.py`:**
+
+     - Description: The functions in the file are responsible for performing C.R.U.D. (Create, Read, Update, Delete) on the article items. This is the backbone of any inventory system as we need the functionality to add new inventory, edit the existing inventory through sales or discounts, display our inventory to the user and also delete the inventory but without loosing the deleted data.
+    
+     <br>
+
+     </details>
+
+     <br>
+
+ 7. **orders.py**: The orders.py file defines the Orders class, this is responsible for creating the sales orders and managing the input functions.
+
+    <details>
+     <summary>orders.py Summary</summary>
+
+     <br>
+
+      **Code Summary:**
+
+     - `__init__(self,order_number, article_number, quantity, sum)`: A function that is responsible for initializing an Orders object with the following variables.
+     - `to_row()`: Function that returns the data of the object to a list format when called.
+     - `get_first_row_index_for_date(date_str, sheet)`: Defines a function given a google sheet and a date in string format to retrieve the row index where the date shows up.
+     - `get_last_row_index_for_date(date_str, sheet)`: A function that given a google sheet and a date in string format to return the last row index where the date shows up.
+     - `get_order_rows_for_dates(orders, start_index, end_index)`: Function that given an orders google sheet, a start row index and an end row index retrieves order rows within a specified range from the orders sheet.
+     - `generate_order_id(orders)`: Defines a function that given an orders sheet generates a new order ID based on the greatest orderID already used and returns that orderID
+     - `display_orders_by_date(orders)`: A function that given an orders google sheet will ask the user for "from date" and "to date" inputs and then given that the dates are valid and data exists will display that data.
+     - `lookup_order_by_id(orders)`: Function which given an orders google sheet will ask the user for an order id and if the id is valid and data exists will display the data for that specific sales order.
+     - `build_order(order_id, orders, inventory)`: Defines a function which given an order id the orders sheet and the inventory sheet builds the data in list format to be appended in the orders sheet. It requires the  inventory sheet to check that the sales order item being added exists in inventory.
+     <br>
+
+      **Summary of functionality in `orders.py`:**
+
+     - Description: The functions in the file are responsible for performing C.R. (Create, Read) on the sales order items. This is the other backbone of any inventory system as we need the functionality to add new sales orders and display our inventory to the user. The sales order is important for keeping track of what inventory was sold, not being able to update or delete these records is also very important as sales should not be removed or updated after the fact. If a stock item is deleted from the inventory sheet, its sales will not be removed from the orders sheet.
+    
+     <br>
+
+     </details>
+
 ## Technologies used
 ### Languages:
 
