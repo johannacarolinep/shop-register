@@ -264,6 +264,23 @@ A guide to valid entries in the program:
 
 - __End date:__ same as start date, but has to be either the same date as the start date, or a date that is greater than the start date.
 
+## Improved user-friendliness
+To make the program more user-friendly, the packages Colorama, Simple terminal menu, and PrettyTable were used.
+
+- __Colorama:__ used to change the text colour in the terminal, according to the following schema:
+  - Light green: Titles 
+  - Light magenta: Input
+  - Red: Invalid input feedback
+  - Yellow: warning/attention
+  - Light cyan: Tables
+  - Green: Success messages
+
+<br>
+
+- __PrettyTable:__ used to easily print data in a more readable table format.
+
+- __Simple terminal menu:__ used to improve navigation through the program, with simple-to-use terminal menus. 
+
 
 ## Instructions
 
