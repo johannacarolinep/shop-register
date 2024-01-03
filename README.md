@@ -724,6 +724,52 @@ Lastly, I confirmed the methods were now working as intended by testing them wit
 
 </details>
 
+<br>
+
+#### Issue when trying to build an order row for an article with 0 items in stock, in the *Register order* path
+
+<details>
+<summary>See issue description and solution</summary>
+
+__Issue:__ In the method `build_order` in orders.py, there is a while loop that continues until the order is complete, `order_complete = True`. In the while loop, the user will first be asked to input an article number. If the article number exists in the inventory, the user is asked for the sales quantity. While testing the program, I came across an issue, where even if the article number belongs to an article that currently has 0 items in stock, the user will still be asked for a sales quantity. 
+
+This is a problem since the validation for quantities in the program will not accept "0" as a value, and the validation for sales quantities in the program will not accept values that are greater than the stock quantity (the logic being that the shop cannot sell items that they do not have in stock).
+
+This means the user gets stuck, with no way to provide a valid input value in this scenario.
+
+__Fix:__ In the `build_order()` method, the `get_sales_quantity()` function is called to get the input from the user and return it to the variable `sales_quantity`.
+
+In `get_sales_quantity()`, before the user is asked for input, the current stock quantity of the article is read from the inventory sheet.
+
+My solution started with adding an if statement in `get_sales_quantity` after the stock quantity of the article is read. If the stock quantity is 0, I chose to return 0, instead of asking the user for input. 
+
+```py
+# check if stock_quantity is 0
+    if stock_quantity == 0:
+        return 0
+```
+
+Then, in `build_order()`, I added another if statement, after calling `get_sales_quantity()`. If the return, sales_quantity, is 0, the user gets informed there are no items of the article in stock. `confirm_order_complete()` is called, so that the user can choose if they want to add another row to the order, or if the order should be considered as complete. After this, I added `continue` to skip the rest of the current iteration of the while loop. 
+
+```py
+# if stock quantity is 0, get_sales_quantity returns 0
+                if sales_quantity == 0:
+                    print(
+                        Fore.YELLOW
+                        + f"No items of article {article_number} in stock."
+                        + Style.RESET_ALL,
+                    )
+                    # ask user if they want to add more rows
+                    order_complete = confirm_order_complete()
+                    continue
+```
+
+
+</details>
+
+<br>
+
+
 ### Unsolved bugs
 
 
