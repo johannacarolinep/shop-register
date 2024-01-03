@@ -769,9 +769,42 @@ Then, in `build_order()`, I added another if statement, after calling `get_sales
 
 <br>
 
+#### In the *Add article* path, when inputting an article number belonging to an inactive article, the wrong menu was displayed
+
+<details>
+<summary>See issue description and solution</summary>
+
+__Issue:__ In the method `build_article()` the user is asked to enter an article number. If the user enters an article number that belongs to an inactive article (the article number exists in the inactive articles sheet), the user is informed through a print statement. After this the *Add article* path end menu should be displayed, allowing the user to either add a different article or to go back to the main menu.
+
+Instead, after the print statement, the end menu for a different path, *Edit article*, was printed, incorrectly directing the user to either the *Edit article* path or back to the main menu.
+
+I troubleshooted the issue by following the logic in the `build_article` method. The method returns a bool, which is then used in an if statement where the method was called, in the `inventory_menu()`, to call the end menu for the *Add article* path if True, and call the end menu for the *Edit article* path if False.
+
+This way I could see that I was unintentionally returning False in this scenario, when I should be returning True.
+
+__Fix:__ My solution was simply to add `return True` after the previously mentioned print statement, as per the snippet below.
+
+```py
+        # if article number belongs to an inactive article, print message
+        if data_validator.validate_article_exists(article, inactive_articles):
+            print(
+                Fore.YELLOW
+                + f"""Article with ID {article} already exists and is inactive.
+Please choose a different article number."""
+                + Style.RESET_ALL
+            )
+            return True
+```
+
+Lastly, I tested running the program, entering the article number of an inactive article, to confirm the method was now acting as intended.
+
+
+
+</details>
+
 
 ### Unsolved bugs
-
+I am not aware of any unsolved bugs. 
 
 
 ## Credits
