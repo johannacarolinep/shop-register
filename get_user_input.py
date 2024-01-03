@@ -118,9 +118,8 @@ def get_order_id() -> str:
 def get_article_name() -> str:
     """
     Runs a while loop to collect a valid name from the user.
-    Needs to be a string of length 5-90 and contain letters.
-    Can contain a number of max 2 digits, special characters !/./,/-, and
-    spaces.
+    Needs to be a string of length 5-34 and contain min 3 letters.
+    Can contain a number of max 2 digits, and special characters.
 
     Returns:
     - string: the article name, in uppercase and stripped of any extra spaces
@@ -128,7 +127,8 @@ def get_article_name() -> str:
     while True:
         print(
             f"""Article names are of length 5-34 characters.
-Special characters not allowed, with exception of '!/./,/-'.
+The name must include a minimum of 3 letters.
+Special characters allowed.
 Spaces are allowed, but superflous spaces will be removed.
 You can include a maximum of one 2-digit number."""
         )

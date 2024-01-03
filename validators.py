@@ -226,7 +226,7 @@ You entered {temp_quantity}. The upper limit is 999999. Try again."""
         """
         Validates if data (user input) has the right format for an article
         name; is not empty, once stripped of extra spaces, has length of 5-34
-        characters,
+        characters, contains min 3 letters and max 1 2-digit number
 
         Parameters:
         data (str): the input to check
@@ -243,13 +243,14 @@ You entered {temp_quantity}. The upper limit is 999999. Try again."""
                     raise ValueError("The max length is 34 characters.")
                 if len(cleaned_str) < 5:
                     raise ValueError("The minimum length is 5 characters")
-                # Check data has letters and optional max 2 digit number
+                # Check data has min 3 letters and optional max 2 digit number
                 pattern = re.compile(
-                    r"(?:[a-zA-Z0-9\s.,!-]*[a-zA-Z]+\s*\d{0,2}\s*"
-                    r"[a-zA-Z0-9\s.,!-]*)+"
+                    r"^(?=.*[a-zA-Z].*[a-zA-Z].*[a-zA-Z])"
+                    r"(?=(?:\D*\d\D*){0,1}$)"
+                    r'[\w\d\s!@#$%^&*()-_+=<>,.?/:;"\'{}[\]|`~]*$'
                 )
                 if bool(pattern.search(cleaned_str)) is False:
-                    raise ValueError("Format incorrect.")
+                    raise ValueError("Format incorrect")
             except ValueError as e:
                 print(
                     Fore.RED
