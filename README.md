@@ -545,7 +545,8 @@ Each file deals with different aspects of the program and are listed below as su
 ##### Standard library imports:
 
 - [os](https://docs.python.org/3/library/os.html): was used to clear the terminal, to provide a better user experience.
-- [re](https://docs.python.org/3/library/re.html): was used to write regex expressions for validation of data formats
+- [re](https://docs.python.org/3/library/re.html): was used to write regex expressions for validation of data formats.
+- [sys](https://docs.python.org/3/library/sys.html): was used to call sys.exit() when quitting program.
 - [datetime](https://docs.python.org/3/library/datetime.html): was used to generate the current date, as well as for validation of inputted dates
 
 ##### Third-party imports:
@@ -565,6 +566,7 @@ Each file deals with different aspects of the program and are listed below as su
 - [Draw.io](https://www.drawio.com/): was used to make flowcharts of the application.
 - [Heroku.com](https://id.heroku.com/login): was used to deploy the project.
 - [Google Sheets](https://www.google.com/sheets/about/): was used to store the data.
+- [Regex Generator](https://regex-generator.olafneumann.org/): was used to generate regex for input validation of article names
 
 ## Deployment
 The program was deployed to [Heroku](https://id.heroku.com/login) and can be accessed by this [link](https://shop-register-ce8149331475.herokuapp.com/).
