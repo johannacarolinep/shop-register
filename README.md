@@ -235,10 +235,35 @@ If the user instead chooses to cancel the order at this stage, no changes will h
 The user can choose to quit the program from the main menu. A message is then printed to the terminal as a confirmation to the user before the program is quit.
 ![Quitting the program](documentation/ss-quitting-program.png)
 
-### Input validation
+## Input validation
 
-Example:
+Input validation is present throughout the program. When entering invalid input, the program will print feedback to the user in a red color. 
+
+Example: feedback shown when entering an invalid value for an article number
+
 ![Example of input validation](documentation/ss-look-up-article-invalid.png)
+
+### Valid entries
+A guide to valid entries in the program:
+
+- __Article number:__ a positive, 4-digit integer, ranging from 1000 - 9999.
+
+- __Article name:__ a string of length 5-34 characters. Has to contain letters. Can contain max one 2-digit number. Can contain special characters "!/./,/-" and spaces. OBS! Superfluous spaces will be removed so that there are no trailing spaces and only one space in between words. The resulting string is validated. 
+
+- __Price in:__ a positive, decimal number, below or equal to 99999.99.
+
+- __Price out:__ same as "price in". If "price out" is smaller than "price in" the user will be asked to confirm, since this would mean the shop is selling the item at a loss.
+
+- __Quantity:__ a positive integer, below or equal to 999999.
+
+- __Sales quantity:__ same as quantity, but will also need to be equal to or smaller than the stock quantity of the specific article (the shop cannot sell items that they do not have in stock).
+
+- __Order number/ID:__ a positive, 5-digit integer, ranging from 10000 - 99999.
+
+- __Start date:__ stripped of trailing spaces, it is in the format YYYY-MM-DD. The string can be parsed into a date. The date is not greater than the current date (since dates are inputted to view historic data, no dates that have not yet occurred will be accepted).
+
+- __End date:__ same as start date, but has to be either the same date as the start date, or a date that is greater than the start date.
+
 
 ## Instructions
 
