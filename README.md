@@ -656,6 +656,74 @@ All test-related documentation can be found in [TESTING.md](TESTING.md).
 
 ## Bugs
 ### Solved bugs
+#### Error when inputting a date range for which there were no orders to display, in *Display order history by date* path
+
+<details>
+<summary>See issue description and solution</summary>
+
+__Issue:__ An error would occur after inputting the START date and END date on the *Display order history by date* path, or in the method `display_orders_by_date()` in orders.py.
+
+Looking closer at the method and following the logic step by step, I understood that the error occurred when the inputted dates did not have exact matches in the dates in the order history. 
+
+After getting the dates (as strings) from the user, they would be passed to another method, `get_row_index_for_date()`. This method would get the order dates from the orders sheet, then iterate through the order dates looking for a match to the dates provided by the user. If found, the index of the matched date would be returned and stored in the variable `index`.  However, if there was no match for the provided date amongst the order dates, the `index` variable would be undefined, leading to an error further down.
+
+__Fix:__ First, I implemented code in the `display_orders_by_date()` method to check through a for loop if there are any orders in the order history data with dates between the user-provided START and END date. An if statement controls the flow so that the method that checks for the index of the dates is only called once I know there are orders registered between the two dates. If not, the user is informed with a print statement that there were no orders to display.
+
+```py
+        registered_dates = orders.col_values(2)
+        registered_dates.pop(0)
+        data_exists = False
+        for reg_date in registered_dates:
+            if reg_date >= start_date and reg_date <= end_date:
+                data_exists = True
+        if data_exists:
+            # get the indexes of the order rows matching user dates
+        else:
+            # inform user there are no orders to display
+```
+
+Next, I needed to change `get_row_index_for_date()`. Instead of iterating the order dates and looking for an exact match for the user-provided date, for my start index, I needed to iterate the order dates and find the index of the __first__ row with an order date that __either matches or is greater than__ the user-provided start date. Similarly, for my end index, I needed to find the __last__ row that __either matches or is smaller than__ the user-provided end date. To achieve this, I used two separate methods, `get_first_row_index_for_date()` and `get_last_row_index_for_date()`.
+
+Here are the new orders being called from inside the if statement in the snippet above:
+
+```py
+            # if orders in the date range, gets the data from orders sheet
+            start_index = Orders.get_first_row_index_for_date(
+                start_date,
+                orders,
+            )
+            end_index = Orders.get_last_row_index_for_date(end_date, orders)
+```
+
+The two methods will iterate the order dates from the orders sheet and return the index of the first row on/following the start date and the last row on/before the end date.
+
+```py
+    @classmethod
+    def get_first_row_index_for_date(self, date_str, sheet):
+        column = sheet.col_values(2)
+        column.pop(0)
+        for item in column:
+            if item >= date_str:
+                date_str = item
+                break
+        index = column.index(date_str) + 2
+        return index
+
+    @classmethod
+    def get_last_row_index_for_date(self, date_str, sheet):
+        column = sheet.col_values(2)
+        column.pop(0)
+        for item in column:
+            if item <= date_str:
+                temp_date = item
+        index = len(column) - 1 - column[::-1].index(temp_date)
+        return index + 2
+```
+
+Lastly, I confirmed the methods were now working as intended by testing them with numerous different values for START dates and END dates and comparing the resulting print of orders to the orders data in the sheet.
+
+</details>
+
 ### Unsolved bugs
 
 
