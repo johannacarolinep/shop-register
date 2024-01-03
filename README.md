@@ -8,6 +8,8 @@ The Shop Register program allows its users to display inventory data, add new ar
 
 The program also allows its users to display order history data, as well as to register a new order.
 
+The intended users of the program are the shop's owner/employees.
+
 The inventory, order history, and inactive articles data is hosted in a Google Spreadsheet, which is connected to the program.
 
 Link to [Shop Register](https://shop-register-ce8149331475.herokuapp.com/)
@@ -17,7 +19,9 @@ Link to the [spreadsheet hosting the data](https://docs.google.com/spreadsheets/
 ## User stories
 
 ## Features
+
 ### Program start, main menu:
+
 Once the program starts, it will print a welcome message with a brief introduction, before printing the main menu.
 
 There is also a short instruction on how to use the terminal menu.
@@ -243,6 +247,9 @@ Example: feedback shown when entering an invalid value for an article number
 
 ![Example of input validation](documentation/ss-look-up-article-invalid.png)
 
+<details>
+<summary>Click to see a description of valid entries in the program</summary>
+
 ### Valid entries
 A guide to valid entries in the program:
 
@@ -263,6 +270,8 @@ A guide to valid entries in the program:
 - __Start date:__ stripped of trailing spaces, it is in the format YYYY-MM-DD. The string can be parsed into a date. The date is not greater than the current date (since dates are inputted to view historic data, no dates that have not yet occurred will be accepted).
 
 - __End date:__ same as start date, but has to be either the same date as the start date, or a date that is greater than the start date.
+
+</details>
 
 ## Improved user-friendliness
 To make the program more user-friendly, the packages Colorama, Simple terminal menu, and PrettyTable were used.
