@@ -46,6 +46,7 @@
 |             | enter article number which exists in *inactive articles* "1004" | User is informed article number belongs to an inactive article. *Add article* path end menu is printed | Y | - |
 |             | enter valid article number that does not exist | Progress indication table is printed with article number. User is asked for article name | Y | - |
 |             | enter input for article name | Input is validated for article name (see below). Program keeps asking until valid input is entered. | Y | - |
+|             | enter valid article name | 
 
 
 ### Testing of input validation
@@ -57,9 +58,16 @@
 |                 | input decimal value "3.5" | Feedback, must be an integer. User asked for input again | Y | - |
 |                 | input negative integer "-5" | Feedback, must be positive. User asked for input again | Y | - |
 |                 | input integer out of range "10011" | Feedback, must be positive and 4 digits. User asked for input again | Y | - |
+|                 | enter valid input "1002" | Input accepted | Y | - |
 | Article name | empty input | Feedback message for emply input is printed. Asks for input again. | Y | - |
-|              | input only number "123456789" | Feedback, incorrect format. User asked for input again. | Y | - |
+|              | input only numbers "123456789" | Feedback, incorrect format. User asked for input again. | Y | - |
 |              | input only special characters "!"#€%" | Feedback, incorrect format. User asked for input again | Y | - |
+|              | input has more than 1 numbers "no3 thing 5" | Feedback, incorrect format. User asked for input again | 
+|              | input is less than 5 characters "ball" | Feedback, min length is 5 | Y | - | 
+|              | input is above 34 characters "ball no34 glittery bouncy yellow bouncy ball" | Feedback, max length is 34 | Y | - |
+|              | input contains superfluous spaces "    ball  no34  " | Superflous spaces removed and then validates. In this case "ball no34" is valid | Y | Name is stored as "BALL NO34" (uppercase, extra spaces removed) |
+|              | enters valid input for name "terrifying t-rex!" | input is accepted | Y | Name is stored as "TERRIFYING T-REX!" (uppercase) |
+
 
 
 ## Validation

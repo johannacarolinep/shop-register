@@ -247,7 +247,7 @@ You entered {temp_quantity}. The upper limit is 999999. Try again."""
                 pattern = re.compile(
                     r"^(?=.*[a-zA-Z].*[a-zA-Z].*[a-zA-Z])"
                     r"(?=(?:\D*\d\D*){0,1}$)"
-                    r'[\w\d\s!@#$%^&*()-_+=<>,.?/:;"\'{}[\]|`~]*$'
+                    r'[\w\s!@#$%^&*()-_+=<>,.?/:;"\'{}[\]|`~.]*$'
                 )
                 if bool(pattern.search(cleaned_str)) is False:
                     raise ValueError("Format incorrect")
