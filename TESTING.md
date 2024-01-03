@@ -46,7 +46,46 @@
 |             | enter article number which exists in *inactive articles* "1004" | User is informed article number belongs to an inactive article. *Add article* path end menu is printed | Y | - |
 |             | enter valid article number that does not exist | Progress indication table is printed with article number. User is asked for article name | Y | - |
 |             | enter input for article name | Input is validated for article name (see below). Program keeps asking until valid input is entered. | Y | - |
-|             | enter valid article name | 
+|             | enter valid article name | Progress indication table is printed with name filled in. User is asked for the *price in* | Y | - |
+|             | enter input for *price in* | Input is validated for *price* (see below). Program keeps asking until valid input is entered. | Y | - |
+|             | input for *price in* is 500 or above, but below absolute upper limit | User is asked to confirm. | Y | - |
+|             | Select No (You entered 501.0. Are you sure?) | User is informed price is not registered. Asked to input *price in* again | Y | - |
+|             | Select Yes (You entered 501.0. Are you sure?) | Value is accepted for *price in* | Y | - |
+|             | enter valid input for *price in*, below 500 | Value is accepted. Progress indication table is printed with *price in* filled in. User is asked to enter *price out* | Y | - |
+|             | enter input for *price out* | Input is validated for *price* (see below). Program keeps asking until valid input is entered. | Y | - |
+|             | enter valid input for *price out* that is greater than *price in* | User is asked to confirm | Y | - |
+|             | confirm *price out* (greater than *price in*) | Value accepted, and progress indication table is printed with *price out* filled in. User is asked to enter quantity. |
+|             | answer "No" when asked to confirm *price out* | Asks for new input for *price out* | Y | - |
+|             | enter valid input for *price out*, but 500+ | User is asked to confirm | Y | - |
+|             | Enter valid input for *price out*, higher than *price in*, and below 500 | Value accepted, progress indication table is printed with *price out* filled in. User is asked for stock quantity | Y | - |
+|             | Enter input for *quantity* | Input is validated for *quantity* (see below). Program keeps asking until valid input is entered | Y | - |
+|             | Enter valid input for *quantity* eg "7" | Input is accepted. The finished article's details are printed in a table. A green success message is printed. The article is added to the inventory sheet. The *add article* path end menu is printed | Y | - |
+| Add article path end menu | Select *Add another article* | Restarts the *Add article* path | Y | - |
+|                           | Select *Back to main menu* | Terminal clears and the main menu is printed | Y | - |
+| Edit articles | n/a | After header is printed, user is asked to input article number | Y | - |
+|               | enter input for article number | Input is validated according to validation for article numbers (see below). Program keeps asking until input is valid. | Y | - |
+|               | input valid article number, but which is not in inventory | User informed article not found. *Edit article* path end menu is printed | Y | - |
+|               | input valid article number which exists in inventory | Article details are printed. User is asked to confirm if they want to edit the article | Y | - | 
+|               | Select "No" (Would you like to edit this article?) | The *Edit article* path end menu is printed | Y | - |
+|               | Select "Yes" (Would you like to edit this article?) | A multi-selection menu is printed. User is asked to select which attributes to edit. | Y | - |
+|               | Press up and down arrows | The selector moves between the attribute options in the menu | Y | - |
+|               | Press space/tab while in the menu | The highlighted attribute is marked for selection | Y | - |
+|               | Press space/tab while on an already marked attribute | The highlighted attribute is un-marked/de-selected | Y | - |
+|               | Press enter while no attributes are selected | User is informed no attributes were selected. The *Edit article* path end menu is printed | Y | - |
+|               | Press enter while min 1 attribute is selected | User is asked for input for each attribute, in order. Program keeps asking for each input until valid input is entered | Y | - |
+|               | Enter valid input for a selected attribute to edit | Green message is printed, confirming the value is updated. The value is updated in the inventory sheet. | Y | - |
+|               | Enter valid input for the last selected attribute to edit | After confirmation of updated value, the *Edit article* path end menu is printed | Y | - |
+| Edit article path end menu | Select *Edit another article* | *Edit article* path restarts | Y | - |
+|                               | Select *Back to main menu* | Terminal cleared and the main menu is displayed | Y | - |
+| Delete article | n/a | After header is printed, user is asked to input article number | Y | - |
+|                | enter input for article number | Input is validated according to validation for article numbers (see below). Program keeps asking until input is valid. | Y | - |
+|                | enter article number which does not exist in inventory | User is informed article not found, and the *Delete article* path end menu is printed | Y | - |
+|                | enter article number which exists in inventory | Article details are printed in a table. The user is asked to confirm deletion | Y | - |
+|                | Select "Yes" (Would you like to delete this article?) | Confirms to the user the article was removed. The article row is deleted in the inventory sheet, and added in the inactive articles sheet. The *Delete article* path end menu is printed | Y | - |
+|                | Select "No" (Would you like to delete this article?) | User is informed the action was cancelled. The *Delete article* path end menu is printed | Y | - |
+| Delete article path end menu | Select *Delete another article* | Restarts the *Delete article* path | Y | - |
+|                              | Select *Back to main menu* | Terminal clears and the main menu is printed | Y | - |
+
 
 
 ### Testing of input validation
@@ -67,8 +106,16 @@
 |              | input is above 34 characters "ball no34 glittery bouncy yellow bouncy ball" | Feedback, max length is 34 | Y | - |
 |              | input contains superfluous spaces "    ball  no34  " | Superflous spaces removed and then validates. In this case "ball no34" is valid | Y | Name is stored as "BALL NO34" (uppercase, extra spaces removed) |
 |              | enters valid input for name "terrifying t-rex!" | input is accepted | Y | Name is stored as "TERRIFYING T-REX!" (uppercase) |
-
-
+| Price (in/out) | empty input | Feedback message for emply input is printed. Asks for input again. | Y | - |
+|          | input is not a number | Feedback, must be a decimal number. Asks for input again | Y | - |
+|          | input is negative value | Feedback, must be a positive value. Asks for input again | Y | - |
+|          | input is 0 | Feedback, must be a positive value. Asks for input again | Y | - |
+|          | input is above 99999.99 | Feedback, above the upper limit for a price. Asks for input again | Y | - |
+| Quantity | empty input | Feedback message for emply input is printed. Asks for input again. | Y | - |
+|          | input is not a number | Feedback, must be an integer. Asks for input again | Y | - |
+|          | input is negative value | Feedback, must be a positive value. Asks for input again | Y | - |
+|          | input is a decimal value | Feedback, must be an integer. Asks for input again | Y | - |
+|          | input is above 999999 | Feedback, above the upper limit for a quantity. Asks for input again | Y | - |
 
 ## Validation
 Code Institute's CI Python Linter was used to ensure all of project's code is compliant with Pep 8 standards.
