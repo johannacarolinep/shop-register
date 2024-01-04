@@ -20,6 +20,32 @@ Link to the [spreadsheet hosting the data](https://docs.google.com/spreadsheets/
 
 ## Features
 
+The program features a main menu, from where the two main parts of the program can be reached, *Inventory* and *Sales*. From the main menu, the user can also choose to quit the program.
+
+The *Inventory* part of the program features the Inventory menu, from which the user can take different paths relating to the shop's inventory.
+1. __Display inventory__ (Path to display the shop's full inventory)
+2. __Look up article__ (Path to search for and display a single article in the inventory, by its article number)
+3. __Add article__ (Path to add a new article into the inventory)
+4. __Edit article__ (Path to edit one or more attributes of an article)
+5. __Delete article__ (Path to delete an article from the inventory, and instead add it to the *inactive articles* sheet)
+6. __Back to main menu__ (Leads back to the main menu)
+
+The *Sales* part of the program features the Sales menu. From here the user can reach all paths the program offers relating to the shop's sales/orders.
+
+1. __Display orders (by date)__ (Path to display orders registered between a start date and an end date chosen by the user)
+2. __Look up order by ID__ (Path to search for and display a specific order by its order ID/order number)
+3. __Register an order__ (Path to register a new order with a unique order ID, and one row per article in the order. Will also adjust the stock quantity in the inventory to account for the sold articles)
+4. __Back to main menu__ (Leads back to the main menu)
+
+At the end of each path the user will be offered to go back to the main menu.
+
+
+__Click the dropdowns below to see more detailed descriptions of each feature:__
+
+
+<details>
+<summary>Program start and the main menu (click to open)</summary>
+
 ### Program start, main menu:
 
 Once the program starts, it will print a welcome message with a brief introduction, before printing the main menu.
@@ -33,6 +59,13 @@ The main menu has 3 options:
   3. Quit: This option will print a "quit" message and quit the program.
 
 ![Program start](documentation/ss-program-load.png)
+
+</details>
+
+<br>
+
+<details>
+<summary>Inventory menu (click to open)</summary>
 
 ### Inventory menu:
 If the user chooses the option "1. Inventory" in the main menu, the terminal will be cleared and the inventory menu will be printed.
@@ -50,6 +83,11 @@ The user has 6 options to choose from:
 
 ![Inventory menu](documentation/ss-inventory-menu.png)
 
+</details>
+
+<details>
+<summary>Display inventory (click to open)</summary>
+
 #### Display inventory
 Option 1 in the inventory menu will start the path "Display inventory".
 
@@ -62,6 +100,11 @@ Then a table is printed of the shop's full inventory. This table contains the he
 After the table with the shops inventory, a terminal menu with only one choice is printed ("Go back"). The user can press enter to go back to the main menu once they are finished reviewing the table.
 
 ![End of display inventory](documentation/ss-display-inventory-back-to-main.png)
+
+</details>
+
+<details>
+<summary>Look up article (click to open)</summary>
 
 #### Look up article
 The 2nd choice in the inventory menu, "2. Look up article", will start the look up article path. 
@@ -79,6 +122,10 @@ After either displaying the found article, or informing the user of the article 
   1. Look up another article - This choice will restart the look up article-path
   2. Back to main menu - This choice will take the user back to the main menu
 
+</details>
+
+<details>
+<summary>Add article (click to open)</summary>
 
 #### Add article
 The 3rd option in the inventory menu leads the user into the "add article path". 
@@ -113,6 +160,11 @@ Article numbers may not be reused once they have been deleted. The reason is tha
 
 ![Add article - exists in inactive articles](documentation/ss-add-article-inactive.png)
 
+</details>
+
+<details>
+<summary>Edit article (click to open)</summary>
+
 #### Edit article
 The 4th option in the inventory menu starts the "Edit articles" path.
 
@@ -141,6 +193,11 @@ In the "edit article" path, if the user entered an article number of a valid for
 
 Lastly, the user will be asked if they want to edit another article or go back to the main menu.
 
+</details>
+
+<details>
+<summary>Delete article (click to open)</summary>
+
 #### Delete article
 The "delete article" path, which is the 5th option in the inventory menu, lets the user remove articles from the inventory, and instead add them to a separate worksheet, "Inactive articles".
 
@@ -160,6 +217,13 @@ In the "delete article" path, if the user enters an article number with a valid 
 
 ![Delete article - article not found](documentation/ss-delete-article-not-found.png)
 
+</details>
+
+<br>
+
+<details>
+<summary>Sales menu (click to open)</summary>
+
 ### Sales menu
 The sales menu can be reached from the main menu (by selecting "2. Sales").
 
@@ -169,12 +233,17 @@ Similarly to the main and inventory menus, there is a short instruction for how 
 
 The user has 4 options to choose from:
 
-  1. Display order (by date)
+  1. Display orders (by date)
   2. Look up order by ID
   3. Register an order
   4. Back to main menu
 
 ![Sales menu](documentation/ss-sales-menu.png)
+
+</details>
+
+<details>
+<summary>Display orders (by date) (click to open)</summary>
 
 #### Display orders (by date)
 The 1st option in the sales menu leads the user into the "display order history" path. 
@@ -194,6 +263,11 @@ If there are no orders in the order history worksheet registered within the date
 
 In both scenarios, the user is asked if they want to look at another time period of order history data or go back to the main menu.
 
+</details>
+
+<details>
+<summary>Look up order by ID (Click to open)</summary>
+
 #### Look up order by ID
 The 2nd option in the sales menu is to look up orders by ID. In this path, the user can search for an order by providing an order ID/order number. 
 
@@ -204,6 +278,11 @@ The user is then asked if they would like to look up another order or go back to
 
 If an order ID of valid format is entered, and this ID is not found in the order history, the user is informed by a print message. 
 ![Order ID not found](documentation/ss-sales-order-not-found.png)
+
+</details>
+
+<details>
+<summary>Register an order (click to open)</summary>
 
 #### Register an order
 The 3rd option in the sales menu is to "register an order". This option lets the user build an order, and then register it in the system. The stock quantity of the articles in the order will decrease in the inventory by the sold quantity.
@@ -234,10 +313,19 @@ If the user instead chooses to cancel the order at this stage, no changes will h
 
 ![Order registered](documentation/ss-order-registered.png)
 
+</details>
+
+<br>
+
+<details>
+<summary>Quitting the program (click to open)</summary>
+
 ### Quitting the program
 
 The user can choose to quit the program from the main menu. A message is then printed to the terminal as a confirmation to the user before the program is quit.
 ![Quitting the program](documentation/ss-quitting-program.png)
+
+</details>
 
 ## Input validation
 
