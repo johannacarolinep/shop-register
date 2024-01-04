@@ -246,7 +246,7 @@ You entered {temp_quantity}. The upper limit is 999999. Try again."""
                 # Check data has min 3 letters and optional max 2 digit number
                 pattern = re.compile(
                     r"^(?=.*[a-zA-Z].*[a-zA-Z].*[a-zA-Z])"
-                    r"(?=(?:\D*\d\D*){0,1}$)"
+                    r"(?=\D*\d{0,2}\D*$)"
                     r'[\w\s!@#$%^&*()-_+=<>,.?/:;"\'{}[\]|`~.]*$'
                 )
                 if bool(pattern.search(cleaned_str)) is False:
