@@ -361,8 +361,8 @@ A guide to valid entries in the program:
 
 </details>
 
-## Improved user-friendliness
-To make the program more user-friendly, the packages Colorama, Simple terminal menu, and PrettyTable were used.
+## Improve user-friendliness
+To make the program more user-friendly, third party packages Colorama, Simple terminal menu, and PrettyTable were used. 
 
 - __Colorama:__ used to change the text colour in the terminal, according to the following schema:
   - Light green: Titles 
@@ -377,6 +377,10 @@ To make the program more user-friendly, the packages Colorama, Simple terminal m
 - __PrettyTable:__ used to easily print data in a more readable table format.
 
 - __Simple terminal menu:__ used to improve navigation through the program, with simple-to-use terminal menus. 
+
+Print statements are used throughout the program to provide users with instruction and feedback.
+
+The standard library module *os* (`os.system("clear")`) is used where it makes sense, to clear the terminal for the user, in order to remove distractions and clutter.
 
 
 ## Instructions
