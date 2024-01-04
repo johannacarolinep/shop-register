@@ -18,6 +18,32 @@ Link to the [spreadsheet hosting the data](https://docs.google.com/spreadsheets/
 
 ## User stories
 
+__As a shop owner/employee using the program:__
+- I want to be quickly understand what type of program it is, and get an overview of the functionality, so that I can quickly determine if it is of use to me.
+
+- I want the program to be easy to navigate, so that I can switch between the different functionalities intuitively.
+
+- I want the program to provide clear instructions, prompts, and feedback so that I can understand what actions I need to take in order to progress through the program.
+
+__As a shop owner/employee who using the program to manage the shop's inventory:__
+- I want the option to view the full inventory, so that I can have an overview of all articles in the shop, their prices and stock levels.
+
+- I want to be able to search for a specific item by its article number, so that I can quickly retrieve detailed information about that particular article.
+
+- I want to be able to add a new article to the inventory, so that I can keep the shop’s product offerings up-to-date.
+
+- I want to be able to edit attributes of existing articles, so that I can correct any faulty information or update information as needed, eg. to edit the stock quantity as stock is refilled, or adjust the sale price.
+
+- I want the option to delete articles from the inventory, so that the shop’s product catalogue can be managed effectively.
+
+__As a shop owner/employee using the program for sales/order management:__
+- I want to view all registered orders between a specified start and end date, so I can analyse the shop's sales performance over a given period.
+
+- I want to look up a specific order by its order ID, so I can quickly retrieve detailed information about that particular transaction.
+
+- I want to register a new order with a unique order ID and specify the articles sold, so I can accurately track sales and update inventory quantities.
+
+
 ## Features
 
 The program features a main menu, from where the two main parts of the program can be reached, *Inventory* and *Sales*. From the main menu, the user can also choose to quit the program.
