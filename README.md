@@ -854,6 +854,7 @@ Each file deals with different aspects of the program and are listed below as su
 - [Heroku.com](https://id.heroku.com/login): was used to deploy the project.
 - [Google Sheets](https://www.google.com/sheets/about/): was used to store the data.
 - [Regex Generator](https://regex-generator.olafneumann.org/): was used to generate regex for input validation of article names
+- [CI Python Linter](https://pep8ci.herokuapp.com/): was used to ensure the code adheres to Pep 8 standards
 
 ## Deployment
 The program was deployed to [Heroku](https://id.heroku.com/login) and can be accessed by this [link](https://shop-register-ce8149331475.herokuapp.com/).
