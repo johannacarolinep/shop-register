@@ -1010,7 +1010,7 @@ All test-related documentation can be found in [TESTING.md](TESTING.md).
 
 ## Bugs
 ### Solved bugs
-#### Error when inputting a date range for which there were no orders to display, in *Display order history by date* path
+#### Bug 1: Error when inputting a date range for which there were no orders to display, in *Display order history by date* path
 
 <details>
 <summary>See issue description and solution</summary>
@@ -1080,7 +1080,7 @@ Lastly, I confirmed the methods were now working as intended by testing them wit
 
 <br>
 
-#### Issue when trying to build an order row for an article with 0 items in stock, in the *Register order* path
+#### Bug 2: Issue when trying to build an order row for an article with 0 items in stock, in the *Register order* path
 
 <details>
 <summary>See issue description and solution</summary>
@@ -1123,7 +1123,7 @@ Then, in `build_order()`, I added another if statement, after calling `get_sales
 
 <br>
 
-#### In the *Add article* path, when inputting an article number belonging to an inactive article, the wrong menu was displayed
+#### Bug 3: In the *Add article* path, when inputting an article number belonging to an inactive article, the wrong menu was displayed
 
 <details>
 <summary>See issue description and solution</summary>
@@ -1156,6 +1156,28 @@ Lastly, I tested running the program, entering the article number of an inactive
 
 </details>
 
+#### Bug 4: Issue with regex used in validation of article names
+
+<details>
+<summary>See issue description and solution</summary>
+
+__Issue:__ For validation of article names, I discovered that the number of digits imposed as a maximum by the regular expression was also used as a minimum. Thus a name would not be valid unless it contained at least 1 digit.
+
+__Fix:__ Changed the regular expression, specifically the second part of the regex, which holds the numeric requirements, from:
+
+```py
+r"(?=(?:\D*\d\D*){0,1}$)"
+```
+
+to:
+
+```py
+r"(?=\D*\d{0,2}\D*$)"
+```
+
+I tested the name validation with a number of different values for names, and confirmed it is now working as intended. The numeric part of the name is optional. 
+
+</details>
 
 ### Unsolved bugs
 I am not aware of any unsolved bugs. 
