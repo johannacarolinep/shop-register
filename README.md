@@ -411,6 +411,171 @@ The standard library module *os* (`os.system("clear")`) is used where it makes s
 
 ## Instructions
 
+To start the program: 
+1. Go to Shop Register by clicking this [link](https://shop-register-ce8149331475.herokuapp.com/) or by copying `https://shop-register-ce8149331475.herokuapp.com` and pasting it into your browser's address bar.
+2. Once the page is loaded, if the program does not start, click on *Run program*.
+3. A welcome message and the main menu should be printed.
+
+__Click on the goal you would like to reach to see step-by-step instructions:__
+
+<details>
+<summary>Display the shop's full inventory.</summary>
+
+<br>
+
+1. In the main menu, select option "1. Inventory"
+
+2. In the inventory menu, select option "1. Display inventory"
+
+3. The shop's full inventory should be printed. Once you've finished reviewing the inventory, press \<enter> to go back to the main menu
+
+</details>
+
+<details>
+<summary>Look up a specific article, using its article number.</summary>
+
+<br>
+
+1. In the main menu, select option "1. Inventory"
+
+2. In the inventory menu, select option "2. Look up article"
+
+3. Enter the article number of the article you are looking for.
+    - *Note:* Follow the on-screen instructions to provide a valid entry.
+
+4. If the article number you entered exists in the inventory, the article details should be printed in a table. If the article does not exist in the inventory, there should be a message confirming this.
+
+5. If you want to look up another article, select "Look up another article" in the menu that is printed. If not, select "Back to main menu".
+
+</details>
+
+<details>
+<summary>Add a new article to the shop's inventory.</summary>
+
+<br>
+
+1. In the main menu, select option "1. Inventory"
+
+2. In the inventory menu, select option "3. Add article"
+
+3. Choose an article number for your article.
+    - In order to create an article, you will need to choose an article number that does not already exist, in neither the inventory or as an inactive article.
+    - *Note:* Follow the on-screen instructions to provide a valid entry.
+    - If you enter an article number that belongs to an article in the inventory, you will be asked if you would instead like to edit the article in question.
+    - If you enter an article number that belongs to an article that is now inactive, you will be informed of this, and asked if you want to add another article.
+4. After choosing an article number, enter a name for your article
+    - *Note:* Follow the on-screen instructions to provide a valid entry.
+5. Enter the *price in*, meaning the price at which the shop buys the article from their supplier.
+    - *Note:* Follow the on-screen instructions to provide a valid entry.
+6. Enter the *price out*, meaning the price at which the shop sells the article to their customers.
+    - *Note:* Follow the on-screen instructions to provide a valid entry.
+7. Enter the *quantity*, the number of items of the article you would like to register in the shop's inventory.
+    - *Note:* Follow the on-screen instructions to provide a valid entry.
+8. As you've finished inputting all values required for the article, a green message should be printed indicating successfully adding the article to the inventory.
+9. In the menu that is printed, select *Add another article* if you want to add more articles to the inventory, or *Back to main menu*.
+
+
+</details>
+
+<details>
+<summary>Edit one or more attributes of a specific article.</summary>
+
+<br>
+
+1. In the main menu, select option "1. Inventory"
+2. In the inventory menu, select option "2. Edit article".
+3. Enter the article number of the article you wish to edit.
+    - *Note:* Follow the on-screen instructions to provide a valid entry.
+    - In order to edit an article, you will need to provide an article number that exists in the inventory.
+    - If the article number provided does not exist, a print message will inform you of this, and you will be offered to start over, or giong back to the main menu.
+4. The article matching the article number you provided should be displayed. In the menu printed below, select *Yes* if you want to go ahead and edit the article.
+    - If you select *No*, you will be asked if you want to edit another article, or go back to the main menu.
+5. A multi-selection menu should be printed, and you are asked to select all attributes for which you want to provide a new value.
+    - Mark an attribute in the menu for selection by pressing \<space> or \<tab>.
+    - Select your marked attributes by pressing \<enter>.
+6. Next you will be asked to enter new values for any attributes you selected in the menu.
+    - *Note:* Follow the on-screen instructions to provide valid entries.
+    - For each successfully updated attribute, a green message should be printed confirming the change.
+7. After finishing updating the attributes, a menu should be printed. Select *Edit another article* if you want to edit more articles. Otherwise select *Back to main menu*.
+
+</details>
+
+<details>
+<summary>Delete an article from the inventory.</summary>
+
+<br>
+
+1. In the main menu, select option "1. Inventory"
+2. In the inventory menu, select option "5. Delete article"
+3. Enter the article number of the article you wish to delete from the inventory.
+  - *Note:* Follow the on-screen instructions to provide a valid entry.
+  - In order to delete an article, you will need to enter an article number belonging to an article in the inventory.
+  - If the article number you provide is not in the inventory, you will be informed, and offered the options to either delete another article or go back to the main menu.
+4. The article matching the provided article number should be displayed. In the menu printed below, select *Yes* to confirm you want to delete the article. 
+  - If you instead select *No*, the deletion is cancelled, and you will be asked to either delete another article, or go back to the main menu. 
+5. A green message should be printed confirming the article has been removed. In the spreadsheet, you should now be able to see the article in question in the inactive_articles worksheet. 
+6. In the menu printed below, select *Delete another article* or *Back to main menu*
+
+
+</details>
+
+<details>
+<summary>Display order history for a specific time period.</summary>
+
+<br>
+
+1. In the main menu, select option "2. Sales"
+2. In the sales menu, select option "1. Display order (by date)"
+3. Enter the start date of the time period for which you want to see order history.
+  - *Note:* Follow the on-screen instructions to provide a valid entry.
+4. Enter the end date of the time period for which you want to see order history.
+  - *Note:* Follow the on-screen instructions to provide a valid entry.
+  - The end date will need to be either the same date as the start date, or a date which is later than the start date.
+5. If there are orders registered within the time period you have specified (between the start and end date, both of which are included), they will be displayed now in a table.
+  - If there were no orders to display, you should be informed through a yellow message.
+6. In the menu that is printed, you can select to either "Search for different dates" or go "Back to main menu"
+
+</details>
+
+<details>
+<summary>Look up a specific order by its order ID.</summary>
+
+<br>
+
+1. In the main menu, select option "2. Sales"
+2. In the sales menu, select option "2. Look up order by ID"
+3. Enter the order ID for the order you are looking for.
+  - *Note:* Follow the on-screen instructions to provide a valid entry.
+  - In order to display an order, you will need to enter an order ID that exists in the orders worksheet.
+  - If the order ID you entered does not exist in the worksheet, you will get the options to either look up another order, or go back to the main menu.
+4. If the order ID was found in the order history (the orders worksheet), the order should now be displayed. In a menu printed below, you will get the options to either *Search for a different order* or go *Back to main menu*.
+
+
+</details>
+
+<details>
+<summary>Register a new order.</summary>
+
+<br>
+
+1. In the main menu, select option "2. Sales"
+2. In the sales menu, select option "3. Register an order"
+3. Enter the article number for the first article you would like to add to the order.
+  - *Note:* Follow the on-screen instructions to provide a valid entry.
+  - In order to add an article to your order, you will need to enter an article number which exists in the inventory, and for which the corresponding article has items in stock.
+  - If your article number does not exist, or the article has 0 items in stock, you will get the options to add another article to the order, or mark the order as complete.
+4. If the article exists and there are items in stock, you will now be asked how many of the items in stock you wish to add to the order.
+  - *Note:* Follow the on-screen instructions to provide a valid entry.
+5. Once the article number and quantity have been entered, you will get the options to either *add another row* to the order or state that the *order is complete*.
+  - Select *Add another row* if you wish to include more articles in the same order. These will have their own row in the orders worksheet, but share order ID.
+6. Once you select *Order is complete*, the order you have just created should be displayed. You will be given the options to *Finalize the order* or *Cancel order*.
+  - If you select *Cancel order* you will be asked if you want to register another order, or go back to the main menu.
+7. If you select *Finalize order*, the order will be registered in the orders worksheet. The stock quantities for the articles you included in the order will be adjusted in the inventory sheet, to account for the sold items. A green message is printed to confirm order registration.
+8. In the menu that is printed, you can choose if you want to *Register another order* or go *Back to main menu*.
+
+
+</details>
+
 ## Flowcharts
 Overarching program logic:
 
