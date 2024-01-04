@@ -707,7 +707,71 @@ Create a local copy of the GitHub repository by following one of the two process
   1. Run the following command in a terminal
   - `git clone git@github.com:johannacarolinep/shop-register.git`
 
+#### Create and connect the Google Spreadsheet to host the inventory and sales data of the project
+
+*Note:*
+You will need to have a Google account.
+
+<details>
+<summary>First, create the Google Spreadsheet (click to see instructions)</summary>
+
+Create the Google Spreadsheet:
+
+  1. Either copy the [spreadsheet used in the project](https://docs.google.com/spreadsheets/d/1l5ltxH_z8xA3u476ee2l4rZuZOsTOB6hkCA9jZtMG6U/edit?usp=sharing) or create a new spreadsheet.
+    - If choosing to create a new spreadsheet, it is important to still use the same names for the 3 worksheets, as well as the same column headers and column order as in the original spreadsheet.
+  2. Make sure the name of the spreadsheet is the same as in the original spreadsheet, *shop_register*.
+</details>
+
+<details>
+<summary>Connect the spreadsheet to the project (click to open instructions)</summary>
+
+Set up the API and connect your spreadsheet to your local copy of the project.
+
+  1. Go to [Google Cloud Platform](https://console.cloud.google.com/)
+  2. Click on "Select a project" in the blue banner near the top of the page.
+  3. Then click on "New project".
+  4. Give the project a name and click "Create".
+  5. After the project has been created, click "Select project" to get to the project page.
+  6. In the menu at the left hand side, select *API's and Services*, then select *Library*.
+  7. Find and click on the *Google Drive API*, then click on *Enable*.
+  8. When enabling the API, you should land on the *Overview* page for the Google Drive API. Here, click *Create credentials* in the upper right corner.
+  9. Fill out the form with the values below:
+      - Which API's are you using?: Google Drive API
+      - What data will you be accessing?: Application data
+        - Click *Next*
+      - Service account name: [choose a name to give the service account]
+        - Click *Create and continue*
+      - Role: Editor
+        - Click *Continue*
+      - Click *Done*
+  10. In the menu on the left hand side, click *Credentials*
+  11. In the section "Service Accounts", find and click on the account that was created.
+  12. On the next page, in the menu on the top of the page, click on *Keys*
+  13. Click on *Add key* -> *Create new key*.
+  14. Select *JSON* as the "Key type" and click *Create*. This should download the key to your computer.
+  15. In the menu on the left hand side, select *API's and Services* -> *Library* to get back to the "Library" page.
+  16. Find and enable the *Google Sheets API*
+  17. Move the file that was downloaded from *Google Cloud Platform* into your local copy of the repository.
+  18. Rename the file *creds.json*. This is __important__, since there is already code in the *run.py* file stating the credentials are in the file *creds.json*
+  19. Open *creds.json*, and copy the value of client email, without the quotes.
+  20. Now go back to your spreadsheet. Click *Share* in the upper right corner, and paste in the email address. Make sure the role is "Editor", then click *Send*.
+
+</details>
+
+<br>
+
+Install the dependencies listed in *requirements.txt*. 
+
+  - While in the project directory, run the following command in the terminal:
+
+```
+pip install -r requirements.txt
+```
+
 ### Run the project as a remote web application by deploying to Heroku:
+
+<details>
+<summary>Click to open the instructions</summary>
 
 - Clone the repository:
   1. Open the terminal on your computer.
@@ -745,18 +809,18 @@ Create a local copy of the GitHub repository by following one of the two process
   ![Heroku - Add python and nodejs](documentation/heroku-buildpacks-order.png)
 
   13. Next, in the "Config Vars" section, click "Click "Reveal Config Vars". You will need to add 2 Config Vars
-  ![Heroku - Reveal Config Vars button](documentation/heroku-reveal-config-vars-btn.png)
+  ![Heroku - Reveal Config Vars button](documentation/heroku-reveal-config-vars.png)
 
 - Config Var number 1:
     - Key: PORT Value: 8000 
     - This Config Var was provided by [CODE INSTITUTE](https://codeinstitute.net/)
 
 - Config Var number 2:
-    - Key: CREDS Value: (Reach out for this value)
+    - Key: CREDS Value: Copy all code in your *creds.json* file and paste here
     - This Config Var contains the credentials necessary for accessing the Google Sheet linked to the program.
     ![Heroku - Config Vars](documentation/heroku-config-vars.png)
 
-  14. Go back to the Deploy tab:
+  14. After adding both Config Vars, go back to the Deploy tab:
 
       ![Heroku - Deploy Tab](documentation/heroku-deploy-tab.png)
 
@@ -770,6 +834,7 @@ Create a local copy of the GitHub repository by following one of the two process
 
   18. You can now click the "View" button (in the screenshot above), to launch the application.
 
+</details>
 
 ## Testing
 All test-related documentation can be found in [TESTING.md](TESTING.md).
