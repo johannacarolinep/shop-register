@@ -412,15 +412,17 @@ The standard library module *os* (`os.system("clear")`) is used where it makes s
 ## Instructions
 
 ## Flowcharts
-Overarching:
+Overarching program logic:
 
 ![Flowchart of the overarching program logic](documentation/drawio-overarching.png)
 
-Inventory:
+Inventory management part of the program:
+(Open the image in a new tab to allow for zooming)
 
 ![Flowchart of the inventory part of the program](documentation/drawio-inventory.png)
 
-Sales:
+Sales management part of the program:
+(Open the image in a new tab to allow for zooming)
 
 ![Flowchart of the sales/orders part of the program](documentation/drawio-sales.png)
 
@@ -647,6 +649,8 @@ Each file deals with different aspects of the program and are listed below as su
      <br>
 
      </details>
+
+<br>
 
 ## Technologies used
 ### Languages:
@@ -997,5 +1001,9 @@ I am not aware of any unsolved bugs.
 - [Simple Terminal Menu](https://pypi.org/project/simple-term-menu/) - Terminal menus
 - [Colorama](https://pypi.org/project/colorama/) - color formatting
 - [PrettyTable](https://pypi.org/project/prettytable/) - table printouts
+- [Code Institute](https://codeinstitute.net/) - for tutorials (especially walkthrough project 3), for providing the student pack, the CI Python Linter, and the deployment terminal, amongst other things.
+
 
 ## Acknowledgements
+
+- I would like to thank my Code Institute mentor [Iuliia Konovalova](https://github.com/IuliiaKonovalova) for all of her great advise and guidance.
